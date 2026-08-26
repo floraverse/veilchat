@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>SaveMoney - আপনার আর্থিক সঙ্গী</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 12px;
+        }
+        .app-container {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 18px 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            margin: 10px 0;
+        }
+
+        /* ===== LANGUAGE SELECTOR ===== */
+        .lang-selector {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .lang-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e;
+            border-color: #f7971e;
+        }
+
+        /* ===== LOGIN/REGISTER ===== */
+        #loginPage, #registerPage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 480px;
+            padding: 10px 0;
+        }
+        #registerPage { display: none; }
+        
+        .app-logo {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .app-logo .icon {
+            display: inline-block;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+        .app-logo .icon i { color: #1a1a2e; font-size: 40px; }
+        .app-logo .text { display: block; font-size: 32px; margin-top: 4px; letter-spacing: 1px; }
+        .app-sub {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin: 6px 0 28px;
+            letter-spacing: 3px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 14px;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            padding: 28px 20px 24px;
+            border-radius: 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .login-card h2 { color: #1a1a2e; margin-bottom: 16px; font-size: 22px; }
+        .login-card .input-group { margin-bottom: 12px; text-align: left; }
+        .login-card .input-group label {
+            font-size: 12px;
+            color: #5a6a7e;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .login-card .input-group input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            border: 2px solid #e8edf5;
+            font-size: 16px;
+            outline: none;
+            background: white;
+            transition: 0.3s;
+        }
+        .login-card .input-group input:focus {
+            border-color: #f7971e;
+            box-shadow: 0 0 0 4px rgba(247, 151, 30, 0.15);
+        }
+        .auth-btn {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            border: none;
+            border-radius: 60px;
+            padding: 16px 10px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(247, 151, 30, 0.35);
+            transition: 0.3s;
+        }
+        .auth-btn:active { transform: scale(0.96); }
+        .auth-toggle {
+            margin-top: 14px;
+            color: #1a66c9;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .auth-toggle:hover { text-decoration: underline; }
+        .auth-error { color: #dc3545; font-size: 13px; margin-top: 4px; display: none; }
+        .auth-success { color: #1f8b4c; font-size: 13px; margin-top: 4px; display: none; }
+        .powered {
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+        .powered strong { color: rgba(255, 255, 255, 0.8); }
+        .hidden { display: none !important; }
+
+        /* ===== HOME PAGE ===== */
+        #homePage {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 28px;
+            padding: 16px 14px 18px;
+        }
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f3f8;
+        }
+        .home-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .home-header .brand .logo-icon {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            padding: 6px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .home-header .brand .logo-icon i { color: #1a1a2e; font-size: 20px; }
+        .home-header .brand h2 { font-size: 20px; font-weight: 700; color: #1a1a2e; }
+        .home-header .header-buttons { display: flex; gap: 2px; align-items: center; }
+        .logout-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #7b8aa0;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .logout-btn:active { background: #eef3fa; }
+        .logout-btn.logout-red { color: #dc3545; }
+        .badge {
+            font-size: 9px;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        .badge-admin { background: #dc3545; color: white; }
+        .badge-user { background: #f7971e; color: white; }
+
+        .tab-bar {
+            display: flex;
+            gap: 3px;
+            background: #f0f3f8;
+            border-radius: 30px;
+            padding: 3px;
+            margin: 2px 0;
+            overflow-x: auto;
+        }
+        .tab-bar button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6c7e96;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .tab-bar button.active {
+            background: white;
+            color: #1a1a2e;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ===== STATS ===== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .stat-card {
+            background: #f8fcff;
+            border-radius: 16px;
+            padding: 10px 12px;
+            border: 1px solid #eef4fc;
+        }
+        .stat-label { font-size: 11px; color: #6c7e96; display: flex; align-items: center; gap: 4px; margin-bottom: 2px; }
+        .stat-value { font-size: 17px; font-weight: 700; color: #0b1f33; }
+        .highlight-blue .stat-value { color: #1a66c9; }
+        .highlight-green .stat-value { color: #1f8b4c; }
+        .highlight-red .stat-value { color: #dc3545; }
+
+        .extra-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            background: #f4f9ff;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+        .extra-stats span { display: flex; align-items: center; gap: 4px; }
+
+        /* ===== ADD TRANSACTION ===== */
+        .add-transaction-box {
+            background: #f0f6fe;
+            border-radius: 20px;
+            padding: 12px;
+            border: 1px solid #dce6f2;
+        }
+        .add-transaction-box .row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .add-transaction-box select,
+        .add-transaction-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid #cddcee;
+            font-size: 13px;
+            background: white;
+            outline: none;
+            min-width: 60px;
+        }
+        .add-transaction-box input[type="number"] { flex: 0.6; }
+        .add-transaction-box .add-btn {
+            background: #1a1a2e;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+        .add-transaction-box .add-btn:active { transform: scale(0.97); }
+
+        /* ===== TAGS ===== */
+        .tag-input { display: flex; gap: 4px; flex-wrap: wrap; }
+        .tag-input input { flex: 2; }
+        .tag-input button {
+            background: #f7971e;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 14px;
+            color: #1a1a2e;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .tag-item {
+            background: #dce6f2;
+            border-radius: 30px;
+            padding: 3px 10px;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .tag-item i { cursor: pointer; color: #dc3545; font-size: 10px; }
+
+        /* ===== FILTER ===== */
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            background: #f5f9ff;
+            padding: 8px 12px;
+            border-radius: 30px;
+        }
+        .filter-row select, .filter-row input {
+            background: white;
+            border: 1px solid #d9e3ef;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            flex: 1 0 70px;
+            outline: none;
+        }
+        .filter-row button {
+            background: #1a1a2e;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            color: white;
+            font-weight: 500;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            flex: 1 0 auto;
+            justify-content: center;
+        }
+        .filter-row .date-range { display: flex; gap: 4px; flex: 1 0 100%; }
+        .filter-row .date-range input { flex: 1; }
+
+        /* ===== TRANSACTION LIST ===== */
+        .tx-list {
+            background: #fafdff;
+            border-radius: 16px;
+            padding: 4px 4px 8px;
+            border: 1px solid #e7eef9;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px solid #ecf2fa;
+            font-size: 12px;
+        }
+        .tx-item:last-child { border: none; }
+        .tx-left .tx-title { font-weight: 600; color: #142433; }
+        .tx-left .tx-desc {
+            font-size: 10px;
+            color: #6b7f99;
+            background: #eef3fa;
+            padding: 1px 8px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .tx-left .tx-tags { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+        .tx-left .tx-tags span {
+            background: #dce6f2;
+            border-radius: 30px;
+            padding: 1px 8px;
+            font-size: 9px;
+            color: #2a4059;
+        }
+        .tx-right { text-align: right; }
+        .tx-amount { font-weight: 700; }
+        .tx-amount.income { color: #1f8b4c; }
+        .tx-amount.expense { color: #dc3545; }
+        .tx-amount.debt-taken { color: #b87c2b; }
+        .tx-amount.debt-given { color: #dc3545; }
+        .tx-date { font-size: 9px; color: #7b8da5; }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .action-buttons button {
+            flex: 1;
+            background: white;
+            border: 1px solid #d3dfee;
+            border-radius: 30px;
+            padding: 8px 4px;
+            font-weight: 500;
+            color: #1d3148;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            min-width: 50px;
+            transition: 0.2s;
+        }
+        .action-buttons button:active { background: #eef5fe; }
+
+        .chart-section {
+            background: #f8fcff;
+            border-radius: 16px;
+            padding: 10px;
+            border: 1px solid #eef4fc;
+        }
+        .chart-section canvas { width: 100% !important; max-height: 140px; }
+
+        .budget-section {
+            background: #f8fcff;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #eef4fc;
+        }
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4px 0;
+            font-size: 12px;
+        }
+        .budget-bar {
+            width: 100%;
+            height: 5px;
+            background: #eef3fa;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 3px 0;
+        }
+        .budget-bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .budget-bar .fill.green { background: #1f8b4c; }
+        .budget-bar .fill.yellow { background: #b87c2b; }
+        .budget-bar .fill.red { background: #dc3545; }
+
+        .reminder-box {
+            background: #fff8e6;
+            border-radius: 14px;
+            padding: 10px 14px;
+            border-left: 4px solid #f7971e;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .reminder-box i { color: #f7971e; margin-right: 6px; }
+        .reminder-box .del-reminder { color: #dc3545; cursor: pointer; }
+
+        /* ===== SETTINGS ===== */
+        .settings-box {
+            background: #f8fcff;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #eef4fc;
+        }
+        .settings-box .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eef3fa;
+        }
+        .settings-box .setting-item:last-child { border-bottom: none; }
+        .settings-box .setting-item button {
+            background: #1a1a2e;
+            border: none;
+            border-radius: 30px;
+            padding: 5px 14px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .settings-box .setting-item button:active { opacity: 0.7; }
+        .settings-box .setting-item button.danger { background: #dc3545; }
+        .settings-box .setting-item button.gold { background: #f7971e; color: #1a1a2e; }
+
+        .report-section {
+            background: #f8fcff;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #eef4fc;
+        }
+        .report-section .report-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 12px;
+            border-bottom: 1px dashed #eef3fa;
+        }
+        .report-section .report-item:last-child { border-bottom: none; }
+        .report-section .report-total { font-weight: 700; color: #1a66c9; }
+
+        /* ===== ADMIN ===== */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .admin-stat-card {
+            background: #f8fcff;
+            border-radius: 14px;
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid #eef4fc;
+        }
+        .admin-stat-card .num { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+        .admin-stat-card .label { font-size: 9px; color: #6c7e96; margin-top: 2px; }
+        .admin-stat-card.blue .num { color: #1a66c9; }
+        .admin-stat-card.green .num { color: #1f8b4c; }
+        .admin-stat-card.red .num { color: #dc3545; }
+        .admin-stat-card.amber .num { color: #b87c2b; }
+
+        .admin-tx-list {
+            max-height: 180px;
+            overflow-y: auto;
+            background: #fafdff;
+            border-radius: 14px;
+            border: 1px solid #e7eef9;
+        }
+        .admin-tx-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            border-bottom: 1px solid #ecf2fa;
+            font-size: 11px;
+        }
+        .admin-tx-item:last-child { border-bottom: none; }
+        .admin-tx-item .tx-amount-small { font-weight: 600; }
+        .admin-tx-item .tx-amount-small.income { color: #1f8b4c; }
+        .admin-tx-item .tx-amount-small.expense { color: #dc3545; }
+
+        .footer-note {
+            margin-top: 10px;
+            font-size: 10px;
+            color: #9dafc4;
+            text-align: center;
+            border-top: 1px solid #e5edf7;
+            padding-top: 10px;
+        }
+
+        /* ===== ADMIN LOGIN OVERLAY ===== */
+        .admin-login-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .admin-login-box {
+            background: white;
+            border-radius: 32px;
+            padding: 32px 24px;
+            width: 340px;
+            max-width: 90%;
+            text-align: center;
+        }
+        .admin-login-box h2 { color: #1a1a2e; margin-bottom: 8px; }
+        .admin-login-box p { color: #6c7e96; font-size: 13px; margin-bottom: 16px; }
+        .admin-login-box input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            border: 2px solid #e8edf5;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .admin-login-box input:focus { border-color: #f7971e; }
+        .admin-login-box .admin-login-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+            border-radius: 30px;
+            padding: 14px;
+            width: 100%;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .admin-login-box .admin-login-btn:active { transform: scale(0.96); }
+        .admin-login-box .admin-login-error { color: #dc3545; font-size: 13px; margin-top: 8px; display: none; }
+        .admin-login-box .admin-login-close { margin-top: 12px; color: #6c7e96; cursor: pointer; font-size: 13px; }
+        .admin-login-box .admin-login-close:hover { text-decoration: underline; }
+
+        /* ===== BACKUP OVERLAY ===== */
+        .backup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .backup-box {
+            background: white;
+            border-radius: 32px;
+            padding: 32px 24px;
+            width: 340px;
+            max-width: 90%;
+            text-align: center;
+        }
+        .backup-box h2 { color: #1a1a2e; margin-bottom: 8px; }
+        .backup-box p { color: #6c7e96; font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+        .backup-box input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            border: 2px solid #e8edf5;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .backup-box input:focus { border-color: #f7971e; }
+        .backup-box .backup-btn {
+            background: linear-gradient(135deg, #1f8b4c, #28a745);
+            border: none;
+            border-radius: 30px;
+            padding: 14px;
+            width: 100%;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .backup-box .backup-btn:active { transform: scale(0.96); }
+        .backup-box .backup-error { color: #dc3545; font-size: 13px; margin-top: 8px; display: none; }
+        .backup-box .backup-success { color: #1f8b4c; font-size: 13px; margin-top: 8px; display: none; }
+        .backup-box .backup-close { margin-top: 12px; color: #6c7e96; cursor: pointer; font-size: 13px; }
+        .backup-box .backup-close:hover { text-decoration: underline; }
+
+        .online-status {
+            font-size: 10px;
+            color: #6c7e96;
+            margin-left: 6px;
+        }
+        .online-status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .online-status .dot.online { background: #1f8b4c; }
+        .online-status .dot.offline { background: #dc3545; }
+
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 13px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 400px) {
+            .stat-value { font-size: 15px; }
+            .app-logo .text { font-size: 26px; }
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-message" id="toastMessage"></div>
+
+    <!-- ===== ADMIN LOGIN OVERLAY ===== -->
+    <div class="admin-login-overlay" id="adminLoginOverlay">
+        <div class="admin-login-box">
+            <i class="fas fa-shield-alt" style="font-size:40px; color:#dc3545; margin-bottom:8px;"></i>
+            <h2 id="adminLoginTitle">👑 এডমিন লগইন</h2>
+            <p id="adminLoginDesc">এডমিন PIN দিন</p>
+            <input type="password" id="adminLoginPin" placeholder="****" maxlength="10">
+            <button class="admin-login-btn" id="adminLoginBtn">🔑 প্রবেশ</button>
+            <div class="admin-login-error" id="adminLoginError">❌ ভুল এডমিন PIN!</div>
+            <div class="admin-login-close" id="adminLoginClose">✕ বন্ধ করুন</div>
+        </div>
+    </div>
+
+    <!-- ===== BACKUP OVERLAY ===== -->
+    <div class="backup-overlay" id="backupOverlay">
+        <div class="backup-box">
+            <i class="fas fa-cloud-upload-alt" style="font-size:40px; color:#1f8b4c; margin-bottom:8px;"></i>
+            <h2 id="backupTitle">☁️ ব্যাকআপ নিন</h2>
+            <p id="backupDesc">আপনার ইমেইলে ডেটা ব্যাকআপ পাঠান</p>
+            <input type="email" id="backupEmail" placeholder="your@email.com">
+            <button class="backup-btn" id="backupBtn">📤 ব্যাকআপ পাঠান</button>
+            <div class="backup-error" id="backupError">❌ সঠিক ইমেইল দিন!</div>
+            <div class="backup-success" id="backupSuccess">✅ ব্যাকআপ পাঠানো হয়েছে!</div>
+            <div class="backup-close" id="backupClose">✕ বন্ধ করুন</div>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- ===== LANGUAGE SELECTOR ===== -->
+        <div class="lang-selector" id="langSelector">
+            <button class="lang-btn active" data-lang="bn">🇧🇩 বাংলা</button>
+            <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+            <button class="lang-btn" data-lang="hi">🇮🇳 हिन्दी</button>
+            <button class="lang-btn" data-lang="ur">🇵🇰 اردو</button>
+        </div>
+
+        <!-- ===== LOGIN PAGE ===== -->
+        <div id="loginPage">
+            <div class="app-logo">
+                <span class="icon"><i class="fas fa-coins"></i></span>
+                <span class="text" id="appName">SaveMoney</span>
+            </div>
+            <div class="app-sub" id="appSub">📊 আপনার আর্থিক সঙ্গী</div>
+            <div class="login-card">
+                <h2 id="loginGreeting">👋 স্বাগতম!</h2>
+                <div class="input-group">
+                    <label id="lblEmail">📧 ইমেইল</label>
+                    <input type="email" id="loginEmail" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label id="lblPassword">🔒 পাসওয়ার্ড</label>
+                    <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড">
+                </div>
+                <div class="auth-error" id="loginError">❌ ভুল ইমেইল বা পাসওয়ার্ড!</div>
+                <button class="auth-btn" id="loginBtn">🔑 লগইন</button>
+                <div class="auth-toggle" id="showRegister">নতুন অ্যাকাউন্ট? রেজিস্টার করুন</div>
+            </div>
+            <div class="powered"><i class="fas fa-code"></i> Powered by <strong>Flora</strong></div>
+        </div>
+
+        <!-- ===== REGISTER PAGE ===== -->
+        <div id="registerPage">
+            <div class="app-logo" style="font-size:36px;">
+                <span class="icon"><i class="fas fa-user-plus"></i></span>
+                <span class="text" id="registerTitle" style="font-size:24px;">নতুন অ্যাকাউন্ট</span>
+            </div>
+            <div class="login-card">
+                <h2 id="registerGreeting">📝 রেজিস্টার</h2>
+                <div class="input-group">
+                    <label id="lblRegEmail">📧 ইমেইল</label>
+                    <input type="email" id="registerEmail" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label id="lblRegPassword">🔒 পাসওয়ার্ড (৬+ অক্ষর)</label>
+                    <input type="password" id="registerPassword" placeholder="পাসওয়ার্ড">
+                </div>
+                <div class="input-group">
+                    <label id="lblRegPin">🔐 PIN (৪ ডিজিট)</label>
+                    <input type="text" id="registerPin" placeholder="1234" maxlength="4">
+                </div>
+                <div class="auth-error" id="registerError"></div>
+                <div class="auth-success" id="registerSuccess">✅ অ্যাকাউন্ট তৈরি হয়েছে!</div>
+                <button class="auth-btn" id="registerBtn">📝 রেজিস্টার</button>
+                <div class="auth-toggle" id="showLogin">ইতিমধ্যে অ্যাকাউন্ট আছে? লগইন করুন</div>
+            </div>
+        </div>
+
+        <!-- ===== HOME PAGE ===== -->
+        <div id="homePage">
+            <div class="home-header">
+                <div class="brand">
+                    <span class="logo-icon" id="logoIcon"><i class="fas fa-coins"></i></span>
+                    <h2>SaveMoney <span id="roleBadge" class="badge badge-user">👤 ইউজার</span></h2>
+                </div>
+                <div class="header-buttons">
+                    <span class="online-status" id="onlineStatus"><span class="dot online"></span><span id="onlineText">অনলাইন</span></span>
+                    <button class="logout-btn logout-red" id="logoutBtn"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="tab-bar" id="tabBar">
+                <button class="active" data-tab="homeTab" id="tabHome">🏠 হোম</button>
+                <button data-tab="reportTab" id="tabReport">📊 রিপোর্ট</button>
+                <button data-tab="settingsTab" id="tabSettings">⚙️ সেটিংস</button>
+                <button data-tab="adminTab" id="adminTabBtn" style="display:none;">👑 এডমিন</button>
+            </div>
+
+            <!-- ===== HOME TAB ===== -->
+            <div id="homeTab" class="tab-content active">
+                <div class="summary-grid">
+                    <div class="stat-card highlight-blue">
+                        <div class="stat-label"><i class="fas fa-circle"></i> <span id="lblBalance">ব্যালেন্স</span></div>
+                        <div class="stat-value" id="currentBalance">৳ 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label"><i class="fas fa-play-circle"></i> <span id="lblOpening">ওপেনিং</span></div>
+                        <div class="stat-value" id="openingBalance">৳ 0</div>
+                    </div>
+                    <div class="stat-card highlight-green">
+                        <div class="stat-label"><i class="fas fa-arrow-up"></i> <span id="lblIncome">ইনকাম</span></div>
+                        <div class="stat-value" id="totalIncome">৳ 0</div>
+                    </div>
+                    <div class="stat-card highlight-red">
+                        <div class="stat-label"><i class="fas fa-arrow-down"></i> <span id="lblCost">খরচ</span></div>
+                        <div class="stat-value" id="totalCost">৳ 0</div>
+                    </div>
+                </div>
+
+                <div class="extra-stats">
+                    <span><i class="fas fa-calendar-day"></i> <span id="lblToday">আজ:</span> <strong id="dailyCost">৳ 0</strong></span>
+                    <span><i class="fas fa-hand-holding-usd" style="color:#b87c2b;"></i> <span id="lblDebt">দেনা/পাওনা:</span> <strong id="debtLoan">৳ 0</strong></span>
+                    <span><i class="fas fa-bullseye" style="color:#1a66c9;"></i> <span id="lblGoal">লক্ষ্য:</span> <strong id="savingsGoal">৳ 0</strong></span>
+                </div>
+
+                <div class="budget-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <span style="font-weight:600; font-size:13px; color:#1a1a2e;"><i class="fas fa-chart-simple"></i> <span id="lblBudget">বাজেট</span></span>
+                        <button id="setBudgetBtn" style="background:#f7971e; border:none; border-radius:30px; padding:3px 14px; color:#1a1a2e; font-weight:600; font-size:11px; cursor:pointer;"><span id="btnSetBudget">সেট</span></button>
+                    </div>
+                    <div id="budgetDisplay">
+                        <div class="budget-item"><span id="lblMonthlyBudget">মাসিক বাজেট</span><span><strong id="monthlyBudget">৳ 0</strong></span></div>
+                        <div class="budget-bar"><div class="fill green" id="budgetBar" style="width:0%"></div></div>
+                        <div style="display:flex; justify-content:space-between; font-size:10px; color:#6c7e96;">
+                            <span><span id="lblUsed">ব্যবহৃত:</span> <strong id="budgetUsed">৳ 0</strong></span>
+                            <span><span id="lblLeft">বাকি:</span> <strong id="budgetLeft">৳ 0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <span style="font-weight:600; font-size:13px; color:#1a1a2e;"><i class="fas fa-chart-pie"></i> <span id="lblCategory">ক্যাটাগরি</span></span>
+                        <select id="chartType" style="border:1px solid #dce6f2; border-radius:20px; padding:3px 10px; font-size:11px; background:white;">
+                            <option value="pie" id="optPie">পাই</option>
+                            <option value="bar" id="optBar">বার</option>
+                        </select>
+                    </div>
+                    <canvas id="myChart"></canvas>
+                </div>
+
+                <div class="add-transaction-box">
+                    <div class="row">
+                        <select id="txType">
+                            <option value="expense" id="txExpense">💸 খরচ</option>
+                            <option value="income" id="txIncome">💰 আয়</option>
+                            <option value="debt-taken" id="txDebtTaken">🤝 ঋণ নেওয়া</option>
+                            <option value="debt-given" id="txDebtGiven">🤲 ঋণ দেওয়া</option>
+                        </select>
+                        <input type="text" id="txDescription" placeholder="বিবরণ">
+                    </div>
+                    <div class="row">
+                        <input type="number" id="txAmount" placeholder="টাকা">
+                        <div class="tag-input" style="flex:1.5;">
+                            <input type="text" id="txTag" placeholder="ট্যাগ">
+                            <button id="addTagBtn"><span id="btnAddTag">যোগ</span></button>
+                        </div>
+                    </div>
+                    <div id="tagContainer" class="tag-input" style="margin-bottom:4px;"></div>
+                    <button class="add-btn" id="addTxBtn"><i class="fas fa-plus-circle"></i> <span id="btnAddTx">যোগ করুন</span></button>
+                </div>
+
+                <div id="reminderContainer"></div>
+
+                <div class="filter-row">
+                    <select id="filterPeriod">
+                        <option value="daily" id="filterDaily">ডেইলি</option>
+                        <option value="monthly" selected id="filterMonthly">মাসিক</option>
+                        <option value="yearly" id="filterYearly">বার্ষিক</option>
+                        <option value="custom" id="filterCustom">কাস্টম</option>
+                    </select>
+                    <div class="date-range" id="dateRange" style="display:none;">
+                        <input type="date" id="filterStartDate">
+                        <input type="date" id="filterEndDate">
+                    </div>
+                    <input type="text" id="filterSearch" placeholder="খুঁজুন...">
+                    <button id="applyFilterBtn"><i class="fas fa-filter"></i> <span id="btnFilter">ফিল্টার</span></button>
+                </div>
+
+                <div class="tx-list" id="transactionList">
+                    <div style="padding:24px 16px; text-align:center; color:#8899b0; font-size:13px;">
+                        <i class="fas fa-inbox" style="font-size:28px; display:block; margin-bottom:8px; opacity:0.3;"></i>
+                        <span id="noTx">এখনো কোনো লেনদেন যোগ করা হয়নি</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== REPORT TAB ===== -->
+            <div id="reportTab" class="tab-content">
+                <div class="report-section">
+                    <h4 style="margin-bottom:10px; color:#1a1a2e;"><i class="fas fa-file-pdf"></i> <span id="lblPdfReport">PDF রিপোর্ট</span></h4>
+                    <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+                        <select id="reportMonth" style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid #dce6f2; background:white; font-size:13px;">
+                            <option value="1">জানুয়ারি</option><option value="2">ফেব্রুয়ারি</option>
+                            <option value="3">মার্চ</option><option value="4">এপ্রিল</option>
+                            <option value="5">মে</option><option value="6">জুন</option>
+                            <option value="7">জুলাই</option><option value="8">আগস্ট</option>
+                            <option value="9">সেপ্টেম্বর</option><option value="10">অক্টোবর</option>
+                            <option value="11">নভেম্বর</option><option value="12">ডিসেম্বর</option>
+                        </select>
+                        <select id="reportYear" style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid #dce6f2; background:white; font-size:13px;"></select>
+                        <button id="generatePdfBtn" style="background:#1a1a2e; border:none; border-radius:30px; padding:8px 20px; color:white; font-weight:600; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-file-pdf"></i> <span id="btnPdf">PDF</span>
+                        </button>
+                    </div>
+                    <div id="pdfPreview" style="background:#fafdff; border-radius:16px; padding:16px; border:1px solid #e7eef9; min-height:200px;">
+                        <div style="text-align:center; color:#8899b0; font-size:13px;">
+                            <i class="fas fa-file-alt" style="font-size:32px; display:block; margin-bottom:8px; opacity:0.3;"></i>
+                            <span id="pdfHint">মাস ও বছর সিলেক্ট করে PDF ডাউনলোড করুন</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section" style="margin-top:10px;">
+                    <h4 style="margin-bottom:8px; color:#1a1a2e;"><i class="fas fa-chart-bar"></i> <span id="lblMonthlyCost">মাসিক খরচ</span></h4>
+                    <div id="monthlyReport">
+                        <div class="report-item"><span>📅 জানুয়ারি</span><span class="report-total" id="m1">৳ 0</span></div>
+                        <div class="report-item"><span>📅 ফেব্রুয়ারি</span><span class="report-total" id="m2">৳ 0</span></div>
+                        <div class="report-item"><span>📅 মার্চ</span><span class="report-total" id="m3">৳ 0</span></div>
+                        <div class="report-item"><span>📅 এপ্রিল</span><span class="report-total" id="m4">৳ 0</span></div>
+                        <div class="report-item"><span>📅 মে</span><span class="report-total" id="m5">৳ 0</span></div>
+                        <div class="report-item"><span>📅 জুন</span><span class="report-total" id="m6">৳ 0</span></div>
+                        <div class="report-item"><span>📅 জুলাই</span><span class="report-total" id="m7">৳ 0</span></div>
+                        <div class="report-item"><span>📅 আগস্ট</span><span class="report-total" id="m8">৳ 0</span></div>
+                        <div class="report-item"><span>📅 সেপ্টেম্বর</span><span class="report-total" id="m9">৳ 0</span></div>
+                        <div class="report-item"><span>📅 অক্টোবর</span><span class="report-total" id="m10">৳ 0</span></div>
+                        <div class="report-item"><span>📅 নভেম্বর</span><span class="report-total" id="m11">৳ 0</span></div>
+                        <div class="report-item"><span>📅 ডিসেম্বর</span><span class="report-total" id="m12">৳ 0</span></div>
+                    </div>
+                    <div style="margin-top:10px; padding-top:10px; border-top:1px solid #eef3fa;">
+                        <div class="report-item"><strong><span id="lblYearlyTotal">📊 মোট বার্ষিক খরচ</span></strong><strong class="report-total" id="yearlyTotal">৳ 0</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SETTINGS TAB ===== -->
+            <div id="settingsTab" class="tab-content">
+                <div class="settings-box">
+                    <h4 style="margin-bottom:8px; color:#1a1a2e;"><i class="fas fa-cog"></i> <span id="lblSettings">সেটিংস</span></h4>
+                    
+                    <!-- PIN Change (With Old PIN) -->
+                    <div class="setting-item">
+                        <span><i class="fas fa-lock"></i> <span id="lblChangePin">🔐 PIN পরিবর্তন</span></span>
+                        <button id="changePinBtn"><span id="btnChangePin">পরিবর্তন</span></button>
+                    </div>
+                    
+                    <!-- PIN Reset (If Forgotten - Via Email) -->
+                    <div class="setting-item" style="border-bottom: 2px solid #f7971e;">
+                        <span><i class="fas fa-key" style="color:#f7971e;"></i> <span id="lblResetPin">🔑 PIN ভুলে গেছেন?</span></span>
+                        <button id="resetPinViaEmailBtn" class="gold"><span id="btnResetPin">রিসেট করুন</span></button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <span><i class="fas fa-wallet"></i> <span id="lblSetOpening">ওপেনিং ব্যালেন্স</span></span>
+                        <button id="setOpeningBtn"><span id="btnSetOpening">সেট</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-bullseye"></i> <span id="lblSetGoal">সেভিংস লক্ষ্য</span></span>
+                        <button id="setGoalBtn"><span id="btnSetGoal">সেট</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-cloud-upload-alt" style="color:#1f8b4c;"></i> <span id="lblBackup">☁️ ইমেইলে ব্যাকআপ</span></span>
+                        <button id="openBackupBtn" style="background:#1f8b4c;"><span id="btnBackup">ব্যাকআপ</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-trash" style="color:#dc3545;"></i> <span style="color:#dc3545;" id="lblClearData">🗑️ সব ডেটা ডিলিট</span></span>
+                        <button id="clearDataBtn" class="danger"><span id="btnClearData">ডিলিট</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-database"></i> <span id="lblBackupDownload">💾 ডেটা ব্যাকআপ</span></span>
+                        <button id="backupNowBtn" style="background:#b87c2b;"><span id="btnBackupDownload">ডাউনলোড</span></button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="exportExcelBtn"><i class="fas fa-file-excel"></i> <span id="btnExcel">Excel</span></button>
+                    <button id="exportCsvBtn"><i class="fas fa-file-csv"></i> <span id="btnCsv">CSV</span></button>
+                    <button id="restoreBtn"><i class="fas fa-cloud-download-alt"></i> <span id="btnRestore">রিস্টোর</span></button>
+                </div>
+            </div>
+
+            <!-- ===== ADMIN TAB ===== -->
+            <div id="adminTab" class="tab-content">
+                <div class="admin-stats">
+                    <div class="admin-stat-card blue">
+                        <div class="num" id="adminTotalTx">0</div>
+                        <div class="label"><span id="lblAdminTx">📝 লেনদেন</span></div>
+                    </div>
+                    <div class="admin-stat-card green">
+                        <div class="num" id="adminTotalIncome">৳ 0</div>
+                        <div class="label"><span id="lblAdminIncome">📈 ইনকাম</span></div>
+                    </div>
+                    <div class="admin-stat-card red">
+                        <div class="num" id="adminTotalCost">৳ 0</div>
+                        <div class="label"><span id="lblAdminCost">📉 খরচ</span></div>
+                    </div>
+                    <div class="admin-stat-card amber">
+                        <div class="num" id="adminBalance">৳ 0</div>
+                        <div class="label"><span id="lblAdminBalance">💰 ব্যালেন্স</span></div>
+                    </div>
+                    <div class="admin-stat-card blue">
+                        <div class="num" id="adminDebt">৳ 0</div>
+                        <div class="label"><span id="lblAdminDebt">🤝 দেনা/পাওনা</span></div>
+                    </div>
+                    <div class="admin-stat-card green">
+                        <div class="num" id="adminUsers">0</div>
+                        <div class="label"><span id="lblAdminUsers">👥 ইউজার</span></div>
+                    </div>
+                </div>
+
+                <div class="admin-panel" style="margin-bottom:8px; background:#f8fcff; border-radius:16px; padding:12px; border:1px solid #eef4fc;">
+                    <h4 style="margin-bottom:6px; color:#1a1a2e;"><i class="fas fa-users"></i> <span id="lblAdminUserList">ইউজার তালিকা</span></h4>
+                    <div id="activeUsersList" style="max-height:150px; overflow-y:auto;">
+                        <div style="padding:8px; text-align:center; color:#8899b0; font-size:12px;"><span id="lblLoading">লোড হচ্ছে...</span></div>
+                    </div>
+                </div>
+
+                <div class="admin-panel">
+                    <h4 style="margin-bottom:6px; color:#1a1a2e;"><i class="fas fa-list"></i> <span id="lblAdminAllTx">সব লেনদেন</span></h4>
+                    <div class="admin-tx-list" id="adminTxList">
+                        <div style="padding:14px; text-align:center; color:#8899b0; font-size:12px;">
+                            <span id="lblNoTx">কোনো লেনদেন নেই</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-panel" style="margin-top:8px;">
+                    <h4 style="margin-bottom:6px; color:#1a1a2e;"><i class="fas fa-shield-alt"></i> <span id="lblAdminControl">এডমিন কন্ট্রোল</span></h4>
+                    <div class="setting-item">
+                        <span><i class="fas fa-sync"></i> <span id="lblResetAdminPin">এডমিন PIN রিসেট</span></span>
+                        <button id="resetAdminPinBtn" style="background:#b87c2b;"><span id="btnResetAdminPin">রিসেট</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-file-export"></i> <span id="lblExportAll">সব ডেটা এক্সপোর্ট</span></span>
+                        <button id="exportAllBtn" style="background:#b87c2b;"><span id="btnExportAll">এক্সপোর্ট</span></button>
+                    </div>
+                    <div class="setting-item">
+                        <span><i class="fas fa-broadcast"></i> <span id="lblBroadcast">ব্রডকাস্ট মেসেজ</span></span>
+                        <button id="broadcastMsgBtn" style="background:#1a66c9;"><span id="btnBroadcast">প্রেরণ</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <i class="fas fa-shield-alt"></i> <span id="footerNote">ডেটা আপনার ডিভাইসে সংরক্ষিত | সীমাহীন ইউজার সাপোর্ট</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // 🌐 LANGUAGE TRANSLATIONS
+        // =====================================================================
+        const translations = {
+            bn: {
+                appName: 'SaveMoney', appSub: '📊 আপনার আর্থিক সঙ্গী',
+                loginGreeting: '👋 স্বাগতম!', loginBtn: '🔑 লগইন',
+                registerTitle: 'নতুন অ্যাকাউন্ট', registerGreeting: '📝 রেজিস্টার', registerBtn: '📝 রেজিস্টার',
+                lblEmail: '📧 ইমেইল', lblPassword: '🔒 পাসওয়ার্ড',
+                lblRegEmail: '📧 ইমেইল', lblRegPassword: '🔒 পাসওয়ার্ড (৬+ অক্ষর)', lblRegPin: '🔐 PIN (৪ ডিজিট)',
+                tabHome: '🏠 হোম', tabReport: '📊 রিপোর্ট', tabSettings: '⚙️ সেটিংস', tabAdmin: '👑 এডমিন',
+                lblBalance: 'ব্যালেন্স', lblOpening: 'ওপেনিং', lblIncome: 'ইনকাম', lblCost: 'খরচ',
+                lblToday: 'আজ:', lblDebt: 'দেনা/পাওনা:', lblGoal: 'লক্ষ্য:',
+                lblBudget: 'বাজেট', btnSetBudget: 'সেট', lblMonthlyBudget: 'মাসিক বাজেট',
+                lblUsed: 'ব্যবহৃত:', lblLeft: 'বাকি:',
+                lblCategory: 'ক্যাটাগরি', optPie: 'পাই', optBar: 'বার',
+                txExpense: '💸 খরচ', txIncome: '💰 আয়', txDebtTaken: '🤝 ঋণ নেওয়া', txDebtGiven: '🤲 ঋণ দেওয়া',
+                btnAddTag: 'যোগ', btnAddTx: 'যোগ করুন',
+                filterDaily: 'ডেইলি', filterMonthly: 'মাসিক', filterYearly: 'বার্ষিক', filterCustom: 'কাস্টম',
+                btnFilter: 'ফিল্টার', noTx: 'এখনো কোনো লেনদেন যোগ করা হয়নি',
+                lblPdfReport: '📄 PDF রিপোর্ট', btnPdf: 'PDF', pdfHint: 'মাস ও বছর সিলেক্ট করে PDF ডাউনলোড করুন',
+                lblMonthlyCost: '📊 মাসিক খরচ', lblYearlyTotal: '📊 মোট বার্ষিক খরচ',
+                lblSettings: '⚙️ সেটিংস',
+                lblChangePin: '🔐 PIN পরিবর্তন', btnChangePin: 'পরিবর্তন',
+                lblResetPin: '🔑 PIN ভুলে গেছেন?', btnResetPin: 'রিসেট করুন',
+                lblSetOpening: 'ওপেনিং ব্যালেন্স', btnSetOpening: 'সেট',
+                lblSetGoal: 'সেভিংস লক্ষ্য', btnSetGoal: 'সেট',
+                lblBackup: '☁️ ইমেইলে ব্যাকআপ', btnBackup: 'ব্যাকআপ',
+                lblClearData: '🗑️ সব ডেটা ডিলিট', btnClearData: 'ডিলিট',
+                lblBackupDownload: '💾 ডেটা ব্যাকআপ', btnBackupDownload: 'ডাউনলোড',
+                btnExcel: 'Excel', btnCsv: 'CSV', btnRestore: 'রিস্টোর',
+                lblAdminTx: '📝 লেনদেন', lblAdminIncome: '📈 ইনকাম', lblAdminCost: '📉 খরচ',
+                lblAdminBalance: '💰 ব্যালেন্স', lblAdminDebt: '🤝 দেনা/পাওনা', lblAdminUsers: '👥 ইউজার',
+                lblAdminUserList: '👥 ইউজার তালিকা', lblLoading: 'লোড হচ্ছে...',
+                lblAdminAllTx: '📋 সব লেনদেন', lblNoTx: 'কোনো লেনদেন নেই',
+                lblAdminControl: '🛡️ এডমিন কন্ট্রোল',
+                lblResetAdminPin: 'এডমিন PIN রিসেট', btnResetAdminPin: 'রিসেট',
+                lblExportAll: 'সব ডেটা এক্সপোর্ট', btnExportAll: 'এক্সপোর্ট',
+                lblBroadcast: 'ব্রডকাস্ট মেসেজ', btnBroadcast: 'প্রেরণ',
+                adminLoginTitle: '👑 এডমিন লগইন', adminLoginDesc: 'এডমিন PIN দিন', adminLoginBtn: '🔑 প্রবেশ', adminLoginClose: '✕ বন্ধ করুন',
+                backupTitle: '☁️ ব্যাকআপ নিন', backupDesc: 'আপনার ইমেইলে ডেটা ব্যাকআপ পাঠান', backupBtn: '📤 ব্যাকআপ পাঠান', backupClose: '✕ বন্ধ করুন',
+                loginError: '❌ ভুল ইমেইল বা পাসওয়ার্ড!',
+                registerSuccess: '✅ অ্যাকাউন্ট তৈরি হয়েছে!',
+                registerError: '❌ PIN ৪ ডিজিট হতে হবে!',
+                onlineText: 'অনলাইন', offlineText: 'অফলাইন',
+                footerNote: '📱 ডেটা আপনার ডিভাইসে সংরক্ষিত | সীমাহীন ইউজার সাপোর্ট',
+                enterOldPin: 'বর্তমান PIN দিন:',
+                enterNewPin: 'নতুন PIN দিন (৪ ডিজিট):',
+                wrongPin: '❌ ভুল PIN!',
+                pinChanged: '✅ PIN পরিবর্তন সম্পন্ন!',
+                invalidPin: '❌ PIN ৪ ডিজিট হতে হবে!',
+                resetEmailSent: '📧 পিন রিসেট লিংক ইমেইলে পাঠানো হয়েছে!',
+                loginFirst: '❌ লগইন করুন!'
+            },
+            en: {
+                appName: 'SaveMoney', appSub: '📊 Your Financial Partner',
+                loginGreeting: '👋 Welcome!', loginBtn: '🔑 Login',
+                registerTitle: 'New Account', registerGreeting: '📝 Register', registerBtn: '📝 Register',
+                lblEmail: '📧 Email', lblPassword: '🔒 Password',
+                lblRegEmail: '📧 Email', lblRegPassword: '🔒 Password (6+ chars)', lblRegPin: '🔐 PIN (4 digits)',
+                tabHome: '🏠 Home', tabReport: '📊 Report', tabSettings: '⚙️ Settings', tabAdmin: '👑 Admin',
+                lblBalance: 'Balance', lblOpening: 'Opening', lblIncome: 'Income', lblCost: 'Expense',
+                lblToday: 'Today:', lblDebt: 'Debt/Loan:', lblGoal: 'Goal:',
+                lblBudget: 'Budget', btnSetBudget: 'Set', lblMonthlyBudget: 'Monthly Budget',
+                lblUsed: 'Used:', lblLeft: 'Left:',
+                lblCategory: 'Category', optPie: 'Pie', optBar: 'Bar',
+                txExpense: '💸 Expense', txIncome: '💰 Income', txDebtTaken: '🤝 Debt Taken', txDebtGiven: '🤲 Debt Given',
+                btnAddTag: 'Add', btnAddTx: 'Add',
+                filterDaily: 'Daily', filterMonthly: 'Monthly', filterYearly: 'Yearly', filterCustom: 'Custom',
+                btnFilter: 'Filter', noTx: 'No transactions yet',
+                lblPdfReport: '📄 PDF Report', btnPdf: 'PDF', pdfHint: 'Select month & year to download PDF',
+                lblMonthlyCost: '📊 Monthly Expense', lblYearlyTotal: '📊 Total Yearly Expense',
+                lblSettings: '⚙️ Settings',
+                lblChangePin: '🔐 Change PIN', btnChangePin: 'Change',
+                lblResetPin: '🔑 Forgot PIN?', btnResetPin: 'Reset',
+                lblSetOpening: 'Opening Balance', btnSetOpening: 'Set',
+                lblSetGoal: 'Savings Goal', btnSetGoal: 'Set',
+                lblBackup: '☁️ Email Backup', btnBackup: 'Backup',
+                lblClearData: '🗑️ Clear All Data', btnClearData: 'Clear',
+                lblBackupDownload: '💾 Data Backup', btnBackupDownload: 'Download',
+                btnExcel: 'Excel', btnCsv: 'CSV', btnRestore: 'Restore',
+                lblAdminTx: '📝 Transactions', lblAdminIncome: '📈 Income', lblAdminCost: '📉 Expense',
+                lblAdminBalance: '💰 Balance', lblAdminDebt: '🤝 Debt/Loan', lblAdminUsers: '👥 Users',
+                lblAdminUserList: '👥 User List', lblLoading: 'Loading...',
+                lblAdminAllTx: '📋 All Transactions', lblNoTx: 'No transactions',
+                lblAdminControl: '🛡️ Admin Control',
+                lblResetAdminPin: 'Reset Admin PIN', btnResetAdminPin: 'Reset',
+                lblExportAll: 'Export All Data', btnExportAll: 'Export',
+                lblBroadcast: 'Broadcast Message', btnBroadcast: 'Send',
+                adminLoginTitle: '👑 Admin Login', adminLoginDesc: 'Enter Admin PIN', adminLoginBtn: '🔑 Enter', adminLoginClose: '✕ Close',
+                backupTitle: '☁️ Take Backup', backupDesc: 'Send data backup to your email', backupBtn: '📤 Send Backup', backupClose: '✕ Close',
+                loginError: '❌ Invalid email or password!',
+                registerSuccess: '✅ Account created!',
+                registerError: '❌ PIN must be 4 digits!',
+                onlineText: 'Online', offlineText: 'Offline',
+                footerNote: '📱 Data stored on your device | Unlimited user support',
+                enterOldPin: 'Enter current PIN:',
+                enterNewPin: 'Enter new PIN (4 digits):',
+                wrongPin: '❌ Wrong PIN!',
+                pinChanged: '✅ PIN changed successfully!',
+                invalidPin: '❌ PIN must be 4 digits!',
+                resetEmailSent: '📧 PIN reset link sent to your email!',
+                loginFirst: '❌ Please login first!'
+            },
+            hi: {
+                appName: 'SaveMoney', appSub: '📊 आपका वित्तीय साथी',
+                loginGreeting: '👋 स्वागत है!', loginBtn: '🔑 लॉगिन',
+                registerTitle: 'नया खाता', registerGreeting: '📝 रजिस्टर', registerBtn: '📝 रजिस्टर',
+                lblEmail: '📧 ईमेल', lblPassword: '🔒 पासवर्ड',
+                lblRegEmail: '📧 ईमेल', lblRegPassword: '🔒 पासवर्ड (6+ अक्षर)', lblRegPin: '🔐 PIN (4 अंक)',
+                tabHome: '🏠 होम', tabReport: '📊 रिपोर्ट', tabSettings: '⚙️ सेटिंग्स', tabAdmin: '👑 एडमिन',
+                lblBalance: 'बैलेंस', lblOpening: 'शुरुआत', lblIncome: 'आय', lblCost: 'खर्च',
+                lblToday: 'आज:', lblDebt: 'कर्ज/लोन:', lblGoal: 'लक्ष्य:',
+                lblBudget: 'बजट', btnSetBudget: 'सेट', lblMonthlyBudget: 'मासिक बजट',
+                lblUsed: 'उपयोग:', lblLeft: 'शेष:',
+                lblCategory: 'श्रेणी', optPie: 'पाई', optBar: 'बार',
+                txExpense: '💸 खर्च', txIncome: '💰 आय', txDebtTaken: '🤝 कर्ज लिया', txDebtGiven: '🤲 कर्ज दिया',
+                btnAddTag: 'जोड़ें', btnAddTx: 'जोड़ें',
+                filterDaily: 'दैनिक', filterMonthly: 'मासिक', filterYearly: 'वार्षिक', filterCustom: 'कस्टम',
+                btnFilter: 'फ़िल्टर', noTx: 'अभी कोई लेनदेन नहीं',
+                lblPdfReport: '📄 PDF रिपोर्ट', btnPdf: 'PDF', pdfHint: 'PDF डाउनलोड करने के लिए महीना और साल चुनें',
+                lblMonthlyCost: '📊 मासिक खर्च', lblYearlyTotal: '📊 कुल वार्षिक खर्च',
+                lblSettings: '⚙️ सेटिंग्स',
+                lblChangePin: '🔐 PIN बदलें', btnChangePin: 'बदलें',
+                lblResetPin: '🔑 PIN भूल गए?', btnResetPin: 'रीसेट',
+                lblSetOpening: 'शुरुआती बैलेंस', btnSetOpening: 'सेट',
+                lblSetGoal: 'बचत लक्ष्य', btnSetGoal: 'सेट',
+                lblBackup: '☁️ ईमेल बैकअप', btnBackup: 'बैकअप',
+                lblClearData: '🗑️ सभी डेटा हटाएं', btnClearData: 'हटाएं',
+                lblBackupDownload: '💾 डेटा बैकअप', btnBackupDownload: 'डाउनलोड',
+                btnExcel: 'Excel', btnCsv: 'CSV', btnRestore: 'बहाल करें',
+                lblAdminTx: '📝 लेनदेन', lblAdminIncome: '📈 आय', lblAdminCost: '📉 खर्च',
+                lblAdminBalance: '💰 बैलेंस', lblAdminDebt: '🤝 कर्ज/लोन', lblAdminUsers: '👥 यूजर्स',
+                lblAdminUserList: '👥 यूजर सूची', lblLoading: 'लोड हो रहा...',
+                lblAdminAllTx: '📋 सभी लेनदेन', lblNoTx: 'कोई लेनदेन नहीं',
+                lblAdminControl: '🛡️ एडमिन कंट्रोल',
+                lblResetAdminPin: 'एडमिन PIN रीसेट', btnResetAdminPin: 'रीसेट',
+                lblExportAll: 'सभी डेटा निर्यात', btnExportAll: 'निर्यात',
+                lblBroadcast: 'ब्रॉडकास्ट संदेश', btnBroadcast: 'भेजें',
+                adminLoginTitle: '👑 एडमिन लॉगिन', adminLoginDesc: 'एडमिन PIN दें', adminLoginBtn: '🔑 प्रवेश', adminLoginClose: '✕ बंद करें',
+                backupTitle: '☁️ बैकअप लें', backupDesc: 'अपने ईमेल पर डेटा बैकअप भेजें', backupBtn: '📤 बैकअप भेजें', backupClose: '✕ बंद करें',
+                loginError: '❌ गलत ईमेल या पासवर्ड!',
+                registerSuccess: '✅ खाता बन गया!',
+                registerError: '❌ PIN 4 अंकों का होना चाहिए!',
+                onlineText: 'ऑनलाइन', offlineText: 'ऑफलाइन',
+                footerNote: '📱 डेटा आपके डिवाइस पर संग्रहीत | असीमित यूजर सपोर्ट',
+                enterOldPin: 'वर्तमान PIN दें:',
+                enterNewPin: 'नया PIN दें (4 अंक):',
+                wrongPin: '❌ गलत PIN!',
+                pinChanged: '✅ PIN बदल गया!',
+                invalidPin: '❌ PIN 4 अंक का होना चाहिए!',
+                resetEmailSent: '📧 PIN रीसेट लिंक ईमेल पर भेजा गया!',
+                loginFirst: '❌ पहले लॉगिन करें!'
+            },
+            ur: {
+                appName: 'SaveMoney', appSub: '📊 آپ کا مالی ساتھی',
+                loginGreeting: '👋 خوش آمدید!', loginBtn: '🔑 لاگ ان',
+                registerTitle: 'نیا اکاؤنٹ', registerGreeting: '📝 رجسٹر', registerBtn: '📝 رجسٹر',
+                lblEmail: '📧 ای میل', lblPassword: '🔒 پاس ورڈ',
+                lblRegEmail: '📧 ای میل', lblRegPassword: '🔒 پاس ورڈ (6+ حروف)', lblRegPin: '🔐 PIN (4 ہندسے)',
+                tabHome: '🏠 ہوم', tabReport: '📊 رپورٹ', tabSettings: '⚙️ سیٹنگز', tabAdmin: '👑 ایڈمن',
+                lblBalance: 'بیلنس', lblOpening: 'آغاز', lblIncome: 'آمدنی', lblCost: 'خرچ',
+                lblToday: 'آج:', lblDebt: 'قرض/لوں:', lblGoal: 'ہدف:',
+                lblBudget: 'بجٹ', btnSetBudget: 'سیٹ', lblMonthlyBudget: 'ماہانہ بجٹ',
+                lblUsed: 'استعمال:', lblLeft: 'باقی:',
+                lblCategory: 'زمرہ', optPie: 'پائی', optBar: 'بار',
+                txExpense: '💸 خرچ', txIncome: '💰 آمدنی', txDebtTaken: '🤝 قرض لیا', txDebtGiven: '🤲 قرض دیا',
+                btnAddTag: 'شامل کریں', btnAddTx: 'شامل کریں',
+                filterDaily: 'روزانہ', filterMonthly: 'ماہانہ', filterYearly: 'سالانہ', filterCustom: 'اپنی مرضی',
+                btnFilter: 'فلٹر', noTx: 'ابھی کوئی لین دین نہیں',
+                lblPdfReport: '📄 PDF رپورٹ', btnPdf: 'PDF', pdfHint: 'PDF ڈاؤن لوڈ کرنے کے لیے مہینہ اور سال منتخب کریں',
+                lblMonthlyCost: '📊 ماہانہ خرچ', lblYearlyTotal: '📊 کل سالانہ خرچ',
+                lblSettings: '⚙️ سیٹنگز',
+                lblChangePin: '🔐 PIN تبدیل کریں', btnChangePin: 'تبدیل کریں',
+                lblResetPin: '🔑 PIN بھول گئے؟', btnResetPin: 'ری سیٹ',
+                lblSetOpening: 'ابتدائی بیلنس', btnSetOpening: 'سیٹ',
+                lblSetGoal: 'بچت کا ہدف', btnSetGoal: 'سیٹ',
+                lblBackup: '☁️ ای میل بیک اپ', btnBackup: 'بیک اپ',
+                lblClearData: '🗑️ تمام ڈیٹا حذف کریں', btnClearData: 'حذف کریں',
+                lblBackupDownload: '💾 ڈیٹا بیک اپ', btnBackupDownload: 'ڈاؤن لوڈ',
+                btnExcel: 'Excel', btnCsv: 'CSV', btnRestore: 'بحال کریں',
+                lblAdminTx: '📝 لین دین', lblAdminIncome: '📈 آمدنی', lblAdminCost: '📉 خرچ',
+                lblAdminBalance: '💰 بیلنس', lblAdminDebt: '🤝 قرض/لوں', lblAdminUsers: '👥 صارفین',
+                lblAdminUserList: '👥 صارفین کی فہرست', lblLoading: 'لوڈ ہو رہا...',
+                lblAdminAllTx: '📋 تمام لین دین', lblNoTx: 'کوئی لین دین نہیں',
+                lblAdminControl: '🛡️ ایڈمن کنٹرول',
+                lblResetAdminPin: 'ایڈمن PIN ری سیٹ', btnResetAdminPin: 'ری سیٹ',
+                lblExportAll: 'تمام ڈیٹا برآمد کریں', btnExportAll: 'برآمد کریں',
+                lblBroadcast: 'براڈکاسٹ پیغام', btnBroadcast: 'بھیجیں',
+                adminLoginTitle: '👑 ایڈمن لاگ ان', adminLoginDesc: 'ایڈمن PIN دیں', adminLoginBtn: '🔑 داخل ہوں', adminLoginClose: '✕ بند کریں',
+                backupTitle: '☁️ بیک اپ لیں', backupDesc: 'اپنے ای میل پر ڈیٹا بیک اپ بھیجیں', backupBtn: '📤 بیک اپ بھیجیں', backupClose: '✕ بند کریں',
+                loginError: '❌ غلط ای میل یا پاس ورڈ!',
+                registerSuccess: '✅ اکاؤنٹ بن گیا!',
+                registerError: '❌ PIN 4 ہندسے کا ہونا چاہیے!',
+                onlineText: 'آن لائن', offlineText: 'آف لائن',
+                footerNote: '📱 ڈیٹا آپ کے ڈیوائس پر محفوظ | لامحدود صارف سپورٹ',
+                enterOldPin: 'موجودہ PIN دیں:',
+                enterNewPin: 'نیا PIN دیں (4 ہندسے):',
+                wrongPin: '❌ غلط PIN!',
+                pinChanged: '✅ PIN تبدیل ہو گیا!',
+                invalidPin: '❌ PIN 4 ہندسے کا ہونا چاہیے!',
+                resetEmailSent: '📧 PIN ری سیٹ لنک ای میل پر بھیجا گیا!',
+                loginFirst: '❌ پہلے لاگ ان کریں!'
+            }
+        };
+
+        let currentLang = 'bn';
+        let currentUser = null;
+        let isAdmin = false;
+        let adminPin = 'admin123';
+        let localData = { transactions: [], openingBalance: 0, monthlyBudget: 0, savingsGoal: 0, reminders: [], pin: '1234' };
+        let currentTags = [];
+        let chartInstance = null;
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+
+        // =====================================================================
+        // 🔥 FIREBASE CONFIG
+        // =====================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyClY9SfdeqMSho0Rtbw6vL7oyBj7ycdpU0",
+            authDomain: "savemoney-app-d3610.firebaseapp.com",
+            databaseURL: "https://savemoney-app-d3610-default-rtdb.firebaseio.com",
+            projectId: "savemoney-app-d3610",
+            storageBucket: "savemoney-app-d3610.firebasestorage.app",
+            messagingSenderId: "446771790878",
+            appId: "1:446771790878:web:4d41c23d9f594dfb4cda0f",
+            measurementId: "G-XV0P251M18"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // =====================================================================
+        // 🌐 LANGUAGE
+        // =====================================================================
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            if (!t) return;
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                if (t[key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t[key];
+                    else el.textContent = t[key];
+                }
+            });
+
+            const map = {
+                appName: 'appName', appSub: 'appSub', loginGreeting: 'loginGreeting',
+                registerTitle: 'registerTitle', registerGreeting: 'registerGreeting',
+                lblEmail: 'lblEmail', lblPassword: 'lblPassword',
+                lblRegEmail: 'lblRegEmail', lblRegPassword: 'lblRegPassword', lblRegPin: 'lblRegPin',
+                tabHome: 'tabHome', tabReport: 'tabReport', tabSettings: 'tabSettings',
+                lblBalance: 'lblBalance', lblOpening: 'lblOpening', lblIncome: 'lblIncome', lblCost: 'lblCost',
+                lblToday: 'lblToday', lblDebt: 'lblDebt', lblGoal: 'lblGoal',
+                lblBudget: 'lblBudget', btnSetBudget: 'btnSetBudget', lblMonthlyBudget: 'lblMonthlyBudget',
+                lblUsed: 'lblUsed', lblLeft: 'lblLeft',
+                lblCategory: 'lblCategory', optPie: 'optPie', optBar: 'optBar',
+                txExpense: 'txExpense', txIncome: 'txIncome', txDebtTaken: 'txDebtTaken', txDebtGiven: 'txDebtGiven',
+                btnAddTag: 'btnAddTag', btnAddTx: 'btnAddTx',
+                filterDaily: 'filterDaily', filterMonthly: 'filterMonthly', filterYearly: 'filterYearly', filterCustom: 'filterCustom',
+                btnFilter: 'btnFilter', noTx: 'noTx',
+                lblPdfReport: 'lblPdfReport', btnPdf: 'btnPdf', pdfHint: 'pdfHint',
+                lblMonthlyCost: 'lblMonthlyCost', lblYearlyTotal: 'lblYearlyTotal',
+                lblSettings: 'lblSettings',
+                lblChangePin: 'lblChangePin', btnChangePin: 'btnChangePin',
+                lblResetPin: 'lblResetPin', btnResetPin: 'btnResetPin',
+                lblSetOpening: 'lblSetOpening', btnSetOpening: 'btnSetOpening',
+                lblSetGoal: 'lblSetGoal', btnSetGoal: 'btnSetGoal',
+                lblBackup: 'lblBackup', btnBackup: 'btnBackup',
+                lblClearData: 'lblClearData', btnClearData: 'btnClearData',
+                lblBackupDownload: 'lblBackupDownload', btnBackupDownload: 'btnBackupDownload',
+                btnExcel: 'btnExcel', btnCsv: 'btnCsv', btnRestore: 'btnRestore',
+                lblAdminTx: 'lblAdminTx', lblAdminIncome: 'lblAdminIncome', lblAdminCost: 'lblAdminCost',
+                lblAdminBalance: 'lblAdminBalance', lblAdminDebt: 'lblAdminDebt', lblAdminUsers: 'lblAdminUsers',
+                lblAdminUserList: 'lblAdminUserList', lblLoading: 'lblLoading',
+                lblAdminAllTx: 'lblAdminAllTx', lblNoTx: 'lblNoTx',
+                lblAdminControl: 'lblAdminControl',
+                lblResetAdminPin: 'lblResetAdminPin', btnResetAdminPin: 'btnResetAdminPin',
+                lblExportAll: 'lblExportAll', btnExportAll: 'btnExportAll',
+                lblBroadcast: 'lblBroadcast', btnBroadcast: 'btnBroadcast',
+                adminLoginTitle: 'adminLoginTitle', adminLoginDesc: 'adminLoginDesc', adminLoginBtn: 'adminLoginBtn', adminLoginClose: 'adminLoginClose',
+                backupTitle: 'backupTitle', backupDesc: 'backupDesc', backupBtn: 'backupBtn', backupClose: 'backupClose',
+                onlineText: 'onlineText', footerNote: 'footerNote'
+            };
+
+            Object.keys(map).forEach(id => {
+                const el = document.getElementById(id);
+                if (el && t[map[id]]) el.textContent = t[map[id]];
+            });
+
+            document.getElementById('loginBtn').textContent = t.loginBtn;
+            document.getElementById('registerBtn').textContent = t.registerBtn;
+
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+            localStorage.setItem('savemoney_lang', lang);
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.addEventListener('click', function() { applyLanguage(this.dataset.lang); });
+        });
+
+        const savedLang = localStorage.getItem('savemoney_lang') || 'bn';
+        applyLanguage(savedLang);
+
+        // =====================================================================
+        // 📦 LOCAL STORAGE
+        // =====================================================================
+        function loadLocalData() {
+            try {
+                const data = localStorage.getItem('savemoney_' + (currentUser ? currentUser.uid : 'guest'));
+                return data ? JSON.parse(data) : { transactions: [], openingBalance: 0, monthlyBudget: 0, savingsGoal: 0, reminders: [], pin: '1234' };
+            } catch { return { transactions: [], openingBalance: 0, monthlyBudget: 0, savingsGoal: 0, reminders: [], pin: '1234' }; }
+        }
+
+        function saveLocalData(data) {
+            if (currentUser) {
+                localStorage.setItem('savemoney_' + currentUser.uid, JSON.stringify(data));
+            }
+        }
+
+        // =====================================================================
+        // 🔐 TOAST
+        // =====================================================================
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            const colors = { success: '#1f8b4c', error: '#dc3545', warning: '#b87c2b', info: '#1a66c9' };
+            toast.style.background = colors[type] || '#1a1a2e';
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        // =====================================================================
+        // 🔐 AUTH
+        // =====================================================================
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const err = document.getElementById('loginError');
+            err.style.display = 'none';
+
+            if (!email || !pass) {
+                err.textContent = translations[currentLang].loginError || '❌ ইমেইল ও পাসওয়ার্ড দিন!';
+                err.style.display = 'block';
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    document.getElementById('loginEmail').value = '';
+                    document.getElementById('loginPassword').value = '';
+                    showToast('✅ ' + (translations[currentLang].loginBtn || 'লগইন সফল!'));
+                })
+                .catch(e => {
+                    err.textContent = '❌ ' + e.message;
+                    err.style.display = 'block';
+                });
+        });
+
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            const email = document.getElementById('registerEmail').value.trim();
+            const pass = document.getElementById('registerPassword').value;
+            const pin = document.getElementById('registerPin').value.trim();
+            const err = document.getElementById('registerError');
+            const succ = document.getElementById('registerSuccess');
+            err.style.display = 'none';
+            succ.style.display = 'none';
+
+            if (!email || !pass || pin.length !== 4) {
+                err.textContent = translations[currentLang].registerError || '❌ সব ফিল্ড পূরণ করুন এবং PIN ৪ ডিজিট দিন!';
+                err.style.display = 'block';
+                return;
+            }
+            if (pass.length < 6) {
+                err.textContent = '❌ পাসওয়ার্ড ৬+ অক্ষর হতে হবে!';
+                err.style.display = 'block';
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, pass)
+                .then(result => {
+                    db.ref('users/' + result.user.uid).set({ email, pin, created: Date.now() });
+                    succ.textContent = translations[currentLang].registerSuccess || '✅ অ্যাকাউন্ট তৈরি হয়েছে!';
+                    succ.style.display = 'block';
+                    document.getElementById('registerEmail').value = '';
+                    document.getElementById('registerPassword').value = '';
+                    document.getElementById('registerPin').value = '';
+                    setTimeout(() => {
+                        succ.style.display = 'none';
+                        document.getElementById('loginPage').style.display = 'flex';
+                        document.getElementById('registerPage').style.display = 'none';
+                    }, 2000);
+                    showToast('✅ ' + (translations[currentLang].registerBtn || 'অ্যাকাউন্ট তৈরি হয়েছে! লগইন করুন'));
+                })
+                .catch(e => {
+                    err.textContent = '❌ ' + e.message;
+                    err.style.display = 'block';
+                });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            auth.signOut().then(() => {
+                showToast('👋 ' + (translations[currentLang].tabHome || 'লগআউট সম্পন্ন!'));
+                isAdmin = false;
+                document.getElementById('adminTabBtn').style.display = 'none';
+                document.getElementById('roleBadge').textContent = '👤 ' + (translations[currentLang].tabHome ? 'ইউজার' : 'User');
+                document.getElementById('roleBadge').className = 'badge badge-user';
+            });
+        });
+
+        document.getElementById('showRegister').addEventListener('click', function() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'flex';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('registerPage').style.display = 'none';
+        });
+
+        // =====================================================================
+        // 🚀 AUTH STATE
+        // =====================================================================
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('registerPage').style.display = 'none';
+                document.getElementById('homePage').style.display = 'flex';
+                localData = loadLocalData();
+                renderHome();
+
+                db.ref('admins/' + user.uid).once('value').then(snap => {
+                    if (snap.val() === true) {
+                        isAdmin = true;
+                        document.getElementById('roleBadge').textContent = '👑 ' + (translations[currentLang].tabAdmin || 'এডমিন');
+                        document.getElementById('roleBadge').className = 'badge badge-admin';
+                        document.getElementById('adminTabBtn').style.display = 'block';
+                        loadAllUsers();
+                        updateAdminStats();
+                    } else {
+                        isAdmin = false;
+                        document.getElementById('roleBadge').textContent = '👤 ' + (translations[currentLang].tabHome ? 'ইউজার' : 'User');
+                        document.getElementById('roleBadge').className = 'badge badge-user';
+                        document.getElementById('adminTabBtn').style.display = 'none';
+                    }
+                });
+
+                db.ref('broadcast').on('child_added', snap => {
+                    const data = snap.val();
+                    if (data && data.message) showToast('📢 ' + data.message);
+                });
+            } else {
+                currentUser = null;
+                isAdmin = false;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('registerPage').style.display = 'none';
+                document.getElementById('homePage').style.display = 'none';
+                document.getElementById('adminTabBtn').style.display = 'none';
+            }
+        });
+
+        // =====================================================================
+        // 👑 ADMIN LOGIN (Logo 3 clicks)
+        // =====================================================================
+        document.getElementById('logoIcon').addEventListener('click', function() {
+            logoClickCount++;
+            if (logoClickTimer) clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 3000);
+
+            if (logoClickCount >= 3) {
+                logoClickCount = 0;
+                document.getElementById('adminLoginOverlay').style.display = 'flex';
+                document.getElementById('adminLoginPin').value = '';
+                document.getElementById('adminLoginError').style.display = 'none';
+                document.getElementById('adminLoginPin').focus();
+            }
+        });
+
+        document.getElementById('adminLoginClose').addEventListener('click', function() {
+            document.getElementById('adminLoginOverlay').style.display = 'none';
+        });
+
+        document.getElementById('adminLoginBtn').addEventListener('click', function() {
+            const entered = document.getElementById('adminLoginPin').value;
+            if (entered === adminPin) {
+                document.getElementById('adminLoginOverlay').style.display = 'none';
+                isAdmin = true;
+                document.getElementById('roleBadge').textContent = '👑 ' + (translations[currentLang].tabAdmin || 'এডমিন');
+                document.getElementById('roleBadge').className = 'badge badge-admin';
+                document.getElementById('adminTabBtn').style.display = 'block';
+                document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+                document.getElementById('adminTabBtn').classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.getElementById('adminTab').classList.add('active');
+                loadAllUsers();
+                updateAdminStats();
+                showToast('👑 ' + (translations[currentLang].tabAdmin || 'এডমিন মোড সক্রিয়!'), 'success');
+            } else {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminLoginPin').value = '';
+            }
+        });
+
+        document.getElementById('adminLoginPin').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('adminLoginBtn').click();
+        });
+
+        // =====================================================================
+        // ☁️ BACKUP
+        // =====================================================================
+        document.getElementById('openBackupBtn').addEventListener('click', function() {
+            document.getElementById('backupOverlay').style.display = 'flex';
+            document.getElementById('backupEmail').value = '';
+            document.getElementById('backupError').style.display = 'none';
+            document.getElementById('backupSuccess').style.display = 'none';
+            document.getElementById('backupEmail').focus();
+        });
+
+        document.getElementById('backupClose').addEventListener('click', function() {
+            document.getElementById('backupOverlay').style.display = 'none';
+        });
+
+        document.getElementById('backupBtn').addEventListener('click', function() {
+            const email = document.getElementById('backupEmail').value.trim();
+            document.getElementById('backupError').style.display = 'none';
+            document.getElementById('backupSuccess').style.display = 'none';
+
+            if (!email || !email.includes('@')) {
+                document.getElementById('backupError').textContent = translations[currentLang].loginError || '❌ সঠিক ইমেইল দিন!';
+                document.getElementById('backupError').style.display = 'block';
+                return;
+            }
+
+            const backupData = {
+                user: currentUser ? currentUser.email : 'unknown',
+                pin: localData.pin || '1234',
+                transactions: localData.transactions || [],
+                openingBalance: localData.openingBalance || 0,
+                monthlyBudget: localData.monthlyBudget || 0,
+                savingsGoal: localData.savingsGoal || 0,
+                reminders: localData.reminders || [],
+                date: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `savemoney_backup_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            document.getElementById('backupSuccess').textContent = translations[currentLang].registerSuccess || '✅ ব্যাকআপ তৈরি হয়েছে!';
+            document.getElementById('backupSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('backupOverlay').style.display = 'none';
+            }, 2000);
+            showToast('✅ ' + (translations[currentLang].btnBackup || 'ব্যাকআপ তৈরি হয়েছে!'), 'success');
+        });
+
+        // =====================================================================
+        // 📊 STATS
+        // =====================================================================
+        function computeStats() {
+            const txs = localData.transactions || [];
+            let totalIncome = 0, totalCost = 0, debtNet = 0, currentBalance = localData.openingBalance || 0, dailyCost = 0;
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const monthStr = todayStr.slice(0, 7);
+            let monthlyCost = 0;
+
+            txs.forEach(t => {
+                const amt = t.amount || 0;
+                if (t.type === 'income' || t.type === 'debt-taken') { if (amt > 0) totalIncome += amt; }
+                if (t.type === 'expense' || t.type === 'debt-given') { if (amt < 0) totalCost += Math.abs(amt); }
+                if (t.type === 'debt-taken') debtNet += Math.abs(amt);
+                if (t.type === 'debt-given') debtNet -= Math.abs(amt);
+                currentBalance += amt;
+                if (t.date === todayStr && amt < 0) dailyCost += Math.abs(amt);
+                if (t.date && t.date.startsWith(monthStr) && amt < 0) monthlyCost += Math.abs(amt);
+            });
+            return { totalIncome, totalCost, debtNet, currentBalance, dailyCost, monthlyCost };
+        }
+
+        // =====================================================================
+        // 🎨 RENDER
+        // =====================================================================
+        function renderHome() {
+            const stats = computeStats();
+            document.getElementById('currentBalance').innerText = `৳ ${stats.currentBalance.toFixed(0)}`;
+            document.getElementById('openingBalance').innerText = `৳ ${(localData.openingBalance || 0).toFixed(0)}`;
+            document.getElementById('totalIncome').innerText = `৳ ${stats.totalIncome.toFixed(0)}`;
+            document.getElementById('totalCost').innerText = `৳ ${stats.totalCost.toFixed(0)}`;
+            document.getElementById('dailyCost').innerHTML = `৳ ${stats.dailyCost.toFixed(0)}`;
+            document.getElementById('debtLoan').innerHTML = `৳ ${stats.debtNet.toFixed(0)}`;
+            document.getElementById('savingsGoal').innerHTML = `৳ ${(localData.savingsGoal || 0).toFixed(0)}`;
+
+            const budget = localData.monthlyBudget || 0;
+            const used = stats.monthlyCost || 0;
+            document.getElementById('monthlyBudget').innerHTML = `৳ ${budget.toFixed(0)}`;
+            document.getElementById('budgetUsed').innerHTML = `৳ ${used.toFixed(0)}`;
+            document.getElementById('budgetLeft').innerHTML = `৳ ${(budget - used).toFixed(0)}`;
+            const pct = budget > 0 ? Math.min((used / budget) * 100, 100) : 0;
+            const bar = document.getElementById('budgetBar');
+            bar.style.width = pct + '%';
+            bar.className = 'fill ' + (pct < 70 ? 'green' : pct < 90 ? 'yellow' : 'red');
+
+            renderReminders();
+            applyFilter();
+            updateChart();
+            updateReport();
+            populateYearSelector();
+        }
+
+        // =====================================================================
+        // 📊 REPORT
+        // =====================================================================
+        function populateYearSelector() {
+            const sel = document.getElementById('reportYear');
+            const currentYear = new Date().getFullYear();
+            sel.innerHTML = '';
+            for (let y = currentYear; y >= currentYear - 10; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                sel.appendChild(opt);
+            }
+        }
+
+        function updateReport() {
+            const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+            const monthlyData = new Array(12).fill(0);
+            (localData.transactions || []).forEach(t => {
+                if (t.amount < 0 && t.date) {
+                    const date = new Date(t.date);
+                    monthlyData[date.getMonth()] += Math.abs(t.amount);
+                }
+            });
+            let total = 0;
+            for (let i = 0; i < 12; i++) {
+                document.getElementById(`m${i+1}`).innerHTML = `৳ ${monthlyData[i].toFixed(0)}`;
+                total += monthlyData[i];
+            }
+            document.getElementById('yearlyTotal').innerHTML = `৳ ${total.toFixed(0)}`;
+        }
+
+        // =====================================================================
+        // 📊 CHART
+        // =====================================================================
+        function updateChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const categories = {};
+            (localData.transactions || []).forEach(t => {
+                if (t.amount < 0) {
+                    const cat = (t.tags && t.tags.length) ? t.tags[0] : 'অন্যান্য';
+                    categories[cat] = (categories[cat] || 0) + Math.abs(t.amount);
+                }
+            });
+            const labels = Object.keys(categories);
+            const data = Object.values(categories);
+            if (chartInstance) chartInstance.destroy();
+            const type = document.getElementById('chartType').value;
+            chartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels.length ? labels : ['কোনো ডেটা নেই'],
+                    datasets: [{
+                        label: 'খরচ (টাকা)',
+                        data: labels.length ? data : [1],
+                        backgroundColor: ['#f7971e', '#1f8b4c', '#b87c2b', '#dc3545', '#764ba2', '#ffd200'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: labels.length > 1 } }
+                }
+            });
+        }
+
+        // =====================================================================
+        // 🔍 FILTER
+        // =====================================================================
+        function applyFilter() {
+            const period = document.getElementById('filterPeriod').value;
+            const search = document.getElementById('filterSearch').value.toLowerCase();
+            let startDate = document.getElementById('filterStartDate').value;
+            let endDate = document.getElementById('filterEndDate').value;
+
+            const txs = localData.transactions || [];
+            const now = new Date();
+
+            let filtered = txs.filter(t => {
+                if (search && !(t.desc || '').toLowerCase().includes(search)) return false;
+                if (period === 'daily') {
+                    const today = now.toISOString().slice(0, 10);
+                    return t.date === today;
+                } else if (period === 'monthly') {
+                    const m = String(now.getMonth() + 1).padStart(2, '0');
+                    const y = now.getFullYear();
+                    return t.date && t.date.startsWith(`${y}-${m}`);
+                } else if (period === 'yearly') {
+                    return t.date && t.date.startsWith(String(now.getFullYear()));
+                } else if (period === 'custom') {
+                    if (startDate && t.date < startDate) return false;
+                    if (endDate && t.date > endDate) return false;
+                    return true;
+                }
+                return true;
+            });
+
+            filtered.sort((a, b) => (a.date < b.date ? 1 : -1));
+            const list = document.getElementById('transactionList');
+            list.innerHTML = '';
+            if (filtered.length === 0) {
+                list.innerHTML = `<div style="padding:24px 16px; text-align:center; color:#8899b0; font-size:13px;">
+                    <i class="fas fa-inbox" style="font-size:28px; display:block; margin-bottom:8px; opacity:0.3;"></i>
+                    ${translations[currentLang].noTx || 'কোনো লেনদেন পাওয়া যায়নি'}
+                </div>`;
+                return;
+            }
+
+            filtered.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'tx-item';
+                let amountClass = 'expense', sign = '-৳ ';
+                if (t.type === 'income') { amountClass = 'income'; sign = '+৳ '; }
+                else if (t.type === 'debt-taken') { amountClass = 'debt-taken'; sign = '+৳ '; }
+                else if (t.type === 'debt-given') { amountClass = 'debt-given'; sign = '-৳ '; }
+                const dateFormatted = t.date ? t.date.replace(/-/g, '/') : '';
+                const typeLabel = { 'expense': 'খরচ', 'income': 'আয়', 'debt-taken': 'ঋণ নেওয়া', 'debt-given': 'ঋণ দেওয়া' }[t.type] || t.type;
+                const tagsHtml = (t.tags && t.tags.length) ? t.tags.map(tg => `<span>#${tg}</span>`).join('') : '';
+
+                div.innerHTML = `
+                    <div class="tx-left">
+                        <span class="tx-title">${t.desc}</span>
+                        <div><span class="tx-desc">${typeLabel}</span></div>
+                        ${tagsHtml ? `<div class="tx-tags">${tagsHtml}</div>` : ''}
+                    </div>
+                    <div class="tx-right">
+                        <span class="tx-amount ${amountClass}">${sign}${Math.abs(t.amount)}</span>
+                        <div class="tx-date">${dateFormatted}</div>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // =====================================================================
+        // ⏰ REMINDERS
+        // =====================================================================
+        function renderReminders() {
+            const container = document.getElementById('reminderContainer');
+            container.innerHTML = '';
+            const today = new Date().toISOString().slice(0, 10);
+            (localData.reminders || []).forEach((r, idx) => {
+                if (r.date && r.date < today) return;
+                const div = document.createElement('div');
+                div.className = 'reminder-box';
+                div.innerHTML = `
+                    <span><i class="fas fa-bell"></i> ${r.text} ${r.date ? '📅 '+r.date.replace(/-/g,'/') : ''}</span>
+                    <span class="del-reminder" data-idx="${idx}"><i class="fas fa-times"></i></span>
+                `;
+                container.appendChild(div);
+            });
+            container.querySelectorAll('.del-reminder').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.idx);
+                    localData.reminders.splice(idx, 1);
+                    saveLocalData(localData);
+                    renderReminders();
+                });
+            });
+        }
+
+        // =====================================================================
+        // 🏷️ TAGS
+        // =====================================================================
+        function renderTags() {
+            const container = document.getElementById('tagContainer');
+            container.innerHTML = '';
+            currentTags.forEach((tag, idx) => {
+                const span = document.createElement('span');
+                span.className = 'tag-item';
+                span.innerHTML = `${tag} <i class="fas fa-times" data-idx="${idx}"></i>`;
+                container.appendChild(span);
+            });
+            container.querySelectorAll('.tag-item i').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.idx);
+                    currentTags.splice(idx, 1);
+                    renderTags();
+                });
+            });
+        }
+
+        document.getElementById('addTagBtn').addEventListener('click', function() {
+            const input = document.getElementById('txTag');
+            const val = input.value.trim();
+            if (val && !currentTags.includes(val)) {
+                currentTags.push(val);
+                renderTags();
+                input.value = '';
+            }
+        });
+
+        // =====================================================================
+        // ➕ ADD TRANSACTION
+        // =====================================================================
+        function addTransaction() {
+            if (!currentUser) return;
+            const type = document.getElementById('txType').value;
+            const desc = document.getElementById('txDescription').value.trim();
+            const amount = parseFloat(document.getElementById('txAmount').value);
+            if (!desc) { showToast('📝 ' + (translations[currentLang].lblBudget || 'বিবরণ লিখুন'), 'warning'); return; }
+            if (isNaN(amount) || amount <= 0) { showToast('💰 ' + (translations[currentLang].lblIncome || 'সঠিক টাকা দিন'), 'warning'); return; }
+
+            let finalAmount = (type === 'expense' || type === 'debt-given') ? -amount : amount;
+            const tags = [...currentTags];
+
+            localData.transactions.push({
+                desc, amount: finalAmount, type, date: new Date().toISOString().slice(0, 10), tags
+            });
+            saveLocalData(localData);
+
+            currentTags = [];
+            renderTags();
+            document.getElementById('txDescription').value = '';
+            document.getElementById('txAmount').value = '';
+            renderHome();
+            showToast('✅ ' + (translations[currentLang].btnAddTx || 'লেনদেন যোগ করা হয়েছে!'), 'success');
+        }
+
+        document.getElementById('addTxBtn').addEventListener('click', addTransaction);
+        document.getElementById('txAmount').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addTransaction();
+        });
+
+        // =====================================================================
+        // 📑 EVENTS
+        // =====================================================================
+        document.getElementById('filterPeriod').addEventListener('change', function() {
+            document.getElementById('dateRange').style.display = this.value === 'custom' ? 'flex' : 'none';
+            applyFilter();
+        });
+
+        document.getElementById('applyFilterBtn').addEventListener('click', applyFilter);
+        document.getElementById('filterSearch').addEventListener('input', applyFilter);
+        document.getElementById('filterStartDate').addEventListener('change', applyFilter);
+        document.getElementById('filterEndDate').addEventListener('change', applyFilter);
+        document.getElementById('chartType').addEventListener('change', updateChart);
+
+        document.querySelectorAll('.tab-bar button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.getElementById(this.dataset.tab).classList.add('active');
+                if (this.dataset.tab === 'reportTab') { updateReport(); populateYearSelector(); }
+                if (this.dataset.tab === 'adminTab') { updateAdminStats(); loadAllUsers(); }
+            });
+        });
+
+        // =====================================================================
+        // ⚙️ SETTINGS
+        // =====================================================================
+        document.getElementById('setBudgetBtn').addEventListener('click', function() {
+            const val = prompt((translations[currentLang].lblBudget || 'মাসিক বাজেট সেট করুন:'), localData.monthlyBudget || '0');
+            if (val !== null && !isNaN(val) && parseFloat(val) >= 0) {
+                localData.monthlyBudget = parseFloat(val);
+                saveLocalData(localData);
+                renderHome();
+                showToast('✅ ' + (translations[currentLang].btnSetBudget || 'বাজেট সেট করা হয়েছে!'), 'success');
+            }
+        });
+
+        document.getElementById('setOpeningBtn').addEventListener('click', function() {
+            const val = prompt((translations[currentLang].lblSetOpening || 'ওপেনিং ব্যালেন্স সেট করুন:'), localData.openingBalance || '0');
+            if (val !== null && !isNaN(val) && parseFloat(val) >= 0) {
+                localData.openingBalance = parseFloat(val);
+                saveLocalData(localData);
+                renderHome();
+                showToast('✅ ' + (translations[currentLang].btnSetOpening || 'ওপেনিং ব্যালেন্স সেট করা হয়েছে!'), 'success');
+            }
+        });
+
+        document.getElementById('setGoalBtn').addEventListener('click', function() {
+            const val = prompt((translations[currentLang].lblSetGoal || 'সেভিংস লক্ষ্য সেট করুন:'), localData.savingsGoal || '0');
+            if (val !== null && !isNaN(val) && parseFloat(val) >= 0) {
+                localData.savingsGoal = parseFloat(val);
+                saveLocalData(localData);
+                renderHome();
+                showToast('✅ ' + (translations[currentLang].btnSetGoal || 'সেভিংস লক্ষ্য সেট করা হয়েছে!'), 'success');
+            }
+        });
+
+        // 🔐 PIN CHANGE
+        document.getElementById('changePinBtn').addEventListener('click', function() {
+            const t = translations[currentLang];
+            const oldPin = prompt(t.enterOldPin || 'বর্তমান PIN দিন:');
+            if (oldPin !== localData.pin) {
+                showToast('❌ ' + (t.wrongPin || 'ভুল PIN!'), 'error');
+                return;
+            }
+            const newPin = prompt(t.enterNewPin || 'নতুন PIN দিন (৪ ডিজিট):');
+            if (newPin && newPin.length === 4) {
+                localData.pin = newPin;
+                saveLocalData(localData);
+                showToast('✅ ' + (t.pinChanged || 'PIN পরিবর্তন সম্পন্ন!'), 'success');
+            } else {
+                showToast('❌ ' + (t.invalidPin || 'PIN ৪ ডিজিট হতে হবে!'), 'error');
+            }
+        });
+
+        // 🔑 RESET PIN VIA EMAIL
+        document.getElementById('resetPinViaEmailBtn').addEventListener('click', function() {
+            const t = translations[currentLang];
+            if (!currentUser) {
+                showToast('❌ ' + (t.loginFirst || 'লগইন করুন!'), 'error');
+                return;
+            }
+            auth.sendPasswordResetEmail(currentUser.email)
+                .then(() => showToast('📧 ' + (t.resetEmailSent || 'পিন রিসেট লিংক ইমেইলে পাঠানো হয়েছে!'), 'success'))
+                .catch(e => showToast('❌ ' + e.message, 'error'));
+        });
+
+        document.getElementById('clearDataBtn').addEventListener('click', function() {
+            if (confirm(translations[currentLang].lblClearData || 'সব ডেটা ডিলিট হবে! নিশ্চিত?')) {
+                localData.transactions = [];
+                localData.reminders = [];
+                localData.openingBalance = 0;
+                localData.monthlyBudget = 0;
+                localData.savingsGoal = 0;
+                saveLocalData(localData);
+                renderHome();
+                showToast('🗑️ ' + (translations[currentLang].btnClearData || 'সব ডেটা ডিলিট করা হয়েছে!'), 'success');
+            }
+        });
+
+        document.getElementById('backupNowBtn').addEventListener('click', function() {
+            const dataStr = JSON.stringify(localData);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `savemoney_backup_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ ' + (translations[currentLang].btnBackupDownload || 'ব্যাকআপ ডাউনলোড সম্পন্ন!'), 'success');
+        });
+
+        document.getElementById('restoreBtn').addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        localData = JSON.parse(ev.target.result);
+                        saveLocalData(localData);
+                        renderHome();
+                        showToast('✅ ' + (translations[currentLang].btnRestore || 'রিস্টোর সম্পন্ন!'), 'success');
+                    } catch (err) {
+                        showToast('❌ ' + (translations[currentLang].loginError || 'ভুল ফাইল!'), 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        });
+
+        document.getElementById('exportExcelBtn').addEventListener('click', function() {
+            const txs = localData.transactions || [];
+            if (txs.length === 0) { showToast('📭 ' + (translations[currentLang].noTx || 'কোনো ডেটা নেই!'), 'warning'); return; }
+            let html = `<table border="1"><tr><th>${translations[currentLang].lblBudget || 'বিবরণ'}</th><th>${translations[currentLang].lblIncome || 'টাকা'}</th><th>${translations[currentLang].lblCategory || 'ধরন'}</th><th>${translations[currentLang].lblToday || 'তারিখ'}</th><th>${translations[currentLang].lblCategory || 'ট্যাগ'}</th></tr>`;
+            txs.forEach(t => {
+                html += `<tr><td>${t.desc}</td><td>${t.amount}</td><td>${t.type}</td><td>${t.date}</td><td>${(t.tags||[]).join(', ')}</td></tr>`;
+            });
+            html += `</table>`;
+            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `savemoney_${new Date().toISOString().slice(0,10)}.xls`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ ' + (translations[currentLang].btnExcel || 'Excel ডাউনলোড সম্পন্ন!'), 'success');
+        });
+
+        document.getElementById('exportCsvBtn').addEventListener('click', function() {
+            const txs = localData.transactions || [];
+            if (txs.length === 0) { showToast('📭 ' + (translations[currentLang].noTx || 'কোনো ডেটা নেই!'), 'warning'); return; }
+            let csv = `${translations[currentLang].lblBudget || 'বিবরণ'},${translations[currentLang].lblIncome || 'টাকা'},${translations[currentLang].lblCategory || 'ধরন'},${translations[currentLang].lblToday || 'তারিখ'},${translations[currentLang].lblCategory || 'ট্যাগ'}\n`;
+            txs.forEach(t => {
+                csv += `"${t.desc}",${t.amount},"${t.type}","${t.date}","${(t.tags||[]).join(';')}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `savemoney_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ ' + (translations[currentLang].btnCsv || 'CSV ডাউনলোড সম্পন্ন!'), 'success');
+        });
+
+        // =====================================================================
+        // 👑 ADMIN FUNCTIONS
+        // =====================================================================
+        function loadAllUsers() {
+            db.ref('users').on('value', snap => {
+                const data = snap.val();
+                const list = document.getElementById('activeUsersList');
+                list.innerHTML = '';
+                if (!data) {
+                    list.innerHTML = `<div style="padding:8px; text-align:center; color:#8899b0; font-size:12px;">${translations[currentLang].lblLoading || 'কোনো ইউজার নেই'}</div>`;
+                    document.getElementById('adminUsers').textContent = '0';
+                    return;
+                }
+                const keys = Object.keys(data);
+                document.getElementById('adminUsers').textContent = keys.length;
+                let html = '';
+                keys.forEach(uid => {
+                    const user = data[uid];
+                    html += `<div class="admin-tx-item"><span>${user.email || uid}</span><span style="font-size:10px; color:#6c7e96;">PIN: ${user.pin || 'N/A'}</span></div>`;
+                });
+                list.innerHTML = html;
+            });
+        }
+
+        function updateAdminStats() {
+            if (!isAdmin) return;
+            db.ref('transactions').once('value').then(snap => {
+                const data = snap.val();
+                let count = 0, totalIncome = 0, totalCost = 0, balance = 0;
+                if (data) {
+                    Object.keys(data).forEach(uid => {
+                        Object.keys(data[uid]).forEach(key => {
+                            const tx = data[uid][key];
+                            count++;
+                            if (tx.amount > 0) totalIncome += tx.amount;
+                            else totalCost += Math.abs(tx.amount);
+                            balance += tx.amount;
+                        });
+                    });
+                }
+                document.getElementById('adminTotalTx').textContent = count;
+                document.getElementById('adminTotalIncome').textContent = `৳ ${totalIncome.toFixed(0)}`;
+                document.getElementById('adminTotalCost').textContent = `৳ ${totalCost.toFixed(0)}`;
+                document.getElementById('adminBalance').textContent = `৳ ${balance.toFixed(0)}`;
+            });
+
+            const list = document.getElementById('adminTxList');
+            list.innerHTML = '';
+            db.ref('transactions').once('value').then(snap => {
+                const data = snap.val();
+                if (!data) {
+                    list.innerHTML = `<div style="padding:14px; text-align:center; color:#8899b0; font-size:12px;">${translations[currentLang].lblNoTx || 'কোনো লেনদেন নেই'}</div>`;
+                    return;
+                }
+                const allTxs = [];
+                Object.keys(data).forEach(uid => {
+                    Object.keys(data[uid]).forEach(key => {
+                        allTxs.push({ uid, ...data[uid][key] });
+                    });
+                });
+                allTxs.sort((a, b) => (a.date < b.date ? 1 : -1));
+                allTxs.slice(0, 20).forEach(t => {
+                    const div = document.createElement('div');
+                    div.className = 'admin-tx-item';
+                    const cls = t.amount > 0 ? 'income' : 'expense';
+                    const sign = t.amount > 0 ? '+' : '';
+                    div.innerHTML = `<span>${t.desc} <span style="font-size:9px; color:#6c7e96;">${t.date || ''}</span></span>
+                        <span class="tx-amount-small ${cls}">${sign}৳ ${Math.abs(t.amount || 0)}</span>`;
+                    list.appendChild(div);
+                });
+            });
+        }
+
+        document.getElementById('resetAdminPinBtn').addEventListener('click', function() {
+            const newPin = prompt(translations[currentLang].lblResetAdminPin || 'নতুন এডমিন PIN দিন:');
+            if (newPin && newPin.length >= 4) {
+                adminPin = newPin;
+                showToast('✅ ' + (translations[currentLang].btnResetAdminPin || 'এডমিন PIN পরিবর্তন সম্পন্ন!'), 'success');
+            } else {
+                showToast('❌ ' + (translations[currentLang].invalidPin || 'কমপক্ষে ৪ অক্ষর দিন!'), 'error');
+            }
+        });
+
+        document.getElementById('exportAllBtn').addEventListener('click', function() {
+            const fullData = { user: currentUser ? currentUser.uid : 'unknown', email: currentUser ? currentUser.email : 'unknown', localData, exportedAt: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(fullData)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `savemoney_full_export_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('✅ ' + (translations[currentLang].btnExportAll || 'সব ডেটা এক্সপোর্ট সম্পন্ন!'), 'success');
+        });
+
+        document.getElementById('broadcastMsgBtn').addEventListener('click', function() {
+            const msg = prompt(translations[currentLang].lblBroadcast || '📢 সকল ইউজারকে পাঠানোর মেসেজ লিখুন:');
+            if (msg && msg.trim()) {
+                db.ref('broadcast').push({ message: msg.trim(), from: currentUser ? currentUser.uid : 'admin', timestamp: Date.now() })
+                    .then(() => showToast('✅ ' + (translations[currentLang].btnBroadcast || 'ব্রডকাস্ট পাঠানো হয়েছে!'), 'success'))
+                    .catch(e => showToast('❌ ' + e.message, 'error'));
+            }
+        });
+
+        // =====================================================================
+        // 📄 PDF
+        // =====================================================================
+        document.getElementById('generatePdfBtn').addEventListener('click', function() {
+            showToast('⏳ ' + (translations[currentLang].btnPdf || 'PDF তৈরি হচ্ছে...'), 'info');
+            const element = document.getElementById('pdfPreview');
+            html2pdf().set({
+                margin: 10,
+                filename: `SaveMoney_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(element).save().then(() => {
+                showToast('✅ ' + (translations[currentLang].btnPdf || 'PDF ডাউনলোড সম্পন্ন!'), 'success');
+            }).catch(e => showToast('❌ ' + e.message, 'error'));
+        });
+
+        // Enter key support
+        document.querySelectorAll('#loginPage input, #registerPage input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    if (this.closest('#loginPage')) document.getElementById('loginBtn').click();
+                    else if (this.closest('#registerPage')) document.getElementById('registerBtn').click();
+                }
+            });
+        });
+
+        console.log('✅ SaveMoney ফাইনাল অ্যাপ রেডি!');
+        console.log('🌐 ৪টি ভাষা সাপোর্ট: বাংলা, English, हिन्दी, اردو');
+        console.log('👑 এডমিন অ্যাক্সেস: লোগোতে ৩ বার ক্লিক করুন');
+        console.log('🔑 এডমিন PIN: admin123');
+        console.log('🔐 ইউজার PIN: ডিফল্ট 1234 (সেটিংস থেকে পরিবর্তন করুন)');
+    </script>
+</body>
+</html>
