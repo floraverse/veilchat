@@ -156,13 +156,20 @@
             box-shadow: 0 4px 20px rgba(108,99,255,0.25);
             border: 3px solid #fff;
         }
-        .verified-badge {
-            position: absolute; bottom: -2px; right: -4px;
-            background: #4CAF50; color: #fff; font-size: 14px;
-            width: 28px; height: 28px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid #fff;
-            box-shadow: 0 2px 8px rgba(76,175,80,0.3);
+       
+            .verified-badge-img {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background: #1DA1F2;
+    object-fit: contain;
+    padding: 3px;
+    box-shadow: 0 2px 12px rgba(29, 161, 242, 0.4);
+    z-index: 5;
         }
         .profile-name { font-size: 22px; font-weight: 700; }
         .profile-username { font-size: 15px; color: var(--gray); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 12px; transition: 0.3s; margin-top: 2px; }
@@ -442,7 +449,7 @@
         <div class="profile-card" id="profile-card">
             <div class="profile-avatar-wrapper">
                 <div class="profile-avatar" id="profile-avatar">J</div>
-                <div class="verified-badge">✅</div>
+                <img src="verified.png" alt="Verified" class="verified-badge-img">
             </div>
             <div class="profile-name" id="profile-name">John Doe</div>
             <div class="profile-username" onclick="showUsernameInfo()">@<span id="profile-username">john_doe</span> <i class="fas fa-info-circle"></i></div>
