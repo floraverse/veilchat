@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#eaf8fa">
+<title>Veil</title>
+<style>
+:root{--bg:#eaf8fa;--glass:rgba(255,255,255,.48);--glass2:rgba(255,255,255,.68);--line:rgba(255,255,255,.78);--text:#18343c;--muted:#718990;--accent:#4c9ead;--danger:#c85d67;--shadow:0 15px 45px rgba(50,110,125,.13)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 5%,#fff,transparent 32%),radial-gradient(circle at 90% 85%,#c9eef4,transparent 38%),var(--bg)}
+body:before{content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.65),transparent 25%),radial-gradient(circle at 70% 65%,rgba(123,211,226,.25),transparent 30%);filter:blur(45px)}
+button,input,textarea,select{font:inherit}button{border:0;cursor:pointer}.hidden{display:none!important}
+.glass{background:var(--glass);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px)}
+#loading{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(235,249,251,.82);backdrop-filter:blur(18px)}
+.loader{text-align:center}.loader-logo{font-size:42px;font-weight:900}.spinner{width:28px;height:28px;margin:18px auto 0;border:3px solid rgba(76,158,173,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.app{width:100%;max-width:720px;min-height:100vh;margin:auto;padding-bottom:92px}
+.topbar{position:sticky;top:10px;z-index:100;margin:10px 12px;padding:13px 16px;border-radius:23px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:24px;font-weight:900}.status{color:var(--muted);font-size:11px}
+.icon-btn,.back-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.55);color:var(--text);display:flex;align-items:center;justify-content:center}
+main{padding:4px 12px}.page{display:none}.page.active{display:block}
+.card{border-radius:25px;padding:18px;margin:12px 0}.center{text-align:center}
+h2,h3{margin-top:0}.avatar{width:94px;height:94px;border-radius:50%;object-fit:cover;background:#d9edf1;border:3px solid rgba(255,255,255,.9);box-shadow:0 9px 25px rgba(40,100,115,.15)}.avatar.small{width:55px;height:55px}
+.profile-name{margin-top:10px;font-size:23px;font-weight:800}.username{margin-top:3px;color:var(--muted);font-size:13px}.verified{width:18px;height:18px;object-fit:contain;vertical-align:-3px;margin-left:4px}.profile-basic{margin-top:12px;color:var(--muted);font-size:13px}.bio{margin:16px auto 0;max-width:500px;line-height:1.55}
+.btn{min-height:44px;padding:11px 17px;border-radius:16px;background:var(--accent);color:white;font-weight:750}.btn:active{transform:scale(.98)}.btn.secondary{color:var(--text);background:rgba(255,255,255,.6);border:1px solid var(--line)}.btn.danger{background:var(--danger)}.full{width:100%}
+.field{margin:13px 0}.field label{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:700}input,textarea,select{width:100%;border:1px solid rgba(100,155,165,.22);border-radius:16px;outline:none;color:var(--text);background:rgba(255,255,255,.55);padding:13px 14px}textarea{min-height:95px;resize:vertical}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}.login-card{width:min(430px,100%);text-align:center;padding:30px 22px;border-radius:30px}.login-logo{font-size:46px;font-weight:950}.login-text{color:var(--muted);line-height:1.5;margin:7px 0 25px}
+.bottom-nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:500;width:min(696px,calc(100% - 20px));padding:7px;border-radius:25px;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav-item{padding:8px 4px;border-radius:18px;color:var(--muted);background:transparent;font-size:11px}.nav-item.active{color:#397f8d;background:rgba(255,255,255,.65);font-weight:800}.nav-icon{display:block;font-size:20px;line-height:22px;margin-bottom:2px}
+.search-box{position:sticky;top:78px;z-index:20}.search-box input{margin:0}.user-card{display:flex;align-items:center;gap:12px;margin:9px 0;padding:12px;border-radius:21px}.user-card-info{flex:1;min-width:0}.user-name{font-weight:750}.user-meta{color:var(--muted);font-size:12px;margin-top:3px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}.divider{height:1px;background:rgba(90,145,155,.13);margin:14px 0}.toggle{width:48px;height:27px;border-radius:20px;background:rgba(90,120,130,.25);padding:3px}.toggle span{display:block;width:21px;height:21px;border-radius:50%;background:#fff;transition:.2s}.toggle.on{background:var(--accent)}.toggle.on span{transform:translateX(21px)}
+.chat-card{height:calc(100vh - 160px);min-height:430px;display:flex;flex-direction:column}.chat-header{display:flex;align-items:center;gap:10px;padding-bottom:10px}.chat-title{font-weight:800}.chat-subtitle{color:var(--muted);font-size:11px}.messages{flex:1;overflow-y:auto;padding:8px 2px}.message{max-width:78%;margin:6px 0;padding:10px 13px;border-radius:18px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}.message.mine{margin-left:auto;background:rgba(76,158,173,.86);color:#fff;border-bottom-right-radius:5px}.message.theirs{background:rgba(255,255,255,.7);border-bottom-left-radius:5px}.composer{display:flex;gap:8px;padding-top:8px}.composer input{margin:0}
+.toast{position:fixed;z-index:10000;left:50%;bottom:95px;transform:translateX(-50%);max-width:90%;padding:12px 16px;border-radius:16px;background:rgba(20,42,49,.9);color:white;font-size:13px;text-align:center}
+@media(max-width:480px){.card{padding:15px}.chat-card{height:calc(100vh - 145px)}.message{max-width:84%}}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="loader"><div class="loader-logo">Veil</div><div class="spinner"></div></div></div>
+
+<section id="loginScreen" class="login hidden">
+  <div class="login-card glass">
+    <div class="login-logo">Veil</div>
+    <p class="login-text">A clean and private social experience.</p>
+    <button id="googleLoginBtn" class="btn full">Continue with Google</button>
+  </div>
+</section>
+
+<div id="app" class="app hidden">
+<header class="topbar glass">
+  <div><div class="logo">Veil</div><div id="connectionStatus" class="status">Connecting…</div></div>
+  <button id="topProfileBtn" class="icon-btn">◉</button>
+</header>
+
+<main>
+<section id="homePage" class="page active">
+  <div class="card glass"><h2>Welcome to Veil</h2><p class="status">Your account is connected.</p></div>
+  <div id="homeProfile"></div>
+</section>
+
+<section id="discoverPage" class="page">
+  <div class="card glass search-box"><input id="searchInput" type="search" placeholder="Search name or username"></div>
+  <div id="usersList"></div>
+</section>
+
+<section id="profilePage" class="page"><div id="profileContainer"></div></section>
+
+<section id="settingsPage" class="page">
+  <div class="card glass">
+    <h2>Settings</h2><div class="divider"></div>
+    <button id="editProfileBtn" class="btn secondary full">Edit Profile</button>
+    <div class="divider"></div>
+    <h3>Profile visibility</h3>
+    <p class="status">Photo, name, username, gender and district are always public.</p>
+    <div id="visibilityContainer"></div>
+    <div class="divider"></div>
+    <button id="logoutBtn" class="btn danger full">Sign out</button>
+  </div>
+</section>
+
+<section id="editPage" class="page">
+  <div class="card glass">
+    <div class="chat-header"><button id="editBackBtn" class="back-btn">‹</button><h2 style="margin:0">Edit Profile</h2></div>
+    <div class="center"><img id="editAvatar" class="avatar" src="" alt="Profile photo"></div>
+    <div class="field"><label>Profile Photo <span style="color:var(--danger)">*</span></label><input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp"></div>
+    <div class="field"><label>Name <span style="color:var(--danger)">*</span></label><input id="nameInput" maxlength="80" autocomplete="name"></div>
+    <div class="field"><label>Username <span style="color:var(--danger)">*</span></label><input id="usernameInput" maxlength="30" placeholder="your_username" autocomplete="off"></div>
+    <div class="field"><label>Gender <span style="color:var(--danger)">*</span></label>
+      <select id="genderInput"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>District <span style="color:var(--danger)">*</span></label><select id="districtInput"><option value="">Select district</option></select></div>
+    <div class="field"><label>Bio</label><textarea id="bioInput" maxlength="300" placeholder="Tell people something about you…"></textarea></div>
+    <div class="field"><label>Age</label><input id="ageInput" type="number" min="18" max="100"></div>
+    <button id="saveProfileBtn" class="btn full">Save Profile</button>
+  </div>
+</section>
+
+<section id="chatPage" class="page">
+  <div class="card glass chat-card">
+    <div class="chat-header"><button id="chatBackBtn" class="back-btn">‹</button><div><div id="chatTitle" class="chat-title">Chat</div><div id="chatSubtitle" class="chat-subtitle"></div></div></div>
+    <div id="messages" class="messages"></div>
+    <div class="composer"><input id="messageInput" maxlength="4000" placeholder="Message…"><button id="sendBtn" class="btn">Send</button></div>
+  </div>
+</section>
+</main>
+
+<nav class="bottom-nav glass">
+  <button class="nav-item active" data-page="homePage"><span class="nav-icon">⌂</span>Home</button>
+  <button class="nav-item" data-page="discoverPage"><span class="nav-icon">⌕</span>Discover</button>
+  <button class="nav-item" data-page="profilePage"><span class="nav-icon">◉</span>Profile</button>
+  <button class="nav-item" data-page="settingsPage"><span class="nav-icon">⚙</span>Settings</button>
+</nav>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,signOut,setPersistence,browserLocalPersistence}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc,updateDoc,collection,query,where,orderBy,onSnapshot,addDoc,serverTimestamp,limit,getDocs}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
+
+/* YOUR REAL FIREBASE WEB CONFIG */
+const firebaseConfig={
+ apiKey:"AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
+ authDomain:"flora-veilchat.firebaseapp.com",
+ projectId:"flora-veilchat",
+ storageBucket:"flora-veilchat.firebasestorage.app",
+ messagingSenderId:"352485676905",
+ appId:"1:352485676905:web:8beb0df80a0daea2cccff8",
+ measurementId:"G-CQKB9Z8VP1"
+};
+
+const VERIFIED_BADGE="https://floraverse.github.io/veilchat/verified.png";
+
+const districts=["Bagerhat","Bandarban","Barguna","Barishal","Bhola","Bogura","Brahmanbaria","Chandpur","Chattogram","Chuadanga","Cox's Bazar","Cumilla","Dhaka","Dinajpur","Faridpur","Feni","Gaibandha","Gazipur","Gopalganj","Habiganj","Jamalpur","Jashore","Jhalokathi","Jhenaidah","Joypurhat","Khagrachhari","Khulna","Kishoreganj","Kurigram","Kushtia","Lakshmipur","Lalmonirhat","Madaripur","Magura","Manikganj","Meherpur","Moulvibazar","Munshiganj","Mymensingh","Naogaon","Narail","Narayanganj","Narsingdi","Natore","Netrokona","Nilphamari","Noakhali","Pabna","Panchagarh","Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati","Rangpur","Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet","Tangail"];
+
+let auth,db,storage,currentUser,currentProfile,viewingProfile,activeChatUser,unsubscribeMessages;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const avatar=p=>p?.photoURL||"data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="#dceff3"/><circle cx="150" cy="110" r="52" fill="#7faeb8"/><path d="M50 280c15-70 55-100 100-100s85 30 100 100" fill="#7faeb8"/></svg>');
+const badge=p=>p?.verified===true?`<img class="verified" src="${VERIFIED_BADGE}" alt="Verified">`:"";
+const chatId=(a,b)=>[a,b].sort().join("_");
+
+function loading(v){$("loading").classList.toggle("hidden",!v)}
+function toast(t){$("toast").textContent=t;$("toast").classList.remove("hidden");clearTimeout(window.tt);window.tt=setTimeout(()=>$("toast").classList.add("hidden"),3000)}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ $(id).classList.add("active");
+ document.querySelectorAll(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.page===id));
+ if(id==="homePage")renderHome();
+ if(id==="profilePage")renderProfile(viewingProfile||currentProfile);
+ if(id==="settingsPage")renderSettings();
+}
+
+async function loadProfile(){
+ const s=await getDoc(doc(db,"users",currentUser.uid));
+ if(s.exists()){currentProfile={uid:currentUser.uid,...s.data()};return true}
+ currentProfile={uid:currentUser.uid,name:currentUser.displayName||"",username:"",gender:"",district:"",photoURL:currentUser.photoURL||"",bio:"",age:"",visibility:{bio:true,age:false},verified:false};
+ return false;
+}
+
+function renderHome(){
+ const p=currentProfile;
+ $("homeProfile").innerHTML=`<div class="card glass center"><img class="avatar" src="${esc(avatar(p))}" alt=""><div class="profile-name">${esc(p.name)}${badge(p)}</div><div class="username">@${esc(p.username)}</div><div class="profile-basic">${esc(p.gender)} · ${esc(p.district)}</div></div>`;
+}
+
+function renderProfile(p){
+ if(!p)return;
+ const v=p.visibility||{};
+ let extra="";
+ if(v.bio===true&&p.bio)extra+=`<div class="bio">${esc(p.bio)}</div>`;
+ if(v.age===true&&p.age)extra+=`<div class="status" style="margin-top:10px">Age ${esc(p.age)}</div>`;
+ const me=p.uid===currentUser.uid;
+ $("profileContainer").innerHTML=`<div class="card glass center"><img class="avatar" src="${esc(avatar(p))}" alt=""><div class="profile-name">${esc(p.name)}${badge(p)}</div><div class="username">@${esc(p.username)}</div><div class="profile-basic">${esc(p.gender)} · ${esc(p.district)}</div>${extra}<div style="margin-top:18px">${me?'<button id="profileEditBtn" class="btn secondary">Edit Profile</button>':'<button id="profileMessageBtn" class="btn">Message</button>'}</div></div>`;
+ if(me)$("profileEditBtn").onclick=openEdit;
+ else $("profileMessageBtn").onclick=()=>startChat(p);
+}
+
+function renderSettings(){
+ const v=currentProfile.visibility||{};
+ $("visibilityContainer").innerHTML=`
+ <div class="setting-row"><div><strong>Bio</strong><div class="status">Show your bio on your profile</div></div><button class="toggle ${v.bio?"on":""}" data-toggle="bio"><span></span></button></div>
+ <div class="setting-row"><div><strong>Age</strong><div class="status">Show your age on your profile</div></div><button class="toggle ${v.age?"on":""}" data-toggle="age"><span></span></button></div>`;
+ document.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=async()=>{
+  const k=b.dataset.toggle,n=!((currentProfile.visibility||{})[k]);
+  currentProfile.visibility={...(currentProfile.visibility||{}),[k]:n};
+  try{await updateDoc(doc(db,"users",currentUser.uid),{visibility:currentProfile.visibility});renderSettings();toast("Visibility updated.")}catch(e){console.error(e);toast("Could not update setting.")}
+ });
+}
+
+function openEdit(){
+ $("editAvatar").src=avatar(currentProfile);
+ $("nameInput").value=currentProfile.name||"";
+ $("usernameInput").value=currentProfile.username||"";
+ $("genderInput").value=currentProfile.gender||"";
+ $("districtInput").value=currentProfile.district||"";
+ $("bioInput").value=currentProfile.bio||"";
+ $("ageInput").value=currentProfile.age||"";
+ $("photoInput").value="";
+ showPage("editPage");
+}
+
+async function usernameAvailable(u){
+ const s=await getDocs(query(collection(db,"users"),where("usernameLower","==",u.toLowerCase()),limit(2)));
+ return s.docs.every(d=>d.id===currentUser.uid);
+}
+
+async function saveProfile(){
+ const name=$("nameInput").value.trim(),username=$("usernameInput").value.trim().replace(/^@/,""),gender=$("genderInput").value,district=$("districtInput").value,bio=$("bioInput").value.trim().slice(0,300),age=$("ageInput").value?Number($("ageInput").value):"";
+ const file=$("photoInput").files[0];
+ if(!name||!username||!gender||!district){toast("Photo, name, username, gender and district are required.");return}
+ if(!/^[A-Za-z0-9_.]{3,30}$/.test(username)){toast("Username must be 3–30 letters, numbers, _ or .");return}
+ if(age&&(age<18||age>100)){toast("Age must be between 18 and 100.");return}
+ if(!currentProfile.photoURL&&!file){toast("Profile photo is required.");return}
+ loading(true);
+ try{
+  if(username.toLowerCase()!==(currentProfile.usernameLower||"")&&!await usernameAvailable(username)){toast("This username is already taken.");return}
+  let photoURL=currentProfile.photoURL||"";
+  if(file){
+   if(file.size>5*1024*1024){toast("Photo must be under 5 MB.");return}
+   const r=ref(storage,`profilePhotos/${currentUser.uid}/${Date.now()}`);
+   await uploadBytes(r,file,{contentType:file.type});
+   photoURL=await getDownloadURL(r);
+  }
+  const data={uid:currentUser.uid,name,nameLower:name.toLowerCase(),username,usernameLower:username.toLowerCase(),gender,district,photoURL,bio,age,visibility:currentProfile.visibility||{bio:true,age:false},updatedAt:serverTimestamp()};
+  const r=doc(db,"users",currentUser.uid),old=await getDoc(r);
+  if(old.exists())await updateDoc(r,data);else await setDoc(r,{...data,verified:false,createdAt:serverTimestamp()});
+  await loadProfile();renderHome();viewingProfile=currentProfile;renderProfile(currentProfile);showPage("profilePage");toast("Profile saved.");
+ }catch(e){console.error(e);toast(e.message||"Profile could not be saved.")}finally{loading(false)}
+}
+
+let searchTimer;
+async function searchUsers(term){
+ const box=$("usersList");
+ if(!term){box.innerHTML='<div class="card glass center status">Search for a name or username.</div>';return}
+ try{
+  const [a,b]=await Promise.all([
+   getDocs(query(collection(db,"users"),where("usernameLower","==",term.toLowerCase()),limit(20))),
+   getDocs(query(collection(db,"users"),where("nameLower","==",term.toLowerCase()),limit(20)))
+  ]);
+  const map=new Map();
+  [...a.docs,...b.docs].forEach(d=>map.set(d.id,{uid:d.id,...d.data()}));
+  const list=[...map.values()].filter(p=>p.uid!==currentUser.uid);
+  if(!list.length){box.innerHTML='<div class="card glass center status">No user found.</div>';return}
+  box.innerHTML=list.map(p=>`<div class="user-card glass" data-id="${esc(p.uid)}"><img class="avatar small" src="${esc(avatar(p))}" alt=""><div class="user-card-info"><div class="user-name">${esc(p.name)}${badge(p)}</div><div class="user-meta">@${esc(p.username)} · ${esc(p.gender)} · ${esc(p.district)}</div></div><button class="btn secondary chat-button">Chat</button></div>`).join("");
+  box.querySelectorAll(".user-card").forEach(c=>{
+   const id=c.dataset.id;
+   c.onclick=()=>openUser(id);
+   c.querySelector(".chat-button").onclick=e=>{e.stopPropagation();getDoc(doc(db,"users",id)).then(s=>s.exists()&&startChat({uid:id,...s.data()}))};
+  });
+ }catch(e){console.error(e);toast("Search failed.")}
+}
+
+async function openUser(uid){
+ const s=await getDoc(doc(db,"users",uid));
+ if(!s.exists()){toast("Profile not found.");return}
+ viewingProfile={uid,...s.data()};showPage("profilePage");
+}
+
+function startChat(p){
+ activeChatUser=p;
+ $("chatTitle").innerHTML=esc(p.name)+badge(p);
+ $("chatSubtitle").textContent="@"+p.username;
+ showPage("chatPage");
+ listenMessages();
+}
+
+function listenMessages(){
+ if(unsubscribeMessages)unsubscribeMessages();
+ const q=query(collection(db,"chats",chatId(currentUser.uid,activeChatUser.uid),"messages"),orderBy("createdAt","asc"),limit(300));
+ unsubscribeMessages=onSnapshot(q,s=>{
+  const box=$("messages");box.innerHTML="";
+  s.forEach(d=>{const m=d.data(),el=document.createElement("div");el.className="message "+(m.senderId===currentUser.uid?"mine":"theirs");el.textContent=m.text||"";box.appendChild(el)});
+  box.scrollTop=box.scrollHeight;
+ },e=>{console.error(e);toast("Chat connection failed.")});
+}
+
+async function sendMessage(){
+ if(!activeChatUser)return;
+ const input=$("messageInput"),text=input.value.trim();if(!text)return;
+ input.value="";
+ const id=chatId(currentUser.uid,activeChatUser.uid);
+ try{
+  await addDoc(collection(db,"chats",id,"messages"),{senderId:currentUser.uid,receiverId:activeChatUser.uid,text,createdAt:serverTimestamp(),read:false});
+  await setDoc(doc(db,"chats",id),{participants:[currentUser.uid,activeChatUser.uid],lastMessage:text.slice(0,200),updatedAt:serverTimestamp()},{merge:true});
+ }catch(e){console.error(e);input.value=text;toast("Message could not be sent.")}
+}
+
+async function googleLogin(){
+ try{loading(true);const provider=new GoogleAuthProvider();await signInWithPopup(auth,provider)}
+ catch(e){console.error(e);toast(e.message||"Google sign-in failed.")}
+ finally{loading(false)}
+}
+
+async function authState(user){
+ if(!user){
+  currentUser=null;$("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");loading(false);return;
+ }
+ currentUser=user;$("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");$("connectionStatus").textContent="Connected";
+ try{
+  const exists=await loadProfile();
+  const incomplete=!exists||!currentProfile.photoURL||!currentProfile.name||!currentProfile.username||!currentProfile.gender||!currentProfile.district;
+  if(incomplete)openEdit();else{viewingProfile=currentProfile;showPage("homePage")}
+ }catch(e){console.error(e);toast("Could not load your profile.")}
+ finally{loading(false)}
+}
+
+districts.forEach(d=>$("districtInput").insertAdjacentHTML("beforeend",`<option value="${esc(d)}">${esc(d)}</option>`));
+
+$("googleLoginBtn").onclick=googleLogin;
+$("editProfileBtn").onclick=openEdit;
+$("editBackBtn").onclick=()=>showPage("profilePage");
+$("saveProfileBtn").onclick=saveProfile;
+$("logoutBtn").onclick=()=>signOut(auth);
+$("topProfileBtn").onclick=()=>{viewingProfile=currentProfile;showPage("profilePage")};
+$("searchInput").oninput=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>searchUsers($("searchInput").value.trim()),350)};
+$("sendBtn").onclick=sendMessage;
+$("messageInput").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}};
+$("chatBackBtn").onclick=()=>{if(unsubscribeMessages)unsubscribeMessages();activeChatUser=null;showPage("discoverPage")};
+$("photoInput").onchange=()=>{const f=$("photoInput").files[0];if(f)$("editAvatar").src=URL.createObjectURL(f)};
+document.querySelectorAll(".nav-item").forEach(b=>b.onclick=()=>{if(b.dataset.page==="profilePage")viewingProfile=currentProfile;showPage(b.dataset.page)});
+
+async function start(){
+ try{
+  const app=initializeApp(firebaseConfig);
+  auth=getAuth(app);db=getFirestore(app);storage=getStorage(app);
+  await setPersistence(auth,browserLocalPersistence);
+  onAuthStateChanged(auth,authState);
+ }catch(e){console.error(e);loading(false);toast("Firebase initialization failed. Check Firebase settings.")}
+}
+start();
+</script>
+</body>
+</html>
