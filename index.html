@@ -45,11 +45,15 @@
         .panel{margin-top:16px;padding:18px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px)}
         .panel h3{margin-bottom:14px}
         .field{width:100%;height:48px;margin-bottom:10px;padding:0 14px;border-radius:13px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.16);color:#fff;outline:none}
+        .field:focus{border-color:rgba(100,200,255,.5)}
         textarea.field{height:90px;padding-top:13px;resize:none}
-        .primary{width:100%;height:48px;border:0;border-radius:14px;background:#fff;color:#082137;font-weight:700}
+        .primary{width:100%;height:48px;border:0;border-radius:14px;background:#fff;color:#082137;font-weight:700;transition:.2s}
+        .primary:active{transform:scale(.97)}
+        .primary:disabled{opacity:.5;cursor:not-allowed}
         .logout{margin-top:10px;background:rgba(255,80,110,.12);color:#ffb1bd;border:1px solid rgba(255,80,110,.20)}
         .matches{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-        .match{overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);cursor:pointer}
+        .match{overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);cursor:pointer;transition:.2s}
+        .match:active{transform:scale(.96)}
         .match img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
         .matchname{padding:11px;font-weight:600}
         .chatpage{min-height:0}
@@ -61,51 +65,59 @@
         .msg.me{margin-left:auto;background:rgba(115,220,255,.15)}
         .chatinput{display:flex;gap:8px;padding:11px;border-top:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07)}
         .chatinput input{flex:1;height:45px;border-radius:14px;border:1px solid rgba(255,255,255,.17);background:rgba(0,0,0,.15);color:#fff;padding:0 13px;outline:none}
-        .send{width:48px;border:0;border-radius:14px;background:#fff;color:#092238}
-        
+        .chatinput input:focus{border-color:rgba(100,200,255,.5)}
+        .send{width:48px;border:0;border-radius:14px;background:#fff;color:#092238;font-size:18px;transition:.2s}
+        .send:active{transform:scale(.9)}
         .login{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 20% 15%,rgba(70,200,240,.18),transparent 32%),rgba(3,14,25,.97);backdrop-filter:blur(25px)}
         .loginbox{width:100%;max-width:400px;padding:32px 25px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.19);box-shadow:0 25px 70px rgba(0,0,0,.4)}
         .loginlogo{text-align:center;font-size:39px;font-weight:800;letter-spacing:9px}
         .tag{text-align:center;font-size:13px;color:rgba(255,255,255,.60);margin:8px 0 28px}
-        .authinput{width:100%;height:51px;margin-bottom:11px;padding:0 15px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;outline:none}
-        .authinput::placeholder{color:rgba(255,255,255,.45)}
-        .authbtn{width:100%;height:51px;border:0;border-radius:14px;background:#fff;color:#092238;font-weight:700}
-        .authbtn:disabled{opacity:.6;cursor:not-allowed}
-        .switch{margin-top:18px;text-align:center;font-size:13px;color:#a9eaff;cursor:pointer}
+        .authbtn{width:100%;height:51px;border:0;border-radius:14px;background:#fff;color:#092238;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s}
+        .authbtn:active{transform:scale(.97)}
+        .authbtn:disabled{opacity:.5;cursor:not-allowed}
+        .google-btn{width:100%;height:51px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s}
+        .google-btn:active{transform:scale(.97)}
+        .google-btn:disabled{opacity:.5;cursor:not-allowed}
         .error{min-height:18px;text-align:center;font-size:13px;color:#ffadb9;margin-bottom:7px}
-        .divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:rgba(255,255,255,.3);font-size:12px}
-        .divider::before,.divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.15)}
-        .google-btn{width:100%;height:51px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px}
-        .loading{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#061827}
-        .loader{width:44px;height:44px;border:3px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .toast{position:fixed;z-index:200;left:50%;bottom:88px;transform:translate(-50%,20px);max-width:90%;padding:12px 17px;border-radius:15px;background:rgba(7,24,39,.94);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:.25s;font-size:13px;text-align:center}
-        .toast.show{opacity:1;transform:translate(-50%,0)}
         .profile-setup{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 20% 15%,rgba(70,200,240,.18),transparent 32%),rgba(3,14,25,.97);backdrop-filter:blur(25px);overflow-y:auto}
         .setup-box{width:100%;max-width:400px;padding:32px 25px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.19);box-shadow:0 25px 70px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto}
-        .photo-upload{width:120px;height:120px;border-radius:50%;margin:0 auto 16px;border:3px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:rgba(255,255,255,.05)}
+        .setup-box::-webkit-scrollbar{width:3px}
+        .setup-box::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:10px}
+        .photo-upload{width:130px;height:130px;border-radius:50%;margin:0 auto 16px;border:3px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:rgba(255,255,255,.05);transition:.3s}
+        .photo-upload:active{transform:scale(.95)}
         .photo-upload img{width:100%;height:100%;object-fit:cover}
         .photo-upload .placeholder{color:rgba(255,255,255,.5);font-size:13px;text-align:center}
-        .photo-upload .placeholder .icon{font-size:32px;display:block;margin-bottom:6px}
-        .photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+        .photo-upload .placeholder .icon{font-size:36px;display:block;margin-bottom:6px}
+        .photo-upload .upload-progress{position:absolute;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+        .photo-upload .upload-progress .spinner{width:30px;height:30px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+        .photo-upload .upload-progress .percent{font-size:14px;color:#fff}
+        .authinput{width:100%;height:51px;margin-bottom:11px;padding:0 15px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;outline:none}
+        .authinput:focus{border-color:rgba(100,200,255,.5)}
+        .authinput::placeholder{color:rgba(255,255,255,.45)}
         .verify-section{margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
-        .verify-section .status{display:flex;align-items:center;gap:8px;font-size:14px}
+        .verify-section .status{display:flex;align-items:center;gap:8px;font-size:14px;flex-wrap:wrap}
         .verify-section .status .badge{padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}
         .badge-pending{background:rgba(255,200,0,.2);color:#ffd700}
         .badge-verified{background:rgba(0,255,100,.2);color:#00ff88}
         .badge-none{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
         .badge-rejected{background:rgba(255,0,0,.2);color:#ff6b6b}
-        .btn-verify{background:rgba(100,200,255,.15);color:#7ceaff;border:1px solid rgba(100,200,255,.25);padding:8px 16px;border-radius:12px;margin-top:8px;width:100%}
+        .btn-verify{background:rgba(100,200,255,.15);color:#7ceaff;border:1px solid rgba(100,200,255,.25);padding:8px 16px;border-radius:12px;margin-top:8px;width:100%;transition:.2s}
+        .btn-verify:active{transform:scale(.97)}
         .step-indicator{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
         .step-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s}
         .step-dot.active{background:#fff;width:24px;border-radius:5px}
         .step-dot.done{background:rgba(100,200,255,.5)}
-        .avatar-badge{position:absolute;bottom:5px;right:5px;width:32px;height:32px;border-radius:50%;background:#071a2b;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+        .loading{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:#061827}
+        .loader{width:44px;height:44px;border:3px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .toast{position:fixed;z-index:200;left:50%;bottom:88px;transform:translate(-50%,20px);max-width:90%;padding:12px 17px;border-radius:15px;background:rgba(7,24,39,.94);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:.25s;font-size:13px;text-align:center}
+        .toast.show{opacity:1;transform:translate(-50%,0)}
         .camera-modal{position:fixed;inset:0;z-index:60;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center}
         .camera-modal.active{display:flex}
         .camera-modal video{width:100%;max-height:70vh;background:#000;object-fit:cover}
         .camera-modal .cam-controls{display:flex;gap:20px;padding:20px;position:absolute;bottom:40px;width:100%;justify-content:center}
-        .cam-btn{width:70px;height:70px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.1);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center}
+        .cam-btn{width:70px;height:70px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.1);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;transition:.2s}
+        .cam-btn:active{transform:scale(.9)}
         .cam-btn.close{width:50px;height:50px;font-size:20px;border-color:rgba(255,0,0,.5);color:#ff6b6b}
         .cam-btn.capture{background:#fff;color:#000;border-color:#fff}
         .cam-btn.switch{width:50px;height:50px;font-size:20px;border-color:rgba(255,255,255,.3)}
@@ -113,12 +125,12 @@
         .cam-preview.active{display:flex}
         .cam-preview img{max-width:90%;max-height:65vh;border-radius:20px;border:2px solid rgba(255,255,255,.1)}
         .cam-preview .preview-actions{display:flex;gap:16px;padding:20px}
-        .preview-btn{padding:12px 30px;border-radius:30px;border:0;font-weight:600}
+        .preview-btn{padding:12px 30px;border-radius:30px;border:0;font-weight:600;transition:.2s}
+        .preview-btn:active{transform:scale(.95)}
         .preview-btn.retake{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
         .preview-btn.confirm{background:#fff;color:#000}
         .cam-label{position:absolute;top:20px;color:rgba(255,255,255,.6);font-size:14px;background:rgba(0,0,0,.5);padding:6px 16px;border-radius:20px}
-        .password-section{margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
-        .password-section .field{margin-bottom:8px}
+        .avatar-badge{position:absolute;bottom:5px;right:5px;width:32px;height:32px;border-radius:50%;background:#071a2b;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px}
         @media(min-width:700px){body{display:flex;align-items:center;justify-content:center}.app{height:850px;max-height:100dvh;border-radius:28px;overflow:hidden}}
     </style>
 </head>
@@ -126,21 +138,16 @@
     <div class="water"></div>
     <div id="loading" class="loading"><div class="loader"></div></div>
 
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="login">
         <div class="loginbox">
             <div class="loginlogo">VEIL</div>
             <div class="tag">Real people. Real connections.</div>
             <div id="authError" class="error"></div>
-            <input id="authEmail" class="authinput" type="email" placeholder="Email">
-            <input id="authPassword" class="authinput" type="password" placeholder="Password">
-            <button id="authButton" class="authbtn">Sign In</button>
-            <div class="divider">OR</div>
-            <button id="googleButton" class="google-btn">
-                <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+            <button id="googleSignIn" class="authbtn" style="background:#fff;color:#092238;">
+                <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
                 Continue with Google
             </button>
-            <div id="switchAuth" class="switch">Create a new account</div>
         </div>
     </div>
 
@@ -153,17 +160,18 @@
             <div class="photo-upload" id="photoUpload">
                 <img id="setupPhoto" style="display:none" alt="Profile">
                 <div class="placeholder" id="photoPlaceholder"><span class="icon">📷</span>Take Selfie</div>
+                <div class="upload-progress" id="uploadProgress"><div class="spinner"></div><span class="percent" id="uploadPercent">0%</span></div>
             </div>
-            <input id="setupName" class="authinput" placeholder="Full Name">
-            <input id="setupAge" class="authinput" type="number" min="18" placeholder="Age">
+            <input id="setupName" class="authinput" placeholder="Full Name" maxlength="50">
+            <input id="setupAge" class="authinput" type="number" min="18" max="100" placeholder="Age">
             <select id="setupGender" class="authinput" style="appearance:auto"><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select>
-            <input id="setupCity" class="authinput" placeholder="City">
-            <textarea id="setupBio" class="authinput" placeholder="Tell people about yourself" style="height:70px;padding-top:13px;resize:none"></textarea>
-            <button id="saveProfileBtn" class="authbtn" style="margin-top:6px">Save Profile</button>
+            <input id="setupCity" class="authinput" placeholder="City" maxlength="30">
+            <textarea id="setupBio" class="authinput" placeholder="Tell people about yourself" maxlength="200" style="height:70px;padding-top:13px;resize:none"></textarea>
+            <button id="saveProfileBtn" class="authbtn" style="margin-top:6px;background:#fff;color:#092238;">Save Profile</button>
         </div>
     </div>
 
-    <!-- MAIN APP -->
+    <!-- APP -->
     <div id="app" class="app hidden">
         <header>
             <button class="headbtn" onclick="showProfile()">☰</button>
@@ -171,7 +179,6 @@
             <button class="headbtn" onclick="showMatches()">♡</button>
         </header>
 
-        <!-- DISCOVER -->
         <section id="discoverPage" class="page active discover">
             <div id="profileCard" class="card">
                 <img id="discoverPhoto" class="photo" src="" alt="Profile">
@@ -196,23 +203,20 @@
             </div>
         </section>
 
-        <!-- MATCHES -->
         <section id="matchesPage" class="page matchespage">
             <h2 class="title">Your Matches</h2>
             <div id="matchesList" class="matches"></div>
         </section>
 
-        <!-- CHAT -->
         <section id="chatPage" class="page chatpage">
             <div id="chatHead" class="chathead"><span style="color:rgba(255,255,255,.5)">Select a match</span></div>
             <div id="chatMessages" class="chatmessages"><div class="chatempty">Select a match to start chatting.</div></div>
             <div class="chatinput">
-                <input id="messageInput" placeholder="Write a message...">
+                <input id="messageInput" placeholder="Write a message..." maxlength="500">
                 <button class="send" onclick="sendMessage()">➤</button>
             </div>
         </section>
 
-        <!-- PROFILE -->
         <section id="profilePage" class="page profilepage">
             <div class="center">
                 <div style="position:relative;display:inline-block">
@@ -224,11 +228,11 @@
             </div>
             <div class="panel">
                 <h3>Edit Profile</h3>
-                <input id="editName" class="field" placeholder="Name">
-                <input id="editAge" class="field" type="number" min="18" placeholder="Age">
+                <input id="editName" class="field" placeholder="Name" maxlength="50">
+                <input id="editAge" class="field" type="number" min="18" max="100" placeholder="Age">
                 <select id="editGender" class="field" style="appearance:auto"><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select>
-                <input id="editCity" class="field" placeholder="City">
-                <textarea id="editBio" class="field" placeholder="Tell people about yourself"></textarea>
+                <input id="editCity" class="field" placeholder="City" maxlength="30">
+                <textarea id="editBio" class="field" placeholder="Tell people about yourself" maxlength="200"></textarea>
                 <button class="primary" onclick="saveProfile()">Save Profile</button>
             </div>
             <div class="panel">
@@ -236,14 +240,6 @@
                 <div class="verify-section">
                     <div class="status"><span>Status:</span><span class="badge badge-none" id="verifyStatusBadge">Not Verified</span></div>
                     <button class="btn-verify" id="verifyBtn" onclick="startVerification()">📸 Verify Profile</button>
-                </div>
-            </div>
-            <div class="panel">
-                <h3>Change Password</h3>
-                <div class="password-section">
-                    <input id="currentPassword" class="field" type="password" placeholder="Current Password">
-                    <input id="newPassword" class="field" type="password" placeholder="New Password (min 6 chars)">
-                    <button class="primary" onclick="changePassword()">Update Password</button>
                 </div>
             </div>
             <div class="panel">
@@ -260,7 +256,7 @@
         </nav>
     </div>
 
-    <!-- CAMERA MODAL -->
+    <!-- CAMERA -->
     <div class="camera-modal" id="cameraModal">
         <span class="cam-label" id="camLabel">Take Selfie</span>
         <video id="cameraVideo" autoplay playsinline></video>
@@ -271,7 +267,6 @@
         </div>
     </div>
 
-    <!-- CAMERA PREVIEW -->
     <div class="cam-preview" id="camPreview">
         <img id="previewImage" src="" alt="Preview">
         <div class="preview-actions">
@@ -295,7 +290,7 @@
 
     <script type="module">
     import { initializeApp } from "firebase/app";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, sendEmailVerification, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
     import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, query, orderBy, limit, serverTimestamp, onSnapshot, updateDoc } from "firebase/firestore";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -325,7 +320,6 @@
     let capturedImageData = null;
     let setupPhotoFile = null;
     let pendingVerificationPhoto = null;
-    let authMode = "login";
 
     const $ = id => document.getElementById(id);
 
@@ -346,67 +340,23 @@
     }
 
     // ============================================================
-    // AUTH - Email/Password
+    // GOOGLE SIGN IN
     // ============================================================
-    $("switchAuth").onclick = () => {
-        if (authMode === "login") {
-            authMode = "signup";
-            $("authButton").textContent = "Create Account";
-            $("switchAuth").textContent = "Already have an account? Sign in";
-        } else {
-            authMode = "login";
-            $("authButton").textContent = "Sign In";
-            $("switchAuth").textContent = "Create a new account";
-        }
+    $("googleSignIn").onclick = async () => {
         $("authError").textContent = "";
-    };
-
-    $("authButton").onclick = async () => {
-        const email = $("authEmail").value.trim();
-        const password = $("authPassword").value;
-        $("authError").textContent = "";
-
-        if (!email || !password) {
-            $("authError").textContent = "Enter email and password.";
-            return;
-        }
-        if (password.length < 6) {
-            $("authError").textContent = "Password must be at least 6 characters.";
-            return;
-        }
-
-        $("authButton").disabled = true;
-        $("authButton").textContent = "Please wait...";
-
-        try {
-            if (authMode === "login") {
-                await signInWithEmailAndPassword(auth, email, password);
-            } else {
-                const result = await createUserWithEmailAndPassword(auth, email, password);
-                await sendEmailVerification(result.user);
-                showToast("Verification email sent! Check your inbox.");
-            }
-        } catch (error) {
-            console.error(error);
-            $("authError").textContent = error.message || "Authentication failed.";
-        }
-        $("authButton").disabled = false;
-        $("authButton").textContent = authMode === "login" ? "Sign In" : "Create Account";
-    };
-
-    // ============================================================
-    // AUTH - Google
-    // ============================================================
-    $("googleButton").onclick = async () => {
-        $("authError").textContent = "";
-        $("googleButton").disabled = true;
+        $("googleSignIn").disabled = true;
+        $("googleSignIn").textContent = "Please wait...";
         try {
             await signInWithPopup(auth, provider);
         } catch (error) {
             console.error(error);
             $("authError").textContent = error.message || "Google sign in failed.";
         }
-        $("googleButton").disabled = false;
+        $("googleSignIn").disabled = false;
+        $("googleSignIn").innerHTML = `
+            <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+            Continue with Google
+        `;
     };
 
     // ============================================================
@@ -431,12 +381,6 @@
             return;
         }
 
-        if (user.providerData[0]?.providerId === "password" && !user.emailVerified) {
-            showToast("Please verify your email first. Check your inbox.");
-            await signOut(auth);
-            return;
-        }
-
         $("loginScreen").classList.add("hidden");
         $("profileSetup").classList.add("hidden");
         $("app").classList.remove("hidden");
@@ -447,10 +391,7 @@
     // ============================================================
     // PROFILE SETUP
     // ============================================================
-    $("photoUpload").onclick = () => {
-        isVerificationMode = false;
-        openCamera('profile');
-    };
+    $("photoUpload").onclick = () => { isVerificationMode = false; openCamera('profile'); };
 
     $("saveProfileBtn").onclick = async () => {
         const name = $("setupName").value.trim();
@@ -505,9 +446,21 @@
         const storageRef = ref(storage, path);
         const uploadTask = uploadBytesResumable(storageRef, file);
         return new Promise((resolve, reject) => {
-            uploadTask.on('state_changed', null, reject, async () => {
-                resolve(await getDownloadURL(uploadTask.snapshot.ref));
-            });
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    const pEl = document.getElementById('uploadPercent');
+                    const progEl = document.getElementById('uploadProgress');
+                    if (progEl) progEl.style.display = 'flex';
+                    if (pEl) pEl.textContent = progress + '%';
+                },
+                reject,
+                async () => {
+                    const url = await getDownloadURL(uploadTask.snapshot.ref);
+                    document.getElementById('uploadProgress').style.display = 'none';
+                    resolve(url);
+                }
+            );
         });
     }
 
@@ -710,28 +663,6 @@
         } catch (error) {
             console.error(error);
             showToast("Failed to save profile.");
-        }
-    };
-
-    // ============================================================
-    // CHANGE PASSWORD
-    // ============================================================
-    window.changePassword = async () => {
-        if (!currentUser) return;
-        const currentPass = $("currentPassword").value;
-        const newPass = $("newPassword").value;
-        if (!currentPass || !newPass) { showToast("Enter both passwords."); return; }
-        if (newPass.length < 6) { showToast("New password min 6 characters."); return; }
-        try {
-            const credential = EmailAuthProvider.credential(currentUser.email, currentPass);
-            await reauthenticateWithCredential(currentUser, credential);
-            await updatePassword(currentUser, newPass);
-            showToast("Password updated!");
-            $("currentPassword").value = "";
-            $("newPassword").value = "";
-        } catch (error) {
-            console.error(error);
-            showToast("Failed: " + error.message);
         }
     };
 
