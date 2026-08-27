@@ -8,31 +8,21 @@
 
 <style>
 :root{
- --bg:#eaf8fa;
- --glass:rgba(255,255,255,.48);
- --glass2:rgba(255,255,255,.68);
- --line:rgba(255,255,255,.78);
- --text:#18343c;
- --muted:#718990;
- --accent:#4c9ead;
- --danger:#c85d67;
- --success:#579b72;
- --shadow:0 15px 45px rgba(50,110,125,.13)
+ --bg:#eaf8fa;--glass:rgba(255,255,255,.52);
+ --glass2:rgba(255,255,255,.72);--line:rgba(255,255,255,.82);
+ --text:#18343c;--muted:#718990;--accent:#4c9ead;
+ --danger:#c85d67;--shadow:0 15px 45px rgba(50,110,125,.13)
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{
- margin:0;min-height:100%;
- font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
- color:var(--text);
- background:
- radial-gradient(circle at 15% 5%,#fff,transparent 32%),
- radial-gradient(circle at 90% 85%,#c9eef4,transparent 38%),
- var(--bg)
+ margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,
+ Segoe UI,Roboto,sans-serif;color:var(--text);
+ background:radial-gradient(circle at 15% 5%,#fff,transparent 32%),
+ radial-gradient(circle at 90% 85%,#c9eef4,transparent 38%),var(--bg)
 }
 body:before{
  content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;
- background:
- radial-gradient(circle at 30% 40%,rgba(255,255,255,.65),transparent 25%),
+ background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.65),transparent 25%),
  radial-gradient(circle at 70% 65%,rgba(123,211,226,.25),transparent 30%);
  filter:blur(45px)
 }
@@ -40,457 +30,213 @@ button,input,textarea,select{font:inherit}
 button{border:0;cursor:pointer}
 .hidden{display:none!important}
 .glass{
- background:var(--glass);
- border:1px solid var(--line);
- box-shadow:var(--shadow);
- backdrop-filter:blur(25px);
+ background:var(--glass);border:1px solid var(--line);
+ box-shadow:var(--shadow);backdrop-filter:blur(25px);
  -webkit-backdrop-filter:blur(25px)
 }
 #loading{
- position:fixed;inset:0;z-index:9999;
- display:flex;align-items:center;justify-content:center;
- background:rgba(235,249,251,.82);
+ position:fixed;inset:0;z-index:9999;display:flex;
+ align-items:center;justify-content:center;background:rgba(235,249,251,.82);
  backdrop-filter:blur(18px)
 }
-.loader{text-align:center}
-.loader-logo{font-size:42px;font-weight:900}
+.loader{text-align:center}.loader-logo{font-size:42px;font-weight:900}
 .spinner{
- width:28px;height:28px;margin:18px auto 0;
- border:3px solid rgba(76,158,173,.2);
- border-top-color:var(--accent);
- border-radius:50%;
- animation:spin .8s linear infinite
+ width:28px;height:28px;margin:18px auto 0;border:3px solid rgba(76,158,173,.2);
+ border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
-.app{
- width:100%;max-width:720px;min-height:100vh;
- margin:auto;padding-bottom:95px
-}
+.app{width:100%;max-width:720px;min-height:100vh;margin:auto;padding-bottom:94px}
 .topbar{
- position:sticky;top:10px;z-index:100;
- margin:10px 12px;padding:10px 13px;
- border-radius:23px;
- display:flex;align-items:center;justify-content:space-between
+ position:sticky;top:10px;z-index:100;margin:10px 12px;padding:10px 13px;
+ border-radius:23px;display:flex;align-items:center;justify-content:space-between
 }
-.logo{font-size:24px;font-weight:900}
-.status{color:var(--muted);font-size:11px}
-
+.logo{font-size:24px;font-weight:900}.status{color:var(--muted);font-size:11px}
 .top-profile{
- width:43px;height:43px;border-radius:50%;
- object-fit:cover;
- border:2px solid rgba(255,255,255,.9);
- box-shadow:0 5px 15px rgba(40,100,115,.15);
- cursor:pointer
+ width:44px;height:44px;border-radius:50%;object-fit:cover;
+ border:2px solid rgba(255,255,255,.9);background:#d9edf1
 }
-
-main{padding:4px 12px}
-.page{display:none}
-.page.active{display:block}
-
-.card{
- border-radius:25px;
- padding:18px;
- margin:12px 0
-}
-.center{text-align:center}
+main{padding:4px 12px}.page{display:none}.page.active{display:block}
+.card{border-radius:25px;padding:18px;margin:12px 0}.center{text-align:center}
 h2,h3{margin-top:0}
-
 .avatar{
- width:94px;height:94px;border-radius:50%;
- object-fit:cover;
- background:#d9edf1;
- border:3px solid rgba(255,255,255,.9);
+ width:94px;height:94px;border-radius:50%;object-fit:cover;
+ background:#d9edf1;border:3px solid rgba(255,255,255,.9);
  box-shadow:0 9px 25px rgba(40,100,115,.15)
 }
 .avatar.small{width:55px;height:55px}
-
-.profile-name{
- margin-top:10px;
- font-size:23px;
- font-weight:800
-}
-.username{
- margin-top:3px;
- color:var(--muted);
- font-size:13px
-}
+.profile-name{margin-top:10px;font-size:23px;font-weight:800}
+.username{margin-top:3px;color:var(--muted);font-size:13px}
 .verified{
- width:18px;height:18px;
- object-fit:contain;
- vertical-align:-3px;
- margin-left:4px
+ width:18px;height:18px;object-fit:contain;vertical-align:-3px;margin-left:4px
 }
-.profile-basic{
- margin-top:12px;
- color:var(--muted);
- font-size:13px
-}
-.bio{
- margin:16px auto 0;
- max-width:500px;
- line-height:1.55
-}
-
+.profile-basic{margin-top:12px;color:var(--muted);font-size:13px}
+.bio{margin:16px auto 0;max-width:500px;line-height:1.55}
 .btn{
- min-height:44px;
- padding:11px 17px;
- border-radius:16px;
- background:var(--accent);
- color:white;
- font-weight:750
+ min-height:44px;padding:11px 17px;border-radius:16px;background:var(--accent);
+ color:white;font-weight:750
 }
 .btn:active{transform:scale(.98)}
 .btn.secondary{
- color:var(--text);
- background:rgba(255,255,255,.6);
+ color:var(--text);background:rgba(255,255,255,.6);
  border:1px solid var(--line)
 }
-.btn.danger{background:var(--danger)}
-.btn.success{background:var(--success)}
-.full{width:100%}
-
+.btn.danger{background:var(--danger)}.full{width:100%}
+.btn.following{background:rgba(76,158,173,.16);color:#397f8d}
 .field{margin:13px 0}
 .field label{
- display:block;
- margin-bottom:5px;
- color:var(--muted);
- font-size:12px;
- font-weight:700
+ display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:700
 }
 input,textarea,select{
- width:100%;
- border:1px solid rgba(100,155,165,.22);
- border-radius:16px;
- outline:none;
- color:var(--text);
- background:rgba(255,255,255,.55);
- padding:13px 14px
+ width:100%;border:1px solid rgba(100,155,165,.22);border-radius:16px;
+ outline:none;color:var(--text);background:rgba(255,255,255,.55);padding:13px 14px
 }
 textarea{min-height:95px;resize:vertical}
-
 .login{
- min-height:100vh;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:22px
+ min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px
 }
 .login-card{
- width:min(430px,100%);
- text-align:center;
- padding:30px 22px;
- border-radius:30px
+ width:min(430px,100%);text-align:center;padding:30px 22px;border-radius:30px
 }
 .login-logo{font-size:46px;font-weight:950}
-.login-text{
- color:var(--muted);
- line-height:1.5;
- margin:7px 0 25px
-}
-
-/* MOBILE BOTTOM NAV */
+.login-text{color:var(--muted);line-height:1.5;margin:7px 0 25px}
 .bottom-nav{
- position:fixed;
- left:50%;
- bottom:10px;
- transform:translateX(-50%);
- z-index:500;
- width:min(696px,calc(100% - 20px));
- padding:7px;
- border-radius:25px;
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:3px
+ position:fixed;left:50%;bottom:10px;transform:translateX(-50%);
+ z-index:500;width:min(696px,calc(100% - 20px));padding:7px;
+ border-radius:25px;display:grid;grid-template-columns:repeat(3,1fr)
 }
 .nav-item{
- padding:8px 4px;
- border-radius:18px;
- color:var(--muted);
- background:transparent;
- font-size:11px
+ padding:8px 4px;border-radius:18px;color:var(--muted);
+ background:transparent;font-size:11px
 }
 .nav-item.active{
- color:#397f8d;
- background:rgba(255,255,255,.65);
- font-weight:800
+ color:#397f8d;background:rgba(255,255,255,.65);font-weight:800
 }
-.nav-icon{
- display:block;
- font-size:20px;
- line-height:22px;
- margin-bottom:2px
-}
-
-/* DISCOVER */
-.search-box{
- position:sticky;
- top:76px;
- z-index:20
-}
-.search-box input{margin:0}
+.nav-icon{display:block;font-size:20px;line-height:22px;margin-bottom:2px}
+.search-box{position:sticky;top:78px;z-index:20}
 .user-card{
- display:flex;
- align-items:center;
- gap:12px;
- margin:9px 0;
- padding:12px;
- border-radius:21px
+ display:flex;align-items:center;gap:12px;margin:9px 0;padding:12px;border-radius:21px
 }
-.user-card-info{
- flex:1;
- min-width:0
-}
-.user-name{font-weight:750}
-.user-meta{
- color:var(--muted);
- font-size:12px;
- margin-top:3px
-}
-
-/* SETTINGS */
+.user-card-info{flex:1;min-width:0}.user-name{font-weight:750}
+.user-meta{color:var(--muted);font-size:12px;margin-top:3px}
 .setting-row{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:12px;
- padding:14px 0
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;padding:15px 0
 }
-.setting-title{font-weight:750}
-.divider{
- height:1px;
- background:rgba(90,145,155,.13);
- margin:14px 0
+.setting-left{min-width:0}.setting-title{font-weight:750}
+.setting-value{
+ display:flex;align-items:center;gap:4px;flex-shrink:0;
+ padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.58);
+ font-size:12px;color:#397f8d
 }
+.setting-value span{font-size:13px}
+.divider{height:1px;background:rgba(90,145,155,.13);margin:12px 0}
 .toggle{
- width:48px;height:27px;
- border-radius:20px;
- background:rgba(90,120,130,.25);
- padding:3px
+ width:48px;height:27px;border-radius:20px;
+ background:rgba(90,120,130,.25);padding:3px
 }
 .toggle span{
- display:block;
- width:21px;height:21px;
- border-radius:50%;
- background:#fff;
- transition:.2s
+ display:block;width:21px;height:21px;border-radius:50%;
+ background:#fff;transition:.2s
 }
 .toggle.on{background:var(--accent)}
 .toggle.on span{transform:translateX(21px)}
-
-.option-group{
- display:flex;
- gap:7px;
- flex-wrap:wrap;
- margin-top:8px
+.profile-actions{
+ display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px
 }
-.option-btn{
- padding:8px 12px;
- border-radius:13px;
- background:rgba(255,255,255,.58);
- border:1px solid rgba(100,155,165,.18);
- color:var(--text);
- font-size:12px
+.stats{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:18px
 }
-.option-btn.selected{
- background:var(--accent);
- color:white
+.stat{
+ padding:12px;border-radius:16px;background:rgba(255,255,255,.42);
+ text-align:center
 }
-
-/* CHAT */
+.stat strong{display:block;font-size:18px}.stat small{color:var(--muted)}
 .chat-card{
- height:calc(100vh - 160px);
- min-height:430px;
- display:flex;
- flex-direction:column
+ height:calc(100vh - 160px);min-height:430px;
+ display:flex;flex-direction:column
 }
-.chat-header{
- display:flex;
- align-items:center;
- gap:10px;
- padding-bottom:10px
-}
-.chat-title{font-weight:800}
-.chat-subtitle{
- color:var(--muted);
- font-size:11px
-}
+.chat-header{display:flex;align-items:center;gap:10px;padding-bottom:10px}
+.chat-title{font-weight:800}.chat-subtitle{color:var(--muted);font-size:11px}
 .back-btn{
- width:42px;height:42px;
- border-radius:50%;
- background:rgba(255,255,255,.55);
- color:var(--text);
- display:flex;
- align-items:center;
- justify-content:center
+ width:42px;height:42px;border-radius:50%;
+ background:rgba(255,255,255,.55);color:var(--text);
+ display:flex;align-items:center;justify-content:center;font-size:25px
 }
-.messages{
- flex:1;
- overflow-y:auto;
- padding:8px 2px
-}
+.messages{flex:1;overflow-y:auto;padding:8px 2px}
 .message{
- max-width:78%;
- margin:6px 0;
- padding:10px 13px;
- border-radius:18px;
- line-height:1.4;
- white-space:pre-wrap;
- overflow-wrap:anywhere
+ max-width:78%;margin:6px 0;padding:10px 13px;border-radius:18px;
+ line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere
 }
 .message.mine{
- margin-left:auto;
- background:rgba(76,158,173,.86);
- color:#fff;
+ margin-left:auto;background:rgba(76,158,173,.86);color:#fff;
  border-bottom-right-radius:5px
 }
 .message.theirs{
- background:rgba(255,255,255,.7);
- border-bottom-left-radius:5px
+ background:rgba(255,255,255,.7);border-bottom-left-radius:5px
 }
-.composer{
- display:flex;
- gap:8px;
- padding-top:8px
-}
+.composer{display:flex;gap:8px;padding-top:8px}
 .composer input{margin:0}
-
-/* FOR YOU */
-.foryou-wrap{
- min-height:calc(100vh - 180px);
- display:flex;
- align-items:center;
- justify-content:center;
- padding:5px 0 15px
-}
-.swipe-card{
- width:100%;
- max-width:540px;
- min-height:570px;
- border-radius:30px;
- overflow:hidden;
- position:relative;
- touch-action:none;
- user-select:none;
- -webkit-user-select:none;
- cursor:grab
-}
-.swipe-card.dragging{cursor:grabbing}
-.swipe-photo{
- width:100%;
- height:390px;
- object-fit:cover;
- display:block;
- background:#d9edf1
-}
-.swipe-content{
- padding:18px 18px 20px
-}
-.swipe-name{
- font-size:25px;
- font-weight:850
-}
-.swipe-location{
- color:var(--muted);
- font-size:13px;
- margin-top:5px
-}
-.swipe-bio{
- margin-top:12px;
- line-height:1.45;
- font-size:14px
-}
-.swipe-actions{
- display:grid;
- grid-template-columns:1fr 1.2fr;
- gap:9px;
- margin-top:16px
-}
-.swipe-actions .btn{width:100%}
-.swipe-hint{
- text-align:center;
- color:var(--muted);
- font-size:11px;
- margin-top:8px
-}
-.empty-card{
- width:100%;
- text-align:center;
- padding:35px 20px
-}
-
-/* PROFILE */
-.profile-location{
- margin-top:10px;
- color:var(--muted);
- font-size:13px
-}
-.profile-info-row{
- margin-top:9px;
- font-size:13px
-}
-.profile-info-label{
- color:var(--muted);
- margin-right:4px
-}
-.follow-count{
- display:flex;
- justify-content:center;
- gap:25px;
- margin-top:16px;
- font-size:13px
-}
-.follow-count strong{
- display:block;
- font-size:18px
-}
-
-/* ABOUT */
-.about-row{
- padding:13px 0;
- border-bottom:1px solid rgba(90,145,155,.1)
-}
-.about-row:last-child{border-bottom:0}
-.about-label{
- color:var(--muted);
- font-size:11px;
- margin-bottom:4px
-}
-.about-value{
- font-size:14px;
- line-height:1.5
-}
-
-/* REPORT */
-.report-option{
- width:100%;
- text-align:left;
- margin:7px 0
-}
-
 .toast{
- position:fixed;
- z-index:10000;
- left:50%;
- bottom:95px;
- transform:translateX(-50%);
- max-width:90%;
- padding:12px 16px;
- border-radius:16px;
- background:rgba(20,42,49,.9);
- color:white;
- font-size:13px;
- text-align:center
+ position:fixed;z-index:10000;left:50%;bottom:95px;
+ transform:translateX(-50%);max-width:90%;padding:12px 16px;
+ border-radius:16px;background:rgba(20,42,49,.9);color:white;
+ font-size:13px;text-align:center
 }
+
+/* For You */
+.foryou-wrap{min-height:calc(100vh - 185px);display:flex;flex-direction:column}
+.discovery-card{
+ position:relative;overflow:hidden;border-radius:30px;
+ padding:0;margin:10px 0;min-height:550px;
+ display:flex;flex-direction:column;justify-content:flex-end
+}
+.discovery-photo{
+ position:absolute;inset:0;width:100%;height:100%;
+ object-fit:cover;background:#d9edf1
+}
+.discovery-overlay{
+ position:absolute;inset:35% 0 0;
+ background:linear-gradient(transparent,rgba(10,35,40,.86))
+}
+.discovery-info{
+ position:relative;z-index:2;color:white;padding:24px 20px
+}
+.discovery-name{font-size:27px;font-weight:850}
+.discovery-meta{font-size:13px;margin-top:7px;opacity:.9}
+.discovery-bio{font-size:14px;line-height:1.45;margin-top:10px}
+.swipe-actions{
+ display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:10px;margin:10px 0
+}
+.swipe-btn{
+ height:54px;border-radius:19px;background:rgba(255,255,255,.72);
+ color:var(--text);font-size:20px;border:1px solid var(--line)
+}
+.swipe-btn.primary{background:var(--accent);color:white}
+.no-users{padding:40px 20px;text-align:center;color:var(--muted)}
+
+.camera-preview{
+ width:180px;height:180px;border-radius:50%;object-fit:cover;
+ background:#d9edf1;border:4px solid rgba(255,255,255,.9)
+}
+.camera-box{
+ padding:15px;border-radius:22px;background:rgba(255,255,255,.35);
+ text-align:center;margin-bottom:12px
+}
+.camera-box video{
+ width:100%;max-width:360px;border-radius:20px;
+ background:#17333b;display:none
+}
+.camera-controls{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.small-note{font-size:11px;color:var(--muted);margin-top:6px}
+
+.about-content{line-height:1.65;color:var(--text);white-space:pre-wrap}
 
 @media(max-width:480px){
  .card{padding:15px}
  .chat-card{height:calc(100vh - 145px)}
  .message{max-width:84%}
- .swipe-card{min-height:540px}
- .swipe-photo{height:340px}
- .swipe-content{padding:15px}
- .swipe-name{font-size:22px}
+ .discovery-card{min-height:500px}
+ .discovery-name{font-size:24px}
 }
 </style>
 </head>
@@ -519,22 +265,32 @@ textarea{min-height:95px;resize:vertical}
   <div class="logo">Veil</div>
   <div id="connectionStatus" class="status">Connecting…</div>
  </div>
- <img id="topProfileBtn" class="top-profile" src="" alt="Profile">
+ <button id="topProfileBtn" style="background:none;padding:0">
+  <img id="topProfileImage" class="top-profile" src="" alt="Profile">
+ </button>
 </header>
 
 <main>
 
-<!-- FOR YOU -->
-<section id="foryouPage" class="page active">
- <div id="forYouContainer" class="foryou-wrap"></div>
+<!-- HOME -->
+<section id="homePage" class="page active">
+ <div class="card glass center">
+  <h2>Welcome to Veil</h2>
+  <p class="status">Your account is connected.</p>
+ </div>
+ <div id="homeProfile"></div>
 </section>
 
-<!-- DISCOVER -->
-<section id="discoverPage" class="page">
- <div class="card glass search-box">
-  <input id="searchInput" type="search" placeholder="Search name or username">
+<!-- FOR YOU -->
+<section id="foryouPage" class="page">
+ <div class="foryou-wrap">
+  <div id="foryouCard"></div>
+  <div id="foryouActions" class="swipe-actions hidden">
+   <button id="passBtn" class="swipe-btn">✕</button>
+   <button id="followForYouBtn" class="swipe-btn primary">Follow</button>
+   <button id="nextBtn" class="swipe-btn">♥</button>
+  </div>
  </div>
- <div id="usersList"></div>
 </section>
 
 <!-- PROFILE -->
@@ -548,115 +304,34 @@ textarea{min-height:95px;resize:vertical}
  <div class="card glass">
   <h2>Settings</h2>
 
-  <div class="divider"></div>
-
   <button id="editProfileBtn" class="btn secondary full">
    Edit Profile
   </button>
- </div>
 
- <div class="card glass">
+  <div class="divider"></div>
+
   <h3>Privacy</h3>
 
-  <p class="status">
-   Name, username, photo, gender, date of birth, district,
-   thana/upazila, post office and postal code are public.
-  </p>
+  <div id="privacyContainer"></div>
 
   <div class="divider"></div>
 
   <div class="setting-row">
-   <div>
-    <div class="setting-title">Bio</div>
-    <div class="status">Who can see your bio?</div>
+   <div class="setting-left">
+    <div class="setting-title">Online Status</div>
    </div>
-  </div>
-  <div id="bioVisibility" class="option-group"></div>
-
-  <div class="setting-row">
-   <div>
-    <div class="setting-title">Age</div>
-    <div class="status">Who can see your age?</div>
-   </div>
-  </div>
-  <div id="ageVisibility" class="option-group"></div>
-
-  <div class="setting-row">
-   <div>
-    <div class="setting-title">Phone Number</div>
-    <div class="status">Who can see your phone?</div>
-   </div>
-  </div>
-  <div id="phoneVisibility" class="option-group"></div>
-
-  <div class="setting-row">
-   <div>
-    <div class="setting-title">Following List</div>
-    <div class="status">Who can see who you follow?</div>
-   </div>
-  </div>
-  <div id="followingVisibility" class="option-group"></div>
- </div>
-
- <div class="card glass">
-  <h3>Notifications</h3>
-
-  <div class="setting-row">
-   <div>
-    <strong>New Messages</strong>
-    <div class="status">Message notifications</div>
-   </div>
-   <button class="toggle" data-notification="messages">
+   <button id="onlineToggle" class="toggle">
     <span></span>
    </button>
   </div>
 
   <div class="divider"></div>
 
-  <div class="setting-row">
-   <div>
-    <strong>New Followers</strong>
-    <div class="status">Follower notifications</div>
-   </div>
-   <button class="toggle" data-notification="followers">
-    <span></span>
-   </button>
-  </div>
- </div>
-
- <div class="card glass">
-  <h3>Safety</h3>
-
-  <button id="blockedUsersBtn" class="btn secondary full">
-   Blocked Users
-  </button>
+  <button id="aboutBtn" class="btn secondary full">About Veil</button>
 
   <div class="divider"></div>
 
-  <button id="reportedUsersBtn" class="btn secondary full">
-   My Reports
-  </button>
- </div>
-
- <div class="card glass">
-  <h3>About Veil</h3>
-  <div id="aboutContainer">
-   <div class="status">Loading…</div>
-  </div>
- </div>
-
- <div class="card glass">
-  <h3>Account</h3>
-
-  <button id="logoutBtn" class="btn danger full">
-   Sign out
-  </button>
-
-  <div class="divider"></div>
-
-  <button id="deleteAccountBtn" class="btn secondary full">
-   Delete Account
-  </button>
+  <button id="logoutBtn" class="btn danger full">Sign out</button>
  </div>
 
 </section>
@@ -671,34 +346,20 @@ textarea{min-height:95px;resize:vertical}
    <h2 style="margin:0">Edit Profile</h2>
   </div>
 
-  <div class="center">
-   <video id="cameraPreview"
-    class="avatar hidden"
-    autoplay
-    muted
-    playsinline
-    style="width:150px;height:150px">
-   </video>
+  <div class="camera-box">
 
+   <img id="editAvatar" class="camera-preview" src="" alt="Selfie">
+
+   <video id="cameraVideo" autoplay playsinline></video>
    <canvas id="cameraCanvas" class="hidden"></canvas>
 
-   <img id="editAvatar"
-    class="avatar"
-    src=""
-    alt="Profile photo">
-  </div>
+   <div class="camera-controls">
+    <button id="openCameraBtn" class="btn secondary">Camera</button>
+    <button id="captureBtn" class="btn hidden">Capture Selfie</button>
+   </div>
 
-  <button id="openCameraBtn" class="btn secondary full">
-   Take Selfie
-  </button>
+   <div class="small-note">Profile photo must be taken with the camera.</div>
 
-  <div id="cameraControls" class="hidden" style="margin-top:8px">
-   <button id="captureSelfieBtn" class="btn full">
-    Capture Selfie
-   </button>
-   <button id="closeCameraBtn" class="btn secondary full" style="margin-top:7px">
-    Cancel Camera
-   </button>
   </div>
 
   <div class="field">
@@ -708,10 +369,7 @@ textarea{min-height:95px;resize:vertical}
 
   <div class="field">
    <label>Username *</label>
-   <input id="usernameInput"
-    maxlength="30"
-    placeholder="your_username"
-    autocomplete="off">
+   <input id="usernameInput" maxlength="30" placeholder="your_username" autocomplete="off">
   </div>
 
   <div class="field">
@@ -727,16 +385,6 @@ textarea{min-height:95px;resize:vertical}
   <div class="field">
    <label>Date of Birth *</label>
    <input id="dobInput" type="date">
-  </div>
-
-  <div class="field">
-   <label>Age *</label>
-   <input id="ageInput" type="number" min="18" max="100">
-  </div>
-
-  <div class="field">
-   <label>Phone Number *</label>
-   <input id="phoneInput" type="tel" maxlength="20">
   </div>
 
   <div class="field">
@@ -758,31 +406,30 @@ textarea{min-height:95px;resize:vertical}
 
   <div class="field">
    <label>Postal Code *</label>
-   <input id="postalCodeInput" maxlength="10" inputmode="numeric">
+   <input id="postalCodeInput" maxlength="20" inputmode="numeric">
+  </div>
+
+  <div class="field">
+   <label>Phone Number *</label>
+   <input id="phoneInput" maxlength="30" inputmode="tel">
+  </div>
+
+  <div class="field">
+   <label>NID Number *</label>
+   <input id="nidInput" maxlength="30" inputmode="numeric">
   </div>
 
   <div class="field">
    <label>Bio *</label>
-   <textarea id="bioInput"
-    maxlength="300"
-    placeholder="Tell people something about you…"></textarea>
+   <textarea id="bioInput" maxlength="300"></textarea>
   </div>
 
   <div class="field">
-   <label>NID Number</label>
-   <input id="nidInput"
-    type="password"
-    maxlength="30"
-    autocomplete="off"
-    placeholder="Admin only">
-   <div class="status" style="margin-top:5px">
-    Your NID is never displayed on your public profile.
-   </div>
+   <label>Age *</label>
+   <input id="ageInput" type="number" min="18" max="100">
   </div>
 
-  <button id="saveProfileBtn" class="btn full">
-   Save Profile
-  </button>
+  <button id="saveProfileBtn" class="btn full">Save Profile</button>
 
  </div>
 </section>
@@ -802,56 +449,36 @@ textarea{min-height:95px;resize:vertical}
   <div id="messages" class="messages"></div>
 
   <div class="composer">
-   <input id="messageInput"
-    maxlength="4000"
-    placeholder="Message…">
+   <input id="messageInput" maxlength="4000" placeholder="Message…">
    <button id="sendBtn" class="btn">Send</button>
   </div>
 
  </div>
 </section>
 
-<!-- BLOCKED USERS -->
-<section id="blockedPage" class="page">
+<!-- ABOUT -->
+<section id="aboutPage" class="page">
  <div class="card glass">
   <div class="chat-header">
-   <button id="blockedBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">Blocked Users</h2>
+   <button id="aboutBackBtn" class="back-btn">‹</button>
+   <h2 style="margin:0">About</h2>
   </div>
-  <div id="blockedList"></div>
- </div>
-</section>
-
-<!-- REPORTS -->
-<section id="reportsPage" class="page">
- <div class="card glass">
-  <div class="chat-header">
-   <button id="reportsBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">My Reports</h2>
-  </div>
-  <div id="reportsList"></div>
+  <div id="aboutContent" class="about-content"></div>
  </div>
 </section>
 
 </main>
 
 <nav class="bottom-nav glass">
-
- <button class="nav-item active" data-page="foryouPage">
-  <span class="nav-icon">♥</span>
-  For You
+ <button class="nav-item active" data-page="homePage">
+  <span class="nav-icon">⌂</span>Home
  </button>
-
- <button class="nav-item" data-page="discoverPage">
-  <span class="nav-icon">⌕</span>
-  Discover
+ <button class="nav-item" data-page="foryouPage">
+  <span class="nav-icon">♡</span>For You
  </button>
-
  <button class="nav-item" data-page="settingsPage">
-  <span class="nav-icon">⚙</span>
-  Settings
+  <span class="nav-icon">⚙</span>Settings
  </button>
-
 </nav>
 
 </div>
@@ -865,43 +492,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
- getAuth,
- onAuthStateChanged,
- GoogleAuthProvider,
- signInWithPopup,
- signOut,
- setPersistence,
- browserLocalPersistence,
- deleteUser
+ getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,
+ signOut,setPersistence,browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
- getFirestore,
- doc,
- getDoc,
- setDoc,
- updateDoc,
- collection,
- query,
- where,
- orderBy,
- onSnapshot,
- addDoc,
- serverTimestamp,
- limit,
- getDocs,
- deleteDoc
+ getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,
+ collection,query,where,orderBy,onSnapshot,addDoc,
+ serverTimestamp,limit,getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
- getStorage,
- ref,
- uploadBytes,
- getDownloadURL
+ getStorage,ref,uploadBytes,getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
 
-/* FIREBASE CONFIG */
+/* Firebase */
+
 const firebaseConfig={
  apiKey:"AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
  authDomain:"flora-veilchat.firebaseapp.com",
@@ -913,67 +520,50 @@ const firebaseConfig={
 };
 
 const VERIFIED_BADGE=
- "https://floraverse.github.io/veilchat/verified.png";
-
+"https://floraverse.github.io/veilchat/verified.png";
 
 const districts=[
-"Bagerhat","Bandarban","Barguna","Barishal","Bhola",
-"Bogura","Brahmanbaria","Chandpur","Chattogram",
-"Chuadanga","Cox's Bazar","Cumilla","Dhaka",
-"Dinajpur","Faridpur","Feni","Gaibandha","Gazipur",
-"Gopalganj","Habiganj","Jamalpur","Jashore","Jhalokathi",
-"Jhenaidah","Joypurhat","Khagrachhari","Khulna",
-"Kishoreganj","Kurigram","Kushtia","Lakshmipur",
-"Lalmonirhat","Madaripur","Magura","Manikganj",
-"Meherpur","Moulvibazar","Munshiganj","Mymensingh",
-"Naogaon","Narail","Narayanganj","Narsingdi","Natore",
-"Netrokona","Nilphamari","Noakhali","Pabna","Panchagarh",
-"Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati",
-"Rangpur","Satkhira","Shariatpur","Sherpur","Sirajganj",
-"Sunamganj","Sylhet","Tangail"
+"Bagerhat","Bandarban","Barguna","Barishal","Bhola","Bogura",
+"Brahmanbaria","Chandpur","Chattogram","Chuadanga","Cox's Bazar",
+"Cumilla","Dhaka","Dinajpur","Faridpur","Feni","Gaibandha",
+"Gazipur","Gopalganj","Habiganj","Jamalpur","Jashore","Jhalokathi",
+"Jhenaidah","Joypurhat","Khagrachhari","Khulna","Kishoreganj",
+"Kurigram","Kushtia","Lakshmipur","Lalmonirhat","Madaripur",
+"Magura","Manikganj","Meherpur","Moulvibazar","Munshiganj",
+"Mymensingh","Naogaon","Narail","Narayanganj","Narsingdi",
+"Natore","Netrokona","Nilphamari","Noakhali","Pabna","Panchagarh",
+"Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati","Rangpur",
+"Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet",
+"Tangail"
 ];
 
-
-let auth,db,storage;
-let currentUser=null;
-let currentProfile=null;
-let viewingProfile=null;
-let activeChatUser=null;
-let unsubscribeMessages=null;
-let cameraStream=null;
-let selfieBlob=null;
-
+let auth,db,storage,currentUser,currentProfile,viewingProfile;
+let activeChatUser,unsubscribeMessages;
+let followingState=new Set();
 let forYouUsers=[];
 let forYouIndex=0;
-let followingSet=new Set();
-
+let cameraStream=null;
+let capturedPhotoBlob=null;
 
 const $=id=>document.getElementById(id);
 
-const esc=s=>
- String(s??"").replace(/[&<>"']/g,m=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#039;"
- }[m]));
+const esc=s=>String(s??"").replace(
+ /[&<>"']/g,
+ m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])
+);
 
-const avatar=p=>
- p?.photoURL ||
- "data:image/svg+xml;charset=UTF-8,"+
- encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">'+
-  '<rect width="100%" height="100%" fill="#dceff3"/>'+
-  '<circle cx="150" cy="110" r="52" fill="#7faeb8"/>'+
-  '<path d="M50 280c15-70 55-100 100-100s85 30 100 100" fill="#7faeb8"/>'+
-  '</svg>'
- );
+const avatar=p=>p?.photoURL||
+"data:image/svg+xml;charset=UTF-8,"+
+encodeURIComponent(
+ '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">'+
+ '<rect width="100%" height="100%" fill="#dceff3"/>'+
+ '<circle cx="150" cy="110" r="52" fill="#7faeb8"/>'+
+ '<path d="M50 280c15-70 55-100 100-100s85 30 100 100" fill="#7faeb8"/>'+
+ '</svg>'
+);
 
-const badge=p=>
- p?.verified===true
- ? `<img class="verified" src="${VERIFIED_BADGE}" alt="Verified">`
- : "";
+const badge=p=>p?.verified===true?
+`<img class="verified" src="${VERIFIED_BADGE}" alt="Verified">`:"";
 
 const chatId=(a,b)=>[a,b].sort().join("_");
 
@@ -986,39 +576,45 @@ function toast(t){
  $("toast").classList.remove("hidden");
  clearTimeout(window.tt);
  window.tt=setTimeout(
-  ()=>$("toast").classList.add("hidden"),
-  3000
+  ()=>$("toast").classList.add("hidden"),3000
  );
 }
 
 
-/* NAVIGATION */
+/* Pages */
 
 function showPage(id){
 
  document.querySelectorAll(".page")
-  .forEach(x=>x.classList.remove("active"));
+ .forEach(x=>x.classList.remove("active"));
 
  $(id).classList.add("active");
 
  document.querySelectorAll(".nav-item")
-  .forEach(x=>
-   x.classList.toggle(
-    "active",
-    x.dataset.page===id
-   )
+ .forEach(x=>{
+  x.classList.toggle(
+   "active",
+   x.dataset.page===id
   );
+ });
 
- if(id==="foryouPage") loadForYou();
+ if(id==="homePage")renderHome();
+
  if(id==="profilePage")
   renderProfile(viewingProfile||currentProfile);
- if(id==="settingsPage") renderSettings();
- if(id==="blockedPage") loadBlockedUsers();
- if(id==="reportsPage") loadReports();
+
+ if(id==="settingsPage"){
+  renderSettings();
+ }
+
+ if(id==="foryouPage"){
+  loadForYou();
+ }
+
 }
 
 
-/* PROFILE */
+/* Profile */
 
 async function loadProfile(){
 
@@ -1038,22 +634,25 @@ async function loadProfile(){
   uid:currentUser.uid,
   name:currentUser.displayName||"",
   username:"",
+  usernameLower:"",
   gender:"",
-  dob:"",
-  age:"",
-  phone:"",
   district:"",
   thana:"",
   postOffice:"",
   postalCode:"",
-  photoURL:currentUser.photoURL||"",
+  dateOfBirth:"",
+  photoURL:"",
   bio:"",
+  age:"",
+  phone:"",
   nidNumber:"",
   visibility:{
    bio:"Public",
    age:"Only Me",
-   phone:"Friends",
-   following:"Public"
+   phone:"Only Me",
+   followers:"Public",
+   following:"Public",
+   online:"Public"
   },
   verified:false
  };
@@ -1062,124 +661,235 @@ async function loadProfile(){
 }
 
 
-/* VERIFIED STATUS */
+function updateTopProfile(){
 
-function profileCanBeComplete(p){
+ $("topProfileImage").src=avatar(currentProfile);
 
- return !!(
-  p &&
-  p.photoURL &&
-  p.name &&
-  p.username &&
-  p.gender &&
-  p.dob &&
-  p.age &&
-  p.phone &&
-  p.district &&
-  p.thana &&
-  p.postOffice &&
-  p.postalCode &&
-  p.bio
- );
 }
 
-async function updateVerificationStatus(){
 
- if(!currentUser||!currentProfile)return;
+/* Home */
 
- try{
+function renderHome(){
 
-  const q=query(
-   collection(db,"follows"),
-   where("followerId","==",currentUser.uid)
-  );
+ const p=currentProfile;
 
-  const snap=await getDocs(q);
+ $("homeProfile").innerHTML=`
+ <div class="card glass center">
+  <img class="avatar" src="${esc(avatar(p))}" alt="">
+  <div class="profile-name">
+   ${esc(p.name)}${badge(p)}
+  </div>
+  <div class="username">@${esc(p.username)}</div>
+  <div class="profile-basic">
+   ${esc(p.gender)} · ${esc(p.district)}
+  </div>
+ </div>`;
+}
 
-  const unique=new Set();
 
-  snap.forEach(d=>{
-   const x=d.data();
-   if(x.followingId && x.followingId!==currentUser.uid){
-    unique.add(x.followingId);
+/* Privacy helpers */
+
+const privacyOptions=["Public","Friends","Only Me"];
+
+function privacySelect(key,label){
+
+ const value=
+  currentProfile.visibility?.[key]||"Only Me";
+
+ return `
+ <div class="setting-row">
+  <div class="setting-left">
+   <div class="setting-title">${label}</div>
+  </div>
+
+  <button
+   class="setting-value"
+   data-privacy="${key}"
+   type="button"
+  >
+   ${esc(value)} <span>⌄</span>
+  </button>
+ </div>`;
+}
+
+
+function renderSettings(){
+
+ const v=currentProfile.visibility||{};
+
+ $("privacyContainer").innerHTML=
+  privacySelect("bio","Bio")+
+  privacySelect("age","Age")+
+  privacySelect("phone","Phone Number")+
+  privacySelect("followers","Followers")+
+  privacySelect("following","Following");
+
+ const online=v.online||"Public";
+
+ $("onlineToggle").classList.toggle(
+  "on",
+  online!=="Only Me"
+ );
+
+ document.querySelectorAll("[data-privacy]")
+ .forEach(btn=>{
+
+  btn.onclick=async()=>{
+
+   const key=btn.dataset.privacy;
+   const current=
+    currentProfile.visibility?.[key]||"Only Me";
+
+   const next=
+    privacyOptions[
+     (privacyOptions.indexOf(current)+1)%privacyOptions.length
+    ];
+
+   currentProfile.visibility={
+    ...(currentProfile.visibility||{}),
+    [key]:next
+   };
+
+   try{
+
+    await updateDoc(
+     doc(db,"users",currentUser.uid),
+     {visibility:currentProfile.visibility}
+    );
+
+    renderSettings();
+
+   }catch(e){
+
+    console.error(e);
+    toast("Privacy update failed.");
+
    }
-  });
 
-  const enoughFollows=unique.size>=3;
-  const complete=profileCanBeComplete(currentProfile);
-  const verified=complete && enoughFollows;
+  };
 
-  if(currentProfile.verified!==verified){
+ });
 
-   currentProfile.verified=verified;
+ $("onlineToggle").onclick=async()=>{
+
+  const current=
+   currentProfile.visibility?.online||"Public";
+
+  const next=current==="Public"?"Only Me":"Public";
+
+  currentProfile.visibility={
+   ...(currentProfile.visibility||{}),
+   online:next
+  };
+
+  try{
 
    await updateDoc(
     doc(db,"users",currentUser.uid),
-    {verified}
+    {visibility:currentProfile.visibility}
    );
+
+   renderSettings();
+
+  }catch(e){
+
+   console.error(e);
+   toast("Online status update failed.");
+
   }
 
- }catch(e){
-  console.error("Verification:",e);
- }
+ };
+
 }
 
 
-/* PROFILE RENDER */
+/* Profile visibility */
 
-function renderProfile(p){
+async function canSeeField(owner,key){
+
+ if(owner.uid===currentUser.uid)return true;
+
+ const setting=
+  owner.visibility?.[key]||"Only Me";
+
+ if(setting==="Public")return true;
+
+ if(setting==="Only Me")return false;
+
+ if(setting==="Friends"){
+
+  const a=await getDoc(
+   doc(db,"follows",`${currentUser.uid}_${owner.uid}`)
+  );
+
+  const b=await getDoc(
+   doc(db,"follows",`${owner.uid}_${currentUser.uid}`)
+  );
+
+  return a.exists()&&b.exists();
+ }
+
+ return false;
+}
+
+
+async function renderProfile(p){
 
  if(!p)return;
 
- const v=p.visibility||{};
  const me=p.uid===currentUser.uid;
 
- let extra="";
+ let bio="";
+ let age="";
+ let phone="";
 
- if(me || v.bio==="Public"){
-  if(p.bio)
-   extra+=`
-   <div class="bio">${esc(p.bio)}</div>`;
- }
+ if(await canSeeField(p,"bio")&&p.bio)
+  bio=`<div class="bio">${esc(p.bio)}</div>`;
 
- if(me || v.age==="Public"){
-  if(p.age)
-   extra+=`
-   <div class="profile-info-row">
-    <span class="profile-info-label">Age:</span>
-    ${esc(p.age)}
-   </div>`;
- }
-
- /* DOB IS PUBLIC */
- if(p.dob){
-  extra+=`
-  <div class="profile-info-row">
-   <span class="profile-info-label">Date of Birth:</span>
-   ${esc(p.dob)}
+ if(await canSeeField(p,"age")&&p.age)
+  age=`<div class="status" style="margin-top:10px">
+   Age ${esc(p.age)}
   </div>`;
- }
 
- if(p.phone &&
-   (me ||
-    v.phone==="Public" ||
-    (v.phone==="Friends" && followingSet.has(p.uid)))){
-  extra+=`
-  <div class="profile-info-row">
-   <span class="profile-info-label">Phone:</span>
+ if(await canSeeField(p,"phone")&&p.phone)
+  phone=`<div class="status" style="margin-top:6px">
    ${esc(p.phone)}
   </div>`;
- }
 
- let followButton="";
+ let followCount=0;
 
- if(!me){
+ try{
 
-  const isFollowing=followingSet.has(p.uid);
+  const f=await getDocs(
+   query(
+    collection(db,"follows"),
+    where("followingId","==",p.uid),
+    limit(500)
+   )
+  );
 
-  followButton=`
+  followCount=f.size;
+
+ }catch(e){}
+
+ let action="";
+
+ if(me){
+
+  action=`
+   <button id="profileEditBtn" class="btn secondary">
+    Edit Profile
+   </button>`;
+
+ }else{
+
+  const isFollowing=
+   followingState.has(p.uid);
+
+  action=`
    <button id="profileFollowBtn"
-    class="btn ${isFollowing?"secondary":""}">
+    class="btn ${isFollowing?"following":""}">
     ${isFollowing?"Following":"Follow"}
    </button>
 
@@ -1190,12 +900,10 @@ function renderProfile(p){
  }
 
  $("profileContainer").innerHTML=`
-
  <div class="card glass center">
 
   <img class="avatar"
-   src="${esc(avatar(p))}"
-   alt="Profile photo">
+   src="${esc(avatar(p))}" alt="">
 
   <div class="profile-name">
    ${esc(p.name)}${badge(p)}
@@ -1206,174 +914,302 @@ function renderProfile(p){
   </div>
 
   <div class="profile-basic">
-   ${esc(p.gender)} · ${esc(p.district)}
+   ${esc(p.gender)} ·
+   ${esc(p.district)} ·
+   ${esc(p.thana)}
   </div>
 
-  <div class="profile-location">
-   ${esc(p.thana)} · ${esc(p.postOffice)} · ${esc(p.postalCode)}
+  ${bio}
+  ${age}
+  ${phone}
+
+  <div class="stats">
+   <div class="stat">
+    <strong>${followCount}</strong>
+    <small>Followers</small>
+   </div>
+   <div class="stat">
+    <strong>${followingState.size}</strong>
+    <small>Following</small>
+   </div>
   </div>
 
-  ${extra}
-
-  ${
-   me
-   ? `<div class="status" style="margin-top:15px">
-       ${p.verified===true
-        ?"✓ Profile verified"
-        :"Profile not verified"}
-      </div>`
-   :`
-    <div style="
-     display:flex;
-     justify-content:center;
-     gap:8px;
-     margin-top:18px">
-     ${followButton}
-    </div>`
-  }
+  <div class="profile-actions">
+   ${action}
+  </div>
 
  </div>`;
 
- if(!me){
+ if(me){
+
+  $("profileEditBtn").onclick=openEdit;
+
+ }else{
 
   $("profileFollowBtn").onclick=
    ()=>toggleFollow(p);
 
   $("profileMessageBtn").onclick=
    ()=>startChat(p);
+
  }
+
 }
 
 
-/* HOME REMOVED */
+/* Follow */
 
-/* TOP PROFILE */
+async function loadFollowing(){
 
-$("topProfileBtn").onclick=()=>{
- viewingProfile=currentProfile;
- showPage("profilePage");
-};
+ followingState=new Set();
 
+ try{
 
-/* SETTINGS */
+  const q=query(
+   collection(db,"follows"),
+   where("followerId","==",currentUser.uid),
+   limit(500)
+  );
 
-function renderVisibilityOptions(container,key,value){
+  const s=await getDocs(q);
 
- const options=["Public","Friends","Only Me"];
-
- $(container).innerHTML=options.map(o=>
-  `<button
-   class="option-btn ${value===o?"selected":""}"
-   data-value="${o}">
-   ${o}
-  </button>`
- ).join("");
-
- document.querySelectorAll(`#${container} .option-btn`)
-  .forEach(b=>{
-
-   b.onclick=async()=>{
-
-    const val=b.dataset.value;
-
-    currentProfile.visibility={
-     ...(currentProfile.visibility||{}),
-     [key]:val
-    };
-
-    try{
-
-     await updateDoc(
-      doc(db,"users",currentUser.uid),
-      {visibility:currentProfile.visibility}
-     );
-
-     renderSettings();
-     toast("Privacy updated.");
-
-    }catch(e){
-     console.error(e);
-     toast("Could not update privacy.");
-    }
-   };
+  s.forEach(d=>{
+   const x=d.data();
+   if(x.followingId)
+    followingState.add(x.followingId);
   });
+
+ }catch(e){
+
+  console.error(e);
+
+ }
+
 }
 
 
-function renderSettings(){
+async function toggleFollow(p){
 
- const v=currentProfile.visibility||{
-  bio:"Public",
-  age:"Only Me",
-  phone:"Friends",
-  following:"Public"
+ if(!p||p.uid===currentUser.uid)return;
+
+ const id=`${currentUser.uid}_${p.uid}`;
+ const r=doc(db,"follows",id);
+
+ const isFollowing=
+  followingState.has(p.uid);
+
+ const btn=
+  $("profileFollowBtn")||
+  $("followForYouBtn");
+
+ try{
+
+  if(isFollowing){
+
+   await deleteDoc(r);
+
+   followingState.delete(p.uid);
+
+   if(btn){
+    btn.textContent="Follow";
+    btn.classList.remove("following");
+   }
+
+   toast("Unfollowed.");
+
+  }else{
+
+   await setDoc(r,{
+    followerId:currentUser.uid,
+    followingId:p.uid,
+    createdAt:serverTimestamp()
+   });
+
+   followingState.add(p.uid);
+
+   if(btn){
+    btn.textContent="Following";
+    btn.classList.add("following");
+   }
+
+   toast("Following.");
+
+  }
+
+  checkVerification();
+
+ }catch(e){
+
+  console.error(e);
+  toast("Follow could not be updated.");
+
+ }
+
+}
+
+
+/*
+ Verification eligibility:
+ required profile fields + at least 3 follows.
+ The existing verified flag is not forcibly written here.
+*/
+
+function checkVerification(){
+
+ const p=currentProfile;
+
+ const complete=
+  !!p.photoURL&&
+  !!p.name&&
+  !!p.username&&
+  !!p.gender&&
+  !!p.dateOfBirth&&
+  !!p.district&&
+  !!p.thana&&
+  !!p.postOffice&&
+  !!p.postalCode&&
+  !!p.phone&&
+  !!p.nidNumber&&
+  !!p.bio&&
+  Number(p.age)>=18;
+
+ return complete&&followingState.size>=3;
+
+}
+
+
+/* For You */
+
+async function loadForYou(){
+
+ $("foryouCard").innerHTML=
+  `<div class="card glass no-users">Loading…</div>`;
+
+ $("foryouActions").classList.add("hidden");
+
+ try{
+
+  const s=await getDocs(
+   query(
+    collection(db,"users"),
+    limit(100)
+   )
+  );
+
+  forYouUsers=s.docs
+   .map(d=>({uid:d.id,...d.data()}))
+   .filter(p=>
+    p.uid!==currentUser.uid &&
+    p.photoURL &&
+    p.name &&
+    p.username
+   );
+
+  forYouIndex=0;
+
+  renderForYou();
+
+ }catch(e){
+
+  console.error(e);
+
+  $("foryouCard").innerHTML=
+   `<div class="card glass no-users">
+    Unable to load profiles.
+   </div>`;
+
+ }
+
+}
+
+
+function currentForYou(){
+
+ return forYouUsers[forYouIndex]||null;
+
+}
+
+
+function renderForYou(){
+
+ const p=currentForYou();
+
+ if(!p){
+
+  $("foryouCard").innerHTML=`
+   <div class="card glass no-users">
+    No more profiles right now.
+   </div>`;
+
+  $("foryouActions").classList.add("hidden");
+
+  return;
+
+ }
+
+ $("foryouCard").innerHTML=`
+ <div class="discovery-card glass">
+
+  <img class="discovery-photo"
+   src="${esc(avatar(p))}" alt="">
+
+  <div class="discovery-overlay"></div>
+
+  <div class="discovery-info">
+
+   <div class="discovery-name">
+    ${esc(p.name)}${badge(p)}
+   </div>
+
+   <div class="discovery-meta">
+    @${esc(p.username)}
+    · ${esc(p.gender)}
+    · ${esc(p.district)}
+   </div>
+
+   <div class="discovery-bio">
+    ${esc(p.bio||"")}
+   </div>
+
+  </div>
+
+ </div>`;
+
+ const isFollowing=
+  followingState.has(p.uid);
+
+ $("followForYouBtn").textContent=
+  isFollowing?"Following":"Follow";
+
+ $("followForYouBtn").classList.toggle(
+  "following",isFollowing
+ );
+
+ $("foryouActions").classList.remove("hidden");
+
+ $("followForYouBtn").onclick=async()=>{
+
+  await toggleFollow(p);
+
  };
 
- renderVisibilityOptions(
-  "bioVisibility","bio",v.bio||"Public"
- );
-
- renderVisibilityOptions(
-  "ageVisibility","age",v.age||"Only Me"
- );
-
- renderVisibilityOptions(
-  "phoneVisibility","phone",v.phone||"Friends"
- );
-
- renderVisibilityOptions(
-  "followingVisibility",
-  "following",
-  v.following||"Public"
- );
-
- loadAbout();
-
- document.querySelectorAll("[data-notification]")
-  .forEach(b=>{
-
-   const key=b.dataset.notification;
-   const enabled=
-    currentProfile.notifications?.[key]===true;
-
-   b.classList.toggle("on",enabled);
-  });
 }
 
 
-/* NOTIFICATIONS */
+function nextForYou(){
 
-document.querySelectorAll("[data-notification]")
- .forEach(b=>{
+ forYouIndex++;
 
-  b.onclick=async()=>{
+ renderForYou();
 
-   const key=b.dataset.notification;
-   const enabled=
-    !(currentProfile.notifications?.[key]===true);
-
-   currentProfile.notifications={
-    ...(currentProfile.notifications||{}),
-    [key]:enabled
-   };
-
-   try{
-
-    await updateDoc(
-     doc(db,"users",currentUser.uid),
-     {notifications:currentProfile.notifications}
-    );
-
-    renderSettings();
-
-   }catch(e){
-    toast("Could not update notification setting.");
-   }
-  };
- });
+}
 
 
-/* EDIT PROFILE */
+$("passBtn").onclick=nextForYou;
+$("nextBtn").onclick=nextForYou;
+
+
+/* Edit Profile */
 
 function openEdit(){
 
@@ -1382,28 +1218,105 @@ function openEdit(){
  $("nameInput").value=currentProfile.name||"";
  $("usernameInput").value=currentProfile.username||"";
  $("genderInput").value=currentProfile.gender||"";
- $("dobInput").value=currentProfile.dob||"";
- $("ageInput").value=currentProfile.age||"";
- $("phoneInput").value=currentProfile.phone||"";
+ $("dobInput").value=currentProfile.dateOfBirth||"";
  $("districtInput").value=currentProfile.district||"";
  $("thanaInput").value=currentProfile.thana||"";
  $("postOfficeInput").value=currentProfile.postOffice||"";
  $("postalCodeInput").value=currentProfile.postalCode||"";
+ $("phoneInput").value=currentProfile.phone||"";
+ $("nidInput").value=currentProfile.nidNumber||"";
  $("bioInput").value=currentProfile.bio||"";
-
- /*
-  NID is shown only to the owner/admin UI.
-  Firestore rules must additionally protect this field.
- */
- $("nidInput").value="";
-
- selfieBlob=null;
+ $("ageInput").value=currentProfile.age||"";
 
  showPage("editPage");
+
 }
 
 
-/* USERNAME */
+/* Camera */
+
+async function openCamera(){
+
+ try{
+
+  cameraStream=
+   await navigator.mediaDevices.getUserMedia({
+    video:{
+     facingMode:"user"
+    },
+    audio:false
+   });
+
+  $("cameraVideo").srcObject=cameraStream;
+  $("cameraVideo").style.display="block";
+  $("editAvatar").classList.add("hidden");
+  $("captureBtn").classList.remove("hidden");
+
+ }catch(e){
+
+  console.error(e);
+  toast("Camera permission is required.");
+
+ }
+
+}
+
+
+function stopCamera(){
+
+ if(cameraStream){
+
+  cameraStream.getTracks().forEach(t=>t.stop());
+  cameraStream=null;
+
+ }
+
+ $("cameraVideo").style.display="none";
+ $("captureBtn").classList.add("hidden");
+
+}
+
+
+function captureSelfie(){
+
+ const video=$("cameraVideo");
+ const canvas=$("cameraCanvas");
+
+ if(!video.videoWidth){
+
+  toast("Camera is not ready.");
+  return;
+
+ }
+
+ canvas.width=video.videoWidth;
+ canvas.height=video.videoHeight;
+
+ const ctx=canvas.getContext("2d");
+
+ ctx.drawImage(
+  video,0,0,canvas.width,canvas.height
+ );
+
+ canvas.toBlob(blob=>{
+
+  if(!blob)return;
+
+  capturedPhotoBlob=blob;
+
+  $("editAvatar").src=
+   URL.createObjectURL(blob);
+
+  $("editAvatar").classList.remove("hidden");
+
+  stopCamera();
+
+ }, "image/jpeg", .88);
+
+}
+
+
+/* Username */
 
 async function usernameAvailable(u){
 
@@ -1422,188 +1335,73 @@ async function usernameAvailable(u){
  return s.docs.every(
   d=>d.id===currentUser.uid
  );
+
 }
 
 
-/* CAMERA */
-
-async function startCamera(){
-
- try{
-
-  cameraStream=
-   await navigator.mediaDevices.getUserMedia({
-    video:{
-     facingMode:"user",
-     width:{ideal:1280},
-     height:{ideal:1280}
-    },
-    audio:false
-   });
-
-  $("cameraPreview").srcObject=cameraStream;
-
-  $("cameraPreview").classList.remove("hidden");
-  $("editAvatar").classList.add("hidden");
-  $("cameraControls").classList.remove("hidden");
-
- }catch(e){
-
-  console.error(e);
-  toast(
-   "Camera permission is required to take your selfie."
-  );
- }
-}
-
-
-function stopCamera(){
-
- if(cameraStream){
-
-  cameraStream.getTracks()
-   .forEach(t=>t.stop());
-
-  cameraStream=null;
- }
-
- $("cameraPreview").classList.add("hidden");
- $("cameraControls").classList.add("hidden");
- $("editAvatar").classList.remove("hidden");
-}
-
-
-$("openCameraBtn").onclick=startCamera;
-
-$("closeCameraBtn").onclick=stopCamera;
-
-
-$("captureSelfieBtn").onclick=()=>{
-
- const video=$("cameraPreview");
- const canvas=$("cameraCanvas");
-
- if(!video.videoWidth){
-  toast("Camera is not ready.");
-  return;
- }
-
- canvas.width=video.videoWidth;
- canvas.height=video.videoHeight;
-
- const ctx=canvas.getContext("2d");
-
- /*
-  Front-camera preview may be mirrored by browser.
-  We capture the actual camera frame.
- */
- ctx.drawImage(
-  video,
-  0,0,
-  canvas.width,
-  canvas.height
- );
-
- canvas.toBlob(blob=>{
-
-  if(!blob){
-   toast("Could not capture selfie.");
-   return;
-  }
-
-  selfieBlob=blob;
-
-  $("editAvatar").src=
-   URL.createObjectURL(blob);
-
-  stopCamera();
-
-  toast("Selfie captured.");
-
- },"image/jpeg",.9);
-};
-
-
-/* SAVE PROFILE */
+/* Save Profile */
 
 async function saveProfile(){
 
- const name=
-  $("nameInput").value.trim();
+ const name=$("nameInput").value.trim();
 
  const username=
-  $("usernameInput")
-   .value.trim()
-   .replace(/^@/,"");
+  $("usernameInput").value
+  .trim()
+  .replace(/^@/,"");
 
- const gender=
-  $("genderInput").value;
+ const gender=$("genderInput").value;
+ const dateOfBirth=$("dobInput").value;
+ const district=$("districtInput").value;
+ const thana=$("thanaInput").value.trim();
+ const postOffice=$("postOfficeInput").value.trim();
+ const postalCode=$("postalCodeInput").value.trim();
+ const phone=$("phoneInput").value.trim();
+ const nidNumber=$("nidInput").value.trim();
+ const bio=$("bioInput").value.trim().slice(0,300);
 
- const dob=
-  $("dobInput").value;
-
- const age=
-  $("ageInput").value
-   ? Number($("ageInput").value)
-   : "";
-
- const phone=
-  $("phoneInput").value.trim();
-
- const district=
-  $("districtInput").value;
-
- const thana=
-  $("thanaInput").value.trim();
-
- const postOffice=
-  $("postOfficeInput").value.trim();
-
- const postalCode=
-  $("postalCodeInput").value.trim();
-
- const bio=
-  $("bioInput").value
-   .trim()
-   .slice(0,300);
-
- const nid=
-  $("nidInput").value.trim();
+ const age=$("ageInput").value?
+  Number($("ageInput").value):"";
 
  if(
-  !name ||
-  !username ||
-  !gender ||
-  !dob ||
-  !age ||
-  !phone ||
-  !district ||
-  !thana ||
-  !postOffice ||
-  !postalCode ||
-  !bio
+  !name||
+  !username||
+  !gender||
+  !dateOfBirth||
+  !district||
+  !thana||
+  !postOffice||
+  !postalCode||
+  !phone||
+  !nidNumber||
+  !bio||
+  !age
  ){
-  toast(
-   "All required profile information must be completed."
-  );
-  return;
- }
 
- if(!currentProfile.photoURL && !selfieBlob){
-  toast("A selfie is required.");
+  toast("Please complete all required fields.");
   return;
+
  }
 
  if(!/^[A-Za-z0-9_.]{3,30}$/.test(username)){
-  toast(
-   "Username must be 3–30 letters, numbers, _ or ."
-  );
+
+  toast("Username must be 3–30 letters, numbers, _ or .");
   return;
+
  }
 
- if(age<18 || age>100){
+ if(age<18||age>100){
+
   toast("Age must be between 18 and 100.");
   return;
+
+ }
+
+ if(!currentProfile.photoURL&&!capturedPhotoBlob){
+
+  toast("Please take a selfie.");
+  return;
+
  }
 
  loading(true);
@@ -1611,40 +1409,51 @@ async function saveProfile(){
  try{
 
   if(
-   username.toLowerCase() !==
+   username.toLowerCase()!==
    (currentProfile.usernameLower||"")
   ){
 
-   const available=
-    await usernameAvailable(username);
+   if(!await usernameAvailable(username)){
 
-   if(!available){
     toast("This username is already taken.");
     return;
+
    }
+
   }
 
   let photoURL=
    currentProfile.photoURL||"";
 
-  if(selfieBlob){
+  if(capturedPhotoBlob){
 
    const r=ref(
     storage,
-    `profilePhotos/${currentUser.uid}/selfie_${Date.now()}.jpg`
+    `profilePhotos/${currentUser.uid}/${Date.now()}.jpg`
    );
 
    await uploadBytes(
     r,
-    selfieBlob,
+    capturedPhotoBlob,
     {contentType:"image/jpeg"}
    );
 
-   photoURL=
-    await getDownloadURL(r);
+   photoURL=await getDownloadURL(r);
+
   }
 
+  const oldVisibility=
+   currentProfile.visibility||{
+    bio:"Public",
+    age:"Only Me",
+    phone:"Only Me",
+    followers:"Public",
+    following:"Public",
+    online:"Public"
+   };
+
   const data={
+
    uid:currentUser.uid,
 
    name,
@@ -1654,44 +1463,32 @@ async function saveProfile(){
    usernameLower:username.toLowerCase(),
 
    gender,
-   dob,
-   age,
-
-   phone,
+   dateOfBirth,
 
    district,
    thana,
    postOffice,
    postalCode,
 
-   photoURL,
+   phone,
+   nidNumber,
+
    bio,
+   age,
 
-   visibility:currentProfile.visibility||{
-    bio:"Public",
-    age:"Only Me",
-    phone:"Friends",
-    following:"Public"
-   },
+   photoURL,
 
-   notifications:currentProfile.notifications||{
-    messages:true,
-    followers:true
-   },
+   visibility:oldVisibility,
 
    updatedAt:serverTimestamp()
+
   };
 
-  /*
-   Only write NID if user entered it.
-   Production Firestore Rules must restrict NID access.
-  */
-  if(nid){
-   data.nidNumber=nid;
-  }
-
-  const r=
-   doc(db,"users",currentUser.uid);
+  const r=doc(
+   db,
+   "users",
+   currentUser.uid
+  );
 
   const old=await getDoc(r);
 
@@ -1706,28 +1503,23 @@ async function saveProfile(){
     verified:false,
     createdAt:serverTimestamp()
    });
+
   }
 
+  capturedPhotoBlob=null;
+
   await loadProfile();
+  await loadFollowing();
 
-  await updateVerificationStatus();
-
-  $("topProfileBtn").src=
-   avatar(currentProfile);
+  updateTopProfile();
 
   viewingProfile=currentProfile;
 
-  stopCamera();
-
-  renderProfile(currentProfile);
+  renderHome();
 
   showPage("profilePage");
 
-  toast(
-   currentProfile.verified
-    ? "Profile saved. You are verified."
-    : "Profile saved."
-  );
+  toast("Profile saved.");
 
  }catch(e){
 
@@ -1740,561 +1532,13 @@ async function saveProfile(){
  }finally{
 
   loading(false);
+
  }
+
 }
 
 
-/* FOLLOW SYSTEM */
-
-async function isFollowing(uid){
-
- const id=
-  `${currentUser.uid}_${uid}`;
-
- const s=
-  await getDoc(
-   doc(db,"follows",id)
-  );
-
- return s.exists();
-}
-
-
-async function toggleFollow(p){
-
- if(!p?.uid || p.uid===currentUser.uid)
-  return;
-
- const id=
-  `${currentUser.uid}_${p.uid}`;
-
- const r=
-  doc(db,"follows",id);
-
- try{
-
-  const existing=
-   await getDoc(r);
-
-  if(existing.exists()){
-
-   await deleteDoc(r);
-
-   followingSet.delete(p.uid);
-
-   toast("Unfollowed.");
-
-  }else{
-
-   await setDoc(r,{
-    followerId:currentUser.uid,
-    followingId:p.uid,
-    createdAt:serverTimestamp()
-   });
-
-   followingSet.add(p.uid);
-
-   toast("Following.");
-  }
-
-  await updateVerificationStatus();
-
-  renderProfile(p);
-
- }catch(e){
-
-  console.error(e);
-  toast("Follow action failed.");
- }
-}
-
-
-async function loadFollowing(){
-
- followingSet=new Set();
-
- try{
-
-  const q=query(
-   collection(db,"follows"),
-   where(
-    "followerId",
-    "==",
-    currentUser.uid
-   )
-  );
-
-  const snap=await getDocs(q);
-
-  snap.forEach(d=>{
-
-   const x=d.data();
-
-   if(x.followingId)
-    followingSet.add(x.followingId);
-  });
-
- }catch(e){
-
-  console.error(e);
- }
-}
-
-
-/* FOR YOU */
-
-async function loadForYou(){
-
- const box=$("forYouContainer");
-
- box.innerHTML=`
-  <div class="card glass empty-card">
-   <div class="status">
-    Loading profiles…
-   </div>
-  </div>`;
-
- try{
-
-  await loadFollowing();
-
-  const snap=await getDocs(
-   query(
-    collection(db,"users"),
-    limit(100)
-   )
-  );
-
-  const users=[];
-
-  snap.forEach(d=>{
-
-   const p={
-    uid:d.id,
-    ...d.data()
-   };
-
-   if(
-    p.uid!==currentUser.uid &&
-    p.photoURL &&
-    p.name &&
-    p.username &&
-    p.gender &&
-    p.district
-   ){
-    users.push(p);
-   }
-  });
-
-  /*
-   No fake users.
-   Randomize only real Firebase users.
-  */
-  users.sort(()=>Math.random()-.5);
-
-  forYouUsers=users;
-  forYouIndex=0;
-
-  renderForYou();
-
- }catch(e){
-
-  console.error(e);
-
-  box.innerHTML=`
-   <div class="card glass empty-card">
-    <strong>Could not load profiles.</strong>
-    <div class="status" style="margin-top:7px">
-     Please check your connection and try again.
-    </div>
-   </div>`;
- }
-}
-
-
-function renderForYou(){
-
- const box=$("forYouContainer");
-
- while(
-  forYouIndex<forYouUsers.length &&
-  forYouUsers[forYouIndex].uid===currentUser.uid
- ){
-  forYouIndex++;
- }
-
- if(forYouIndex>=forYouUsers.length){
-
-  box.innerHTML=`
-   <div class="card glass empty-card">
-    <h3>No more profiles right now.</h3>
-    <div class="status">
-     Check again later for new people.
-    </div>
-    <button id="refreshForYou"
-     class="btn secondary"
-     style="margin-top:15px">
-     Refresh
-    </button>
-   </div>`;
-
-  $("refreshForYou").onclick=loadForYou;
-
-  return;
- }
-
- const p=forYouUsers[forYouIndex];
-
- box.innerHTML=`
-
- <div
-  id="swipeCard"
-  class="swipe-card glass">
-
-  <img
-   class="swipe-photo"
-   src="${esc(avatar(p))}"
-   alt="Profile photo">
-
-  <div class="swipe-content">
-
-   <div class="swipe-name">
-    ${esc(p.name)}${badge(p)}
-   </div>
-
-   <div class="swipe-location">
-    ${esc(p.gender)} ·
-    ${esc(p.district)} ·
-    ${esc(p.thana)}
-   </div>
-
-   ${
-    p.bio &&
-    (p.visibility?.bio!=="Only Me")
-    ? `<div class="swipe-bio">
-        ${esc(p.bio)}
-       </div>`
-    : ""
-   }
-
-   <div class="swipe-actions">
-
-    <button id="skipBtn"
-     class="btn secondary">
-     Pass
-    </button>
-
-    <button id="followBtn"
-     class="btn">
-     ${followingSet.has(p.uid)
-      ?"Following"
-      :"Follow"}
-    </button>
-
-   </div>
-
-   <button id="messageForYou"
-    class="btn secondary full"
-    style="margin-top:8px">
-    Message
-   </button>
-
-   <div class="swipe-hint">
-    Swipe left to pass · Swipe right to continue
-   </div>
-
-  </div>
-
- </div>`;
-
- $("skipBtn").onclick=()=>{
-  forYouIndex++;
-  renderForYou();
- };
-
- $("followBtn").onclick=async()=>{
-
-  await toggleFollow(p);
-
-  const b=$("followBtn");
-
-  if(b){
-   b.textContent=
-    followingSet.has(p.uid)
-     ?"Following"
-     :"Follow";
-  }
- };
-
- $("messageForYou").onclick=
-  ()=>startChat(p);
-
- setupSwipe(p);
-}
-
-
-function setupSwipe(p){
-
- const card=$("swipeCard");
-
- if(!card)return;
-
- let startX=0;
- let currentX=0;
- let dragging=false;
-
- function pointerDown(e){
-
-  dragging=true;
-  card.classList.add("dragging");
-
-  startX=
-   e.clientX ??
-   e.touches?.[0]?.clientX ??
-   0;
-
-  currentX=startX;
- }
-
- function pointerMove(e){
-
-  if(!dragging)return;
-
-  currentX=
-   e.clientX ??
-   e.touches?.[0]?.clientX ??
-   currentX;
-
-  const dx=currentX-startX;
-
-  card.style.transform=
-   `translateX(${dx}px) rotate(${dx*.04}deg)`;
-
-  card.style.opacity=
-   String(
-    Math.max(.45,1-Math.abs(dx)/500)
-   );
- }
-
- function pointerUp(){
-
-  if(!dragging)return;
-
-  dragging=false;
-  card.classList.remove("dragging");
-
-  const dx=currentX-startX;
-
-  if(Math.abs(dx)>110){
-
-   card.style.transition=".2s ease";
-   card.style.transform=
-    `translateX(${dx>0?700:-700}px) rotate(${dx>0?20:-20}deg)`;
-
-   setTimeout(()=>{
-
-    forYouIndex++;
-    renderForYou();
-
-   },180);
-
-  }else{
-
-   card.style.transition=".2s ease";
-   card.style.transform="";
-   card.style.opacity="1";
-
-   setTimeout(()=>{
-    card.style.transition="";
-   },220);
-  }
- }
-
- card.addEventListener(
-  "pointerdown",
-  pointerDown
- );
-
- card.addEventListener(
-  "pointermove",
-  pointerMove
- );
-
- card.addEventListener(
-  "pointerup",
-  pointerUp
- );
-
- card.addEventListener(
-  "pointercancel",
-  pointerUp
- );
-}
-
-
-/* DISCOVER */
-
-let searchTimer;
-
-async function searchUsers(term){
-
- const box=$("usersList");
-
- if(!term){
-
-  box.innerHTML=`
-   <div class="card glass center status">
-    Search for a name or username.
-   </div>`;
-
-  return;
- }
-
- try{
-
-  const [a,b]=await Promise.all([
-
-   getDocs(
-    query(
-     collection(db,"users"),
-     where(
-      "usernameLower",
-      "==",
-      term.toLowerCase()
-     ),
-     limit(20)
-    )
-   ),
-
-   getDocs(
-    query(
-     collection(db,"users"),
-     where(
-      "nameLower",
-      "==",
-      term.toLowerCase()
-     ),
-     limit(20)
-    )
-   )
-  ]);
-
-  const map=new Map();
-
-  [...a.docs,...b.docs].forEach(d=>
-   map.set(
-    d.id,
-    {uid:d.id,...d.data()}
-   )
-  );
-
-  const list=
-   [...map.values()]
-    .filter(
-     p=>p.uid!==currentUser.uid
-    );
-
-  if(!list.length){
-
-   box.innerHTML=`
-    <div class="card glass center status">
-     No user found.
-    </div>`;
-
-   return;
-  }
-
-  box.innerHTML=
-   list.map(p=>`
-
-   <div
-    class="user-card glass"
-    data-id="${esc(p.uid)}">
-
-    <img
-     class="avatar small"
-     src="${esc(avatar(p))}"
-     alt="">
-
-    <div class="user-card-info">
-
-     <div class="user-name">
-      ${esc(p.name)}${badge(p)}
-     </div>
-
-     <div class="user-meta">
-      @${esc(p.username)}
-      · ${esc(p.gender)}
-      · ${esc(p.district)}
-     </div>
-
-    </div>
-
-    <button class="btn secondary chat-button">
-     Chat
-    </button>
-
-   </div>
-
-   `).join("");
-
-  box.querySelectorAll(".user-card")
-   .forEach(c=>{
-
-    const id=c.dataset.id;
-
-    c.onclick=()=>openUser(id);
-
-    c.querySelector(".chat-button")
-     .onclick=e=>{
-
-      e.stopPropagation();
-
-      getDoc(
-       doc(db,"users",id)
-      ).then(s=>
-       s.exists() &&
-       startChat({
-        uid:id,
-        ...s.data()
-       })
-      );
-     };
-   });
-
- }catch(e){
-
-  console.error(e);
-  toast("Search failed.");
- }
-}
-
-
-async function openUser(uid){
-
- const s=
-  await getDoc(
-   doc(db,"users",uid)
-  );
-
- if(!s.exists()){
-
-  toast("Profile not found.");
-  return;
- }
-
- viewingProfile={
-  uid,
-  ...s.data()
- };
-
- await loadFollowing();
-
- showPage("profilePage");
-}
-
-
-/* CHAT */
+/* Chat */
 
 function startChat(p){
 
@@ -2309,6 +1553,7 @@ function startChat(p){
  showPage("chatPage");
 
  listenMessages();
+
 }
 
 
@@ -2332,43 +1577,42 @@ function listenMessages(){
  );
 
  unsubscribeMessages=
-  onSnapshot(
-   q,
-   s=>{
+  onSnapshot(q,s=>{
 
-    const box=$("messages");
+   const box=$("messages");
 
-    box.innerHTML="";
+   box.innerHTML="";
 
-    s.forEach(d=>{
+   s.forEach(d=>{
 
-     const m=d.data();
+    const m=d.data();
 
-     const el=
-      document.createElement("div");
+    const el=
+     document.createElement("div");
 
-     el.className=
-      "message "+
-      (
-       m.senderId===currentUser.uid
-       ?"mine"
-       :"theirs"
-      );
+    el.className=
+     "message "+
+     (
+      m.senderId===currentUser.uid
+      ?"mine"
+      :"theirs"
+     );
 
-     el.textContent=m.text||"";
+    el.textContent=m.text||"";
 
-     box.appendChild(el);
-    });
+    box.appendChild(el);
 
-    box.scrollTop=box.scrollHeight;
-   },
+   });
 
-   e=>{
+   box.scrollTop=box.scrollHeight;
 
-    console.error(e);
-    toast("Chat connection failed.");
-   }
-  );
+  },e=>{
+
+   console.error(e);
+   toast("Chat connection failed.");
+
+  });
+
 }
 
 
@@ -2377,7 +1621,9 @@ async function sendMessage(){
  if(!activeChatUser)return;
 
  const input=$("messageInput");
- const text=input.value.trim();
+
+ const text=
+  input.value.trim();
 
  if(!text)return;
 
@@ -2426,345 +1672,53 @@ async function sendMessage(){
 
   input.value=text;
 
-  toast(
-   "Message could not be sent."
-  );
+  toast("Message could not be sent.");
+
  }
+
 }
 
 
-/* BLOCK */
-
-async function blockUser(uid){
-
- if(!confirm("Block this user?"))return;
-
- try{
-
-  await setDoc(
-   doc(
-    db,
-    "blocks",
-    `${currentUser.uid}_${uid}`
-   ),
-   {
-    blockerId:currentUser.uid,
-    blockedId:uid,
-    createdAt:serverTimestamp()
-   }
-  );
-
-  toast("User blocked.");
-
- }catch(e){
-
-  console.error(e);
-  toast("Could not block user.");
- }
-}
-
-
-async function loadBlockedUsers(){
-
- const box=$("blockedList");
-
- box.innerHTML=
-  `<div class="status">Loading…</div>`;
-
- try{
-
-  const q=query(
-   collection(db,"blocks"),
-   where(
-    "blockerId",
-    "==",
-    currentUser.uid
-   )
-  );
-
-  const snap=await getDocs(q);
-
-  if(snap.empty){
-
-   box.innerHTML=
-    `<div class="status">
-      No blocked users.
-     </div>`;
-
-   return;
-  }
-
-  box.innerHTML="";
-
-  for(const d of snap.docs){
-
-   const x=d.data();
-
-   const u=
-    await getDoc(
-     doc(db,"users",x.blockedId)
-    );
-
-   if(!u.exists())continue;
-
-   const p={
-    uid:u.id,
-    ...u.data()
-   };
-
-   const row=
-    document.createElement("div");
-
-   row.className="user-card glass";
-
-   row.innerHTML=`
-    <img class="avatar small"
-     src="${esc(avatar(p))}">
-
-    <div class="user-card-info">
-     <div class="user-name">
-      ${esc(p.name)}
-     </div>
-     <div class="user-meta">
-      @${esc(p.username)}
-     </div>
-    </div>
-
-    <button class="btn secondary">
-     Unblock
-    </button>`;
-
-   row.querySelector("button").onclick=
-    async()=>{
-
-     await deleteDoc(d.ref);
-
-     loadBlockedUsers();
-    };
-
-   box.appendChild(row);
-  }
-
- }catch(e){
-
-  console.error(e);
-  toast("Could not load blocked users.");
- }
-}
-
-
-/* REPORT */
-
-async function reportUser(p){
-
- const reason=
-  prompt(
-   "Report reason:\n\n"+
-   "1. Fake profile\n"+
-   "2. Harassment\n"+
-   "3. Inappropriate content\n"+
-   "4. Other"
-  );
-
- if(!reason)return;
-
- try{
-
-  await addDoc(
-   collection(db,"reports"),
-   {
-    reporterId:currentUser.uid,
-    reportedUserId:p.uid,
-    reason:reason.slice(0,300),
-    status:"pending",
-    createdAt:serverTimestamp()
-   }
-  );
-
-  toast("Report submitted.");
-
- }catch(e){
-
-  console.error(e);
-  toast("Could not submit report.");
- }
-}
-
-
-async function loadReports(){
-
- const box=$("reportsList");
-
- box.innerHTML=
-  `<div class="status">Loading…</div>`;
-
- try{
-
-  const q=query(
-   collection(db,"reports"),
-   where(
-    "reporterId",
-    "==",
-    currentUser.uid
-   )
-  );
-
-  const snap=await getDocs(q);
-
-  if(snap.empty){
-
-   box.innerHTML=
-    `<div class="status">
-      You have no reports.
-     </div>`;
-
-   return;
-  }
-
-  box.innerHTML=
-   snap.docs.map(d=>{
-
-    const x=d.data();
-
-    return `
-     <div class="card glass">
-      <strong>${esc(x.reason||"Report")}</strong>
-      <div class="status" style="margin-top:5px">
-       Status: ${esc(x.status||"pending")}
-      </div>
-     </div>`;
-   }).join("");
-
- }catch(e){
-
-  console.error(e);
-  toast("Could not load reports.");
- }
-}
-
-
-/* ABOUT — ADMIN CONTROLLED */
+/* About */
 
 async function loadAbout(){
 
- const box=$("aboutContainer");
-
  try{
 
-  const s=
-   await getDoc(
-    doc(db,"appConfig","about")
-   );
+  const s=await getDoc(
+   doc(db,"appConfig","about")
+  );
 
   if(!s.exists()){
 
-   box.innerHTML=`
-    <div class="status">
-     About information is not available yet.
-    </div>`;
+   $("aboutContent").textContent=
+    "About information is not available.";
 
    return;
+
   }
 
-  const a=s.data();
+  const data=s.data();
 
-  box.innerHTML=`
-
-   ${
-    a.description
-    ? `<div class="about-row">
-        <div class="about-label">About</div>
-        <div class="about-value">
-         ${esc(a.description)}
-        </div>
-       </div>`
-    :""
-   }
-
-   ${
-    a.version
-    ? `<div class="about-row">
-        <div class="about-label">Version</div>
-        <div class="about-value">
-         ${esc(a.version)}
-        </div>
-       </div>`
-    :""
-   }
-
-   ${
-    a.termsUrl
-    ? `<div class="about-row">
-        <a href="${esc(a.termsUrl)}"
-         target="_blank"
-         rel="noopener"
-         class="btn secondary full">
-         Terms & Conditions
-        </a>
-       </div>`
-    :""
-   }
-
-   ${
-    a.privacyUrl
-    ? `<div class="about-row">
-        <a href="${esc(a.privacyUrl)}"
-         target="_blank"
-         rel="noopener"
-         class="btn secondary full">
-         Privacy Policy
-        </a>
-       </div>`
-    :""
-   }
-
-   ${
-    a.guidelinesUrl
-    ? `<div class="about-row">
-        <a href="${esc(a.guidelinesUrl)}"
-         target="_blank"
-         rel="noopener"
-         class="btn secondary full">
-         Community Guidelines
-        </a>
-       </div>`
-    :""
-   }
-
-   ${
-    a.supportEmail
-    ? `<div class="about-row">
-        <div class="about-label">Support</div>
-        <div class="about-value">
-         ${esc(a.supportEmail)}
-        </div>
-       </div>`
-    :""
-   }
-
-   ${
-    a.copyright
-    ? `<div class="about-row">
-        <div class="about-value">
-         ${esc(a.copyright)}
-        </div>
-       </div>`
-    :""
-   }`;
+  $("aboutContent").textContent=
+   data.text||
+   data.content||
+   data.description||
+   "";
 
  }catch(e){
 
   console.error(e);
 
-  box.innerHTML=
-   `<div class="status">
-     Could not load About information.
-    </div>`;
+  $("aboutContent").textContent=
+   "About information could not be loaded.";
+
  }
+
 }
 
 
-/* AUTH */
+/* Login */
 
 async function googleLogin(){
 
@@ -2792,58 +1746,13 @@ async function googleLogin(){
  }finally{
 
   loading(false);
+
  }
+
 }
 
 
-/* DELETE ACCOUNT */
-
-async function deleteAccountNow(){
-
- const ok=
-  confirm(
-   "Delete your Veil account permanently?\n\n"+
-   "This action cannot be undone."
-  );
-
- if(!ok)return;
-
- try{
-
-  loading(true);
-
-  /*
-   Firebase may require recent authentication
-   before deleteUser().
-  */
-  await deleteUser(currentUser);
-
- }catch(e){
-
-  console.error(e);
-
-  if(e.code==="auth/requires-recent-login"){
-
-   toast(
-    "For security, sign in again before deleting your account."
-   );
-
-  }else{
-
-   toast(
-    e.message||
-    "Could not delete account."
-   );
-  }
-
- }finally{
-
-  loading(false);
- }
-}
-
-
-/* AUTH STATE */
+/* Auth */
 
 async function authState(user){
 
@@ -2851,43 +1760,47 @@ async function authState(user){
 
   currentUser=null;
 
-  $("app")
-   .classList.add("hidden");
+  $("app").classList.add("hidden");
 
-  $("loginScreen")
-   .classList.remove("hidden");
+  $("loginScreen").classList.remove("hidden");
 
   loading(false);
 
   return;
+
  }
 
  currentUser=user;
 
- $("loginScreen")
-  .classList.add("hidden");
+ $("loginScreen").classList.add("hidden");
+ $("app").classList.remove("hidden");
 
- $("app")
-  .classList.remove("hidden");
-
- $("connectionStatus")
-  .textContent="Connected";
+ $("connectionStatus").textContent=
+  "Connected";
 
  try{
 
-  const exists=
-   await loadProfile();
-
-  $("topProfileBtn").src=
-   avatar(currentProfile);
+  const exists=await loadProfile();
 
   await loadFollowing();
 
-  await updateVerificationStatus();
+  updateTopProfile();
 
   const incomplete=
-   !exists ||
-   !profileCanBeComplete(currentProfile);
+   !exists||
+   !currentProfile.photoURL||
+   !currentProfile.name||
+   !currentProfile.username||
+   !currentProfile.gender||
+   !currentProfile.dateOfBirth||
+   !currentProfile.district||
+   !currentProfile.thana||
+   !currentProfile.postOffice||
+   !currentProfile.postalCode||
+   !currentProfile.phone||
+   !currentProfile.nidNumber||
+   !currentProfile.bio||
+   !currentProfile.age;
 
   if(incomplete){
 
@@ -2896,8 +1809,8 @@ async function authState(user){
   }else{
 
    viewingProfile=currentProfile;
+   showPage("homePage");
 
-   showPage("foryouPage");
   }
 
  }catch(e){
@@ -2911,24 +1824,25 @@ async function authState(user){
  }finally{
 
   loading(false);
+
  }
+
 }
 
 
-/* INITIALISE DISTRICTS */
+/* Districts */
 
-districts.forEach(d=>
- $("districtInput")
-  .insertAdjacentHTML(
-   "beforeend",
-   `<option value="${esc(d)}">
-     ${esc(d)}
-    </option>`
-  )
-);
+districts.forEach(d=>{
+
+ $("districtInput").insertAdjacentHTML(
+  "beforeend",
+  `<option value="${esc(d)}">${esc(d)}</option>`
+ );
+
+});
 
 
-/* EVENTS */
+/* Events */
 
 $("googleLoginBtn").onclick=
  googleLogin;
@@ -2937,11 +1851,12 @@ $("editProfileBtn").onclick=
  openEdit;
 
 $("editBackBtn").onclick=()=>{
- stopCamera();
 
- viewingProfile=currentProfile;
+ stopCamera();
+ capturedPhotoBlob=null;
 
  showPage("profilePage");
+
 };
 
 $("saveProfileBtn").onclick=
@@ -2950,24 +1865,19 @@ $("saveProfileBtn").onclick=
 $("logoutBtn").onclick=
  ()=>signOut(auth);
 
-$("deleteAccountBtn").onclick=
- deleteAccountNow;
-
 $("topProfileBtn").onclick=()=>{
+
  viewingProfile=currentProfile;
+
  showPage("profilePage");
+
 };
 
-$("searchInput").oninput=()=>{
- clearTimeout(searchTimer);
+$("openCameraBtn").onclick=
+ openCamera;
 
- searchTimer=setTimeout(
-  ()=>searchUsers(
-   $("searchInput").value.trim()
-  ),
-  350
- );
-};
+$("captureBtn").onclick=
+ captureSelfie;
 
 $("sendBtn").onclick=
  sendMessage;
@@ -2975,13 +1885,15 @@ $("sendBtn").onclick=
 $("messageInput").onkeydown=e=>{
 
  if(
-  e.key==="Enter" &&
+  e.key==="Enter"&&
   !e.shiftKey
  ){
 
   e.preventDefault();
   sendMessage();
+
  }
+
 };
 
 $("chatBackBtn").onclick=()=>{
@@ -2991,43 +1903,38 @@ $("chatBackBtn").onclick=()=>{
 
  activeChatUser=null;
 
- showPage("discoverPage");
+ showPage("foryouPage");
+
 };
 
-$("blockedUsersBtn").onclick=
- ()=>showPage("blockedPage");
+$("aboutBtn").onclick=async()=>{
 
-$("reportedUsersBtn").onclick=
- ()=>showPage("reportsPage");
+ await loadAbout();
 
-$("blockedBackBtn").onclick=
- ()=>showPage("settingsPage");
+ showPage("aboutPage");
 
-$("reportsBackBtn").onclick=
- ()=>showPage("settingsPage");
+};
+
+$("aboutBackBtn").onclick=()=>{
+
+ showPage("settingsPage");
+
+};
 
 
 document.querySelectorAll(".nav-item")
- .forEach(b=>{
+.forEach(b=>{
 
-  b.onclick=()=>{
+ b.onclick=()=>{
 
-   showPage(
-    b.dataset.page
-   );
-  };
- });
+  showPage(b.dataset.page);
 
+ };
 
-/*
-  Clicking a profile from Profile page
-  does not expose NID.
-  Add report/block controls to other
-  profiles without displaying private fields.
-*/
+});
 
 
-/* FIREBASE START */
+/* Firebase start */
 
 async function start(){
 
@@ -3059,9 +1966,11 @@ async function start(){
   loading(false);
 
   toast(
-   "Firebase initialization failed. Check Firebase settings."
+   "Firebase initialization failed."
   );
+
  }
+
 }
 
 start();
@@ -3069,29 +1978,3 @@ start();
 </script>
 </body>
 </html>
-```
-
-### গুরুত্বপূর্ণ Firebase অংশ
-
-এই HTML-এর নতুন featureগুলো চালাতে Firestore-এ বাস্তবে নিচের structure ব্যবহার হচ্ছে:
-
-* `users/{uid}`
-* `follows/{followerId_followingId}`
-* `blocks/{blockerId_blockedId}`
-* `reports/{reportId}`
-* `chats/{chatId}/messages/{messageId}`
-* `appConfig/about`
-
-**`appConfig/about`** Admin Panel থেকে update করলে Veil-এর Settings → About-এ নতুন তথ্য আসবে। HTML পরিবর্তন লাগবে না।
-
-### কিন্তু Production-এ এই Rules অবশ্যই দিতে হবে
-
-বিশেষ করে `nidNumber`, `phone`, `verified`, `follows` ইত্যাদির জন্য শুধু HTML-এর ওপর নির্ভর করা নিরাপদ নয়। তোমার আগের Rules যদি এখনও:
-
-```text
-allow read, write: if false;
-```
-
-থাকে, তাহলে এই নতুন features কাজ করবে না।
-
-আর **৩ জন follow করে verified হওয়া**-টা এখন UI/Firestore logic-এ করা হয়েছে; একেবারে tamper-proof production verification করতে **Cloud Functions/একটি trusted backend + কঠোর Firestore Rules** যোগ করা উচিত। NID-এর ক্ষেত্রেও একইভাবে Admin-only access enforce করতে হবে।
