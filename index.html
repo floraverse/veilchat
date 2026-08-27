@@ -39,9 +39,7 @@
         .nav.active{opacity:1}
         .profilepage,.matchespage{padding:18px;overflow:auto}
         .title{font-size:24px;margin-bottom:18px}
-        .avatar{width:125px;height:125px;border-radius:50%;object-fit:cover;display:block;margin:10px auto 14px;border:3px solid rgba(255,255,255,.25);position:relative}
-        .avatar-wrapper{position:relative;display:inline-block}
-        .avatar-badge{position:absolute;bottom:5px;right:5px;width:32px;height:32px;border-radius:50%;background:#071a2b;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+        .avatar{width:125px;height:125px;border-radius:50%;object-fit:cover;display:block;margin:10px auto 14px;border:3px solid rgba(255,255,255,.25)}
         .center{text-align:center}
         .muted{color:rgba(255,255,255,.62);font-size:13px}
         .panel{margin-top:16px;padding:18px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px)}
@@ -71,7 +69,6 @@
         .send{width:48px;border:0;border-radius:14px;background:#fff;color:#092238;font-size:18px;transition:.2s}
         .send:active{transform:scale(.9)}
         
-        /* Login Screen */
         .login{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 20% 15%,rgba(70,200,240,.18),transparent 32%),rgba(3,14,25,.97);backdrop-filter:blur(25px)}
         .loginbox{width:100%;max-width:400px;padding:32px 25px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.19);box-shadow:0 25px 70px rgba(0,0,0,.4)}
         .loginlogo{text-align:center;font-size:39px;font-weight:800;letter-spacing:9px}
@@ -84,14 +81,12 @@
         .authbtn:disabled{opacity:.5;cursor:not-allowed}
         .switch{margin-top:18px;text-align:center;font-size:13px;color:#a9eaff;cursor:pointer}
         .error{min-height:18px;text-align:center;font-size:13px;color:#ffadb9;margin-bottom:7px}
-        .otp-row{display:flex;gap:8px;margin-bottom:11px}
-        .otp-row .authinput{flex:1;text-align:center;font-size:20px;letter-spacing:4px}
-        .otp-row .authbtn{flex:0 0 80px;height:51px;font-size:13px}
-        .phone-prefix{display:flex;gap:0;margin-bottom:11px;align-items:center}
-        .phone-prefix .prefix{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-right:0;border-radius:14px 0 0 14px;padding:0 12px;height:51px;display:flex;align-items:center;color:rgba(255,255,255,.7);font-size:14px;white-space:nowrap}
-        .phone-prefix .authinput{border-radius:0 14px 14px 0;margin-bottom:0}
+        .divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:rgba(255,255,255,.3);font-size:12px}
+        .divider::before,.divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.15)}
+        .google-btn{width:100%;height:51px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s}
+        .google-btn:active{transform:scale(.97)}
+        .google-btn img{width:22px;height:22px}
 
-        /* Profile Setup */
         .profile-setup{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 20% 15%,rgba(70,200,240,.18),transparent 32%),rgba(3,14,25,.97);backdrop-filter:blur(25px);overflow-y:auto}
         .setup-box{width:100%;max-width:400px;padding:32px 25px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.19);box-shadow:0 25px 70px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto}
         .setup-box::-webkit-scrollbar{width:3px}
@@ -124,7 +119,6 @@
         .toast{position:fixed;z-index:200;left:50%;bottom:88px;transform:translate(-50%,20px);max-width:90%;padding:12px 17px;border-radius:15px;background:rgba(7,24,39,.94);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:.25s;font-size:13px;text-align:center}
         .toast.show{opacity:1;transform:translate(-50%,0)}
 
-        /* Camera Modal */
         .camera-modal{position:fixed;inset:0;z-index:60;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center}
         .camera-modal.active{display:flex}
         .camera-modal video{width:100%;max-height:70vh;background:#000;object-fit:cover}
@@ -143,6 +137,10 @@
         .preview-btn.retake{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
         .preview-btn.confirm{background:#fff;color:#000}
         .cam-label{position:absolute;top:20px;color:rgba(255,255,255,.6);font-size:14px;background:rgba(0,0,0,.5);padding:6px 16px;border-radius:20px}
+        
+        .password-section{margin-top:12px;padding:14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+        .password-section .field{margin-bottom:8px}
+        .avatar-badge{position:absolute;bottom:5px;right:5px;width:32px;height:32px;border-radius:50%;background:#071a2b;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px}
         @media(min-width:700px){body{display:flex;align-items:center;justify-content:center}.app{height:850px;max-height:100dvh;border-radius:28px;overflow:hidden}}
     </style>
 </head>
@@ -159,21 +157,19 @@
             <div class="tag">Real people. Real connections.</div>
             <div id="authError" class="error"></div>
             
-            <div id="phoneStep">
-                <div class="phone-prefix">
-                    <span class="prefix">+880</span>
-                    <input id="authPhone" class="authinput" type="tel" placeholder="1XXXXXXXXX" maxlength="10" inputmode="numeric">
-                </div>
-                <button id="sendOtpBtn" class="authbtn">Send OTP</button>
-            </div>
-
-            <div id="otpStep" class="hidden">
-                <div class="otp-row">
-                    <input id="authOtp" class="authinput" type="text" placeholder="6-digit OTP" maxlength="6" inputmode="numeric">
-                    <button id="verifyOtpBtn" class="authbtn">Verify</button>
-                </div>
-                <button id="resendOtpBtn" class="switch" style="background:none;border:0;cursor:pointer">Resend OTP</button>
-            </div>
+            <input id="authEmail" class="authinput" type="email" placeholder="Email" autocomplete="email">
+            <input id="authPassword" class="authinput" type="password" placeholder="Password" autocomplete="current-password">
+            
+            <button id="authButton" class="authbtn">Sign In</button>
+            
+            <div class="divider">OR</div>
+            
+            <button id="googleSignIn" class="google-btn">
+                <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                Continue with Google
+            </button>
+            
+            <div id="switchAuth" class="switch">Create a new account</div>
         </div>
     </div>
 
@@ -186,7 +182,7 @@
                 <span class="step-dot"></span>
             </div>
             <div style="text-align:center;font-size:18px;font-weight:600;margin-bottom:4px">Create Your Profile</div>
-            <div style="text-align:center;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:18px">Step 2 of 3</div>
+            <div style="text-align:center;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:18px">Complete your profile</div>
 
             <div class="photo-upload" id="photoUpload">
                 <img id="setupPhoto" style="display:none" alt="Profile">
@@ -211,7 +207,7 @@
             <input id="setupCity" class="authinput" placeholder="City" maxlength="30">
             <textarea id="setupBio" class="authinput" placeholder="Tell people about yourself" maxlength="200" style="height:70px;padding-top:13px;resize:none"></textarea>
 
-            <button id="saveProfileBtn" class="authbtn" style="margin-top:6px">Save & Continue</button>
+            <button id="saveProfileBtn" class="authbtn" style="margin-top:6px">Save Profile</button>
         </div>
     </div>
 
@@ -223,7 +219,6 @@
             <button class="headbtn" onclick="showMatches()">♡</button>
         </header>
 
-        <!-- DISCOVER -->
         <section id="discoverPage" class="page active discover">
             <div id="profileCard" class="card">
                 <img id="discoverPhoto" class="photo" src="" alt="Profile">
@@ -251,13 +246,11 @@
             </div>
         </section>
 
-        <!-- MATCHES -->
         <section id="matchesPage" class="page matchespage">
             <h2 class="title">Your Matches</h2>
             <div id="matchesList" class="matches"></div>
         </section>
 
-        <!-- CHAT -->
         <section id="chatPage" class="page chatpage">
             <div id="chatHead" class="chathead">
                 <span style="color:rgba(255,255,255,.5)">Select a match</span>
@@ -271,7 +264,6 @@
             </div>
         </section>
 
-        <!-- PROFILE -->
         <section id="profilePage" class="page profilepage">
             <div class="center">
                 <div style="position:relative;display:inline-block">
@@ -279,7 +271,7 @@
                     <div class="avatar-badge" id="profileVerifyBadge" style="display:none">✓</div>
                 </div>
                 <h2 id="myName" style="margin-top:4px">Your Profile</h2>
-                <div id="myPhone" class="muted"></div>
+                <div id="myEmail" class="muted"></div>
             </div>
 
             <div class="panel">
@@ -309,12 +301,20 @@
             </div>
 
             <div class="panel">
+                <h3>Change Password</h3>
+                <div class="password-section">
+                    <input id="currentPassword" class="field" type="password" placeholder="Current Password">
+                    <input id="newPassword" class="field" type="password" placeholder="New Password (min 6 chars)">
+                    <button class="primary" onclick="changePassword()">Update Password</button>
+                </div>
+            </div>
+
+            <div class="panel">
                 <h3>Account</h3>
                 <button class="primary logout" onclick="logout()">Sign Out</button>
             </div>
         </section>
 
-        <!-- NAV -->
         <nav>
             <button class="nav active" data-page="discoverPage" onclick="showDiscover()">⌂</button>
             <button class="nav" data-page="matchesPage" onclick="showMatches()">♡</button>
@@ -350,10 +350,15 @@
         import { 
             getAuth, 
             onAuthStateChanged, 
-            signInWithPhoneNumber, 
-            RecaptchaVerifier,
-            PhoneAuthProvider,
-            signOut 
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signOut,
+            sendEmailVerification,
+            updatePassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            EmailAuthProvider,
+            reauthenticateWithCredential
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
         import { 
             getFirestore, 
@@ -364,7 +369,6 @@
             setDoc, 
             addDoc, 
             query, 
-            where, 
             orderBy, 
             limit, 
             serverTimestamp, 
@@ -375,11 +379,9 @@
             getStorage, 
             ref, 
             uploadBytesResumable, 
-            getDownloadURL,
-            deleteObject
+            getDownloadURL
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
             authDomain: "flora-veilchat.firebaseapp.com",
@@ -394,25 +396,23 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
+        const provider = new GoogleAuthProvider();
 
-        // STATE
         let currentUser = null;
         let profiles = [];
         let currentIndex = 0;
         let selectedChatUser = null;
         let unsubscribeMessages = null;
-        let verificationResolver = null;
-        let pendingPhotoURL = null;
-        let pendingVerificationPhoto = null;
         let isVerificationMode = false;
         let cameraStream = null;
         let facingMode = 'user';
         let capturedImageData = null;
+        let setupPhotoFile = null;
+        let pendingVerificationPhoto = null;
+        let authMode = "login";
 
-        // DOM REFS
         const $ = id => document.getElementById(id);
 
-        // TOAST
         function showToast(message, duration = 2500) {
             const t = $("toast");
             t.textContent = message;
@@ -421,99 +421,78 @@
             t._timeout = setTimeout(() => t.classList.remove("show"), duration);
         }
 
-        // DEFAULT PHOTO
         function defaultPhoto() {
             return "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800&q=85";
         }
 
         // ============================================================
-        // PHONE AUTH
+        // AUTH - Email/Password
         // ============================================================
-        let recaptchaVerifier = null;
-        let confirmationResult = null;
-
-        function initRecaptcha() {
-            if (!recaptchaVerifier) {
-                recaptchaVerifier = new RecaptchaVerifier(auth, 'sendOtpBtn', {
-                    size: 'invisible',
-                    callback: () => {}
-                });
+        $("switchAuth").onclick = () => {
+            if (authMode === "login") {
+                authMode = "signup";
+                $("authButton").textContent = "Create Account";
+                $("switchAuth").textContent = "Already have an account? Sign in";
+            } else {
+                authMode = "login";
+                $("authButton").textContent = "Sign In";
+                $("switchAuth").textContent = "Create a new account";
             }
-            return recaptchaVerifier;
-        }
+            $("authError").textContent = "";
+        };
 
-        $("sendOtpBtn").onclick = async () => {
-            const phoneInput = $("authPhone").value.trim();
-            if (phoneInput.length !== 10 || !/^[0-9]{10}$/.test(phoneInput)) {
-                $("authError").textContent = "Enter a valid 10-digit phone number.";
+        $("authButton").onclick = async () => {
+            const email = $("authEmail").value.trim();
+            const password = $("authPassword").value;
+            $("authError").textContent = "";
+
+            if (!email || !password) {
+                $("authError").textContent = "Enter email and password.";
                 return;
             }
-            const fullPhone = "+880" + phoneInput;
-            $("authError").textContent = "";
-            $("sendOtpBtn").disabled = true;
-            $("sendOtpBtn").textContent = "Sending...";
+            if (password.length < 6) {
+                $("authError").textContent = "Password must be at least 6 characters.";
+                return;
+            }
+
+            $("authButton").disabled = true;
+            $("authButton").textContent = "Please wait...";
 
             try {
-                const verifier = initRecaptcha();
-                confirmationResult = await signInWithPhoneNumber(auth, fullPhone, verifier);
-                $("phoneStep").classList.add("hidden");
-                $("otpStep").classList.remove("hidden");
-                $("sendOtpBtn").textContent = "Send OTP";
-                $("sendOtpBtn").disabled = false;
-                showToast("OTP sent to " + fullPhone);
-            } catch (error) {
-                console.error(error);
-                $("authError").textContent = error.message || "Failed to send OTP.";
-                $("sendOtpBtn").textContent = "Send OTP";
-                $("sendOtpBtn").disabled = false;
-                if (recaptchaVerifier) {
-                    recaptchaVerifier.clear();
-                    recaptchaVerifier = null;
+                if (authMode === "login") {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    const result = await createUserWithEmailAndPassword(auth, email, password);
+                    await sendEmailVerification(result.user);
+                    showToast("Verification email sent! Please check your inbox.");
                 }
-            }
-        };
-
-        $("verifyOtpBtn").onclick = async () => {
-            const otp = $("authOtp").value.trim();
-            if (otp.length !== 6 || !/^[0-9]{6}$/.test(otp)) {
-                $("authError").textContent = "Enter a valid 6-digit OTP.";
-                return;
-            }
-            $("authError").textContent = "";
-            $("verifyOtpBtn").disabled = true;
-            $("verifyOtpBtn").textContent = "Verifying...";
-
-            try {
-                const result = await confirmationResult.confirm(otp);
-                // User signed in
-                $("verifyOtpBtn").textContent = "Verified";
-                showToast("Phone verified successfully!");
             } catch (error) {
                 console.error(error);
-                $("authError").textContent = error.message || "Invalid OTP. Please try again.";
-                $("verifyOtpBtn").textContent = "Verify";
-                $("verifyOtpBtn").disabled = false;
+                $("authError").textContent = error.message || "Authentication failed.";
             }
+            $("authButton").disabled = false;
+            $("authButton").textContent = authMode === "login" ? "Sign In" : "Create Account";
         };
 
-        $("resendOtpBtn").onclick = async () => {
+        // ============================================================
+        // AUTH - Google Sign In
+        // ============================================================
+        $("googleSignIn").onclick = async () => {
             $("authError").textContent = "";
-            $("resendOtpBtn").disabled = true;
-            $("resendOtpBtn").textContent = "Sending...";
+            $("googleSignIn").disabled = true;
+            $("googleSignIn").textContent = "Please wait...";
+
             try {
-                const phoneInput = $("authPhone").value.trim();
-                const fullPhone = "+880" + phoneInput;
-                const verifier = initRecaptcha();
-                confirmationResult = await signInWithPhoneNumber(auth, fullPhone, verifier);
-                showToast("OTP resent to " + fullPhone);
-                $("resendOtpBtn").textContent = "Resend OTP";
-                $("resendOtpBtn").disabled = false;
+                await signInWithPopup(auth, provider);
             } catch (error) {
                 console.error(error);
-                $("authError").textContent = error.message || "Failed to resend OTP.";
-                $("resendOtpBtn").textContent = "Resend OTP";
-                $("resendOtpBtn").disabled = false;
+                $("authError").textContent = error.message || "Google sign in failed.";
             }
+            $("googleSignIn").disabled = false;
+            $("googleSignIn").innerHTML = `
+                <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                Continue with Google
+            `;
         };
 
         // ============================================================
@@ -527,28 +506,25 @@
                 $("app").classList.add("hidden");
                 $("profileSetup").classList.add("hidden");
                 $("loginScreen").classList.remove("hidden");
-                $("otpStep").classList.add("hidden");
-                $("phoneStep").classList.remove("hidden");
-                $("authOtp").value = "";
-                $("authPhone").value = "";
-                if (recaptchaVerifier) {
-                    recaptchaVerifier.clear();
-                    recaptchaVerifier = null;
-                }
                 return;
             }
 
             // Check if profile exists
             const docSnap = await getDoc(doc(db, "users", user.uid));
             if (!docSnap.exists()) {
-                // New user - show profile setup
                 $("loginScreen").classList.add("hidden");
                 $("app").classList.add("hidden");
                 $("profileSetup").classList.remove("hidden");
                 return;
             }
 
-            // Existing user - show app
+            // Check email verification for email/password users
+            if (user.providerData[0]?.providerId === "password" && !user.emailVerified) {
+                showToast("Please verify your email first. Check your inbox.");
+                await signOut(auth);
+                return;
+            }
+
             $("loginScreen").classList.add("hidden");
             $("profileSetup").classList.add("hidden");
             $("app").classList.remove("hidden");
@@ -559,12 +535,7 @@
         // ============================================================
         // PROFILE SETUP
         // ============================================================
-        let setupPhotoFile = null;
-
-        $("photoUpload").onclick = function() {
-            if (this.querySelector("img") && !this.querySelector("img").style.display === "none") {
-                // If photo exists, allow retake
-            }
+        $("photoUpload").onclick = () => {
             isVerificationMode = false;
             openCamera('profile');
         };
@@ -593,13 +564,10 @@
             $("saveProfileBtn").textContent = "Saving...";
 
             try {
-                // Upload photo
                 const photoURL = await uploadPhoto(setupPhotoFile, currentUser.uid, 'profile');
-
-                // Save profile
                 await setDoc(doc(db, "users", currentUser.uid), {
                     uid: currentUser.uid,
-                    phone: currentUser.phoneNumber || "",
+                    email: currentUser.email || "",
                     name: name,
                     age: age,
                     gender: gender,
@@ -623,11 +591,11 @@
                 showToast("Failed to create profile: " + error.message);
             }
             $("saveProfileBtn").disabled = false;
-            $("saveProfileBtn").textContent = "Save & Continue";
+            $("saveProfileBtn").textContent = "Save Profile";
         };
 
         // ============================================================
-        // PHOTO UPLOAD
+        // UPLOAD PHOTO
         // ============================================================
         async function uploadPhoto(file, uid, type) {
             const path = `users/${uid}/${type}_${Date.now()}.jpg`;
@@ -688,6 +656,8 @@
             }
         }
 
+        window.openCamera = openCamera;
+
         function closeCamera() {
             const modal = $("cameraModal");
             const video = $("cameraVideo");
@@ -698,6 +668,7 @@
             video.srcObject = null;
             modal.classList.remove("active");
         }
+        window.closeCamera = closeCamera;
 
         function switchCamera() {
             facingMode = facingMode === 'user' ? 'environment' : 'user';
@@ -717,6 +688,7 @@
                 showToast("Cannot switch camera.");
             });
         }
+        window.switchCamera = switchCamera;
 
         function capturePhoto() {
             const video = $("cameraVideo");
@@ -725,7 +697,6 @@
             canvas.height = video.videoHeight || 1280;
             const ctx = canvas.getContext('2d');
             
-            // Mirror for front camera
             if (facingMode === 'user') {
                 ctx.translate(canvas.width, 0);
                 ctx.scale(-1, 1);
@@ -735,22 +706,22 @@
             const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
             capturedImageData = dataUrl;
             
-            // Show preview
             const preview = $("camPreview");
             const previewImg = $("previewImage");
             previewImg.src = dataUrl;
             preview.classList.add("active");
         }
+        window.capturePhoto = capturePhoto;
 
         function retakePhoto() {
             $("camPreview").classList.remove("active");
             capturedImageData = null;
         }
+        window.retakePhoto = retakePhoto;
 
         function confirmPhoto() {
             if (!capturedImageData) return;
             
-            // Convert dataURL to File
             const blob = dataURLToBlob(capturedImageData);
             const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
             
@@ -759,7 +730,6 @@
                 submitVerification();
             } else {
                 setupPhotoFile = file;
-                // Show in UI
                 const img = $("setupPhoto");
                 img.src = capturedImageData;
                 img.style.display = 'block';
@@ -771,6 +741,7 @@
             closeCamera();
             capturedImageData = null;
         }
+        window.confirmPhoto = confirmPhoto;
 
         function dataURLToBlob(dataURL) {
             const parts = dataURL.split(',');
@@ -784,17 +755,10 @@
             return new Blob([u8arr], { type: mime });
         }
 
-        window.openCamera = openCamera;
-        window.closeCamera = closeCamera;
-        window.switchCamera = switchCamera;
-        window.capturePhoto = capturePhoto;
-        window.retakePhoto = retakePhoto;
-        window.confirmPhoto = confirmPhoto;
-
         // ============================================================
         // VERIFICATION
         // ============================================================
-        async function startVerification() {
+        window.startVerification = async () => {
             if (!currentUser) return;
             const docSnap = await getDoc(doc(db, "users", currentUser.uid));
             const data = docSnap.exists() ? docSnap.data() : {};
@@ -813,7 +777,7 @@
             
             isVerificationMode = true;
             openCamera('verification');
-        }
+        };
 
         async function submitVerification() {
             if (!currentUser || !pendingVerificationPhoto) return;
@@ -837,8 +801,6 @@
             }
         }
 
-        window.startVerification = startVerification;
-
         // ============================================================
         // LOAD MY PROFILE
         // ============================================================
@@ -849,7 +811,7 @@
                 if (!snap.exists()) return;
                 const data = snap.data();
 
-                $("myPhone").textContent = data.phone || currentUser.phoneNumber || "";
+                $("myEmail").textContent = data.email || currentUser.email || "";
                 $("myName").textContent = data.name || "Your Profile";
                 $("myPhoto").src = data.photoURL || defaultPhoto();
 
@@ -859,7 +821,6 @@
                 $("editCity").value = data.city || "";
                 $("editBio").value = data.bio || "";
 
-                // Verification status
                 const badge = $("verifyStatusBadge");
                 const verifyBtn = $("verifyBtn");
                 const profileBadge = $("profileVerifyBadge");
@@ -929,6 +890,36 @@
             } catch (error) {
                 console.error(error);
                 showToast("Failed to save profile.");
+            }
+        };
+
+        // ============================================================
+        // CHANGE PASSWORD
+        // ============================================================
+        window.changePassword = async () => {
+            if (!currentUser) return;
+            const currentPass = $("currentPassword").value;
+            const newPass = $("newPassword").value;
+
+            if (!currentPass || !newPass) {
+                showToast("Enter both current and new password.");
+                return;
+            }
+            if (newPass.length < 6) {
+                showToast("New password must be at least 6 characters.");
+                return;
+            }
+
+            try {
+                const credential = EmailAuthProvider.credential(currentUser.email, currentPass);
+                await reauthenticateWithCredential(currentUser, credential);
+                await updatePassword(currentUser, newPass);
+                showToast("Password updated successfully!");
+                $("currentPassword").value = "";
+                $("newPassword").value = "";
+            } catch (error) {
+                console.error(error);
+                showToast("Failed to update password: " + error.message);
             }
         };
 
@@ -1244,7 +1235,7 @@
         }, { passive: true });
 
         console.log("VEIL - Real People, Real Connections");
-        console.log("Version: 2.0 (Bangladesh Phone OTP + Selfie Only)");
+        console.log("Version: 2.0 (Email/Password + Google Sign In)");
     </script>
 </body>
 </html>
