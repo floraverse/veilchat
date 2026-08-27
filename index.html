@@ -51,15 +51,15 @@ button{border:0;cursor:pointer}
  border-radius:23px;display:flex;align-items:center;justify-content:space-between
 }
 .logo{font-size:24px;font-weight:900}.status{color:var(--muted);font-size:11px}
-.top-actions{display:flex;align-items:center;gap:8px}
+.top-right{display:flex;align-items:center;gap:8px}
 .icon-btn{
- position:relative;width:42px;height:42px;border-radius:50%;
- background:rgba(255,255,255,.58);color:var(--text);font-size:20px
+ width:42px;height:42px;border-radius:50%;
+ background:rgba(255,255,255,.6);color:var(--text);
+ position:relative;font-size:20px
 }
-.notify-badge{
- position:absolute;right:-2px;top:-3px;min-width:18px;height:18px;
- padding:0 4px;border-radius:10px;background:var(--danger);color:white;
- font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center
+.notification-dot{
+ position:absolute;right:5px;top:4px;width:9px;height:9px;
+ background:var(--danger);border-radius:50%;border:2px solid white
 }
 .top-profile{
  width:44px;height:44px;border-radius:50%;object-fit:cover;
@@ -92,9 +92,7 @@ h2,h3{margin-top:0}
 }
 .btn.danger{background:var(--danger)}.full{width:100%}
 .btn.following{background:rgba(76,158,173,.16);color:#397f8d}
-.btn.friend{
- background:rgba(76,158,173,.18);color:#397f8d
-}
+.btn.liked{background:rgba(200,93,103,.16);color:var(--danger)}
 .field{margin:13px 0}
 .field label{
  display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:700
@@ -111,12 +109,8 @@ textarea{min-height:95px;resize:vertical}
  width:min(430px,100%);text-align:center;padding:30px 22px;border-radius:30px
 }
 .login-logo{font-size:46px;font-weight:950}
-.login-text{color:var(--muted);line-height:1.5;margin:7px 0 18px}
-.country-note{
- padding:10px 13px;border-radius:14px;
- background:rgba(76,158,173,.1);font-size:12px;
- color:#397f8d;margin-bottom:22px
-}
+.login-text{color:var(--muted);line-height:1.5;margin:7px 0 8px}
+.bd-note{font-size:12px;color:var(--accent);margin-bottom:25px;font-weight:700}
 .bottom-nav{
  position:fixed;left:50%;bottom:10px;transform:translateX(-50%);
  z-index:500;width:min(696px,calc(100% - 20px));padding:7px;
@@ -130,17 +124,24 @@ textarea{min-height:95px;resize:vertical}
  color:#397f8d;background:rgba(255,255,255,.65);font-weight:800
 }
 .nav-icon{display:block;font-size:20px;line-height:22px;margin-bottom:2px}
-.search-box{position:sticky;top:78px;z-index:20;margin-bottom:8px}
+.search-box{
+ position:sticky;top:78px;z-index:20;margin:10px 0
+}
 .search-input{
- background:rgba(255,255,255,.75)!important
+ padding-left:42px;
+ background:rgba(255,255,255,.72)
+}
+.search-wrap{position:relative}
+.search-symbol{
+ position:absolute;left:15px;top:50%;transform:translateY(-50%);
+ color:var(--muted)
 }
 .user-card{
  display:flex;align-items:center;gap:12px;margin:9px 0;padding:12px;border-radius:21px
 }
 .user-card-info{flex:1;min-width:0}.user-name{font-weight:750}
 .user-meta{color:var(--muted);font-size:12px;margin-top:3px}
-.user-actions{display:flex;gap:6px;flex-shrink:0}
-.user-actions .btn{min-height:38px;padding:8px 11px;font-size:12px}
+.user-card-actions{display:flex;gap:6px;flex-shrink:0}
 .setting-row{
  display:flex;align-items:center;justify-content:space-between;
  gap:12px;padding:15px 0
@@ -167,14 +168,15 @@ textarea{min-height:95px;resize:vertical}
  display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px
 }
 .stats{
- display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:18px
+ display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px
 }
 .stat{
- padding:11px 5px;border-radius:16px;background:rgba(255,255,255,.42);
+ padding:12px 5px;border-radius:16px;background:rgba(255,255,255,.42);
  text-align:center
 }
-.stat strong{display:block;font-size:17px}.stat small{color:var(--muted);font-size:10px}
+.stat strong{display:block;font-size:18px}.stat small{color:var(--muted);font-size:10px}
 .stat.clickable{cursor:pointer}
+.stat.hidden-stat{display:none}
 .chat-card{
  height:calc(100vh - 160px);min-height:430px;
  display:flex;flex-direction:column
@@ -198,55 +200,68 @@ textarea{min-height:95px;resize:vertical}
 .message.theirs{
  background:rgba(255,255,255,.7);border-bottom-left-radius:5px
 }
-.message img{
- max-width:260px;max-height:300px;border-radius:13px;display:block
-}
-.message-time{font-size:9px;opacity:.65;margin-top:4px}
+.message-time{display:block;font-size:9px;opacity:.65;margin-top:4px}
 .composer{display:flex;gap:8px;padding-top:8px}
 .composer input{margin:0}
-.photo-send-btn{
- width:48px;height:44px;border-radius:15px;
- background:rgba(255,255,255,.68);color:var(--text);font-size:20px
+.expiry-note{
+ margin:0 0 8px;padding:8px 10px;border-radius:12px;
+ background:rgba(255,255,255,.5);color:var(--muted);
+ font-size:10px;text-align:center
 }
-.chat-notice{
- font-size:10px;line-height:1.45;color:var(--muted);
- padding:8px 10px;border-radius:13px;
- background:rgba(255,255,255,.45);margin-bottom:6px
+.toast{
+ position:fixed;z-index:10000;left:50%;bottom:95px;
+ transform:translateX(-50%);max-width:90%;padding:12px 16px;
+ border-radius:16px;background:rgba(20,42,49,.9);color:white;
+ font-size:13px;text-align:center
 }
-.pending-photo{
- display:flex;align-items:center;gap:8px;padding:8px;
- border-radius:13px;background:rgba(255,255,255,.5);
- font-size:11px;margin-bottom:6px
+.notification{
+ display:flex;gap:10px;padding:12px;border-radius:18px;
+ margin:8px 0;background:rgba(255,255,255,.42)
 }
-.pending-photo img{width:42px;height:42px;border-radius:8px;object-fit:cover}
-.notification-item{
- display:flex;gap:11px;padding:13px 2px;border-bottom:1px solid rgba(90,145,155,.12);
- cursor:pointer
-}
-.notification-item.unread{
- background:rgba(255,255,255,.28);border-radius:12px;padding-left:8px;padding-right:8px
-}
-.notification-icon{
- width:39px;height:39px;border-radius:50%;
- background:rgba(76,158,173,.13);
- display:flex;align-items:center;justify-content:center;flex-shrink:0
-}
+.notification.unread{background:rgba(255,255,255,.72)}
 .notification-text{font-size:13px;line-height:1.4}
 .notification-time{font-size:10px;color:var(--muted);margin-top:4px}
-.modal{
- position:fixed;inset:0;z-index:8000;background:rgba(15,35,40,.35);
- display:flex;align-items:flex-end;justify-content:center;padding:12px
+.notification-avatar{
+ width:43px;height:43px;border-radius:50%;object-fit:cover;flex-shrink:0
 }
-.modal-card{
- width:min(620px,100%);max-height:85vh;overflow:auto;
- border-radius:28px;padding:20px
+.empty{text-align:center;padding:30px 15px;color:var(--muted)}
+.count-line{
+ display:flex;justify-content:center;gap:15px;margin-top:12px;
+ color:var(--muted);font-size:12px
 }
-.modal-top{display:flex;justify-content:space-between;align-items:center}
-.close-btn{
- width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.6)
+
+/* For You */
+.foryou-wrap{min-height:calc(100vh - 185px);display:flex;flex-direction:column}
+.discovery-card{
+ position:relative;overflow:hidden;border-radius:30px;
+ padding:0;margin:10px 0;min-height:550px;
+ display:flex;flex-direction:column;justify-content:flex-end
 }
-.about-content{line-height:1.65;color:var(--text);white-space:pre-wrap}
+.discovery-photo{
+ position:absolute;inset:0;width:100%;height:100%;
+ object-fit:cover;background:#d9edf1;cursor:pointer
+}
+.discovery-overlay{
+ position:absolute;inset:35% 0 0;
+ background:linear-gradient(transparent,rgba(10,35,40,.86))
+}
+.discovery-info{
+ position:relative;z-index:2;color:white;padding:24px 20px;cursor:pointer
+}
+.discovery-name{font-size:27px;font-weight:850}
+.discovery-meta{font-size:13px;margin-top:7px;opacity:.9}
+.discovery-bio{font-size:14px;line-height:1.45;margin-top:10px}
+.swipe-actions{
+ display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:10px;margin:10px 0
+}
+.swipe-btn{
+ height:54px;border-radius:19px;background:rgba(255,255,255,.72);
+ color:var(--text);font-size:20px;border:1px solid var(--line)
+}
+.swipe-btn.primary{background:var(--accent);color:white}
+.swipe-btn.liked{background:var(--danger);color:white}
 .no-users{padding:40px 20px;text-align:center;color:var(--muted)}
+
 .camera-preview{
  width:180px;height:180px;border-radius:50%;object-fit:cover;
  background:#d9edf1;border:4px solid rgba(255,255,255,.9)
@@ -261,22 +276,16 @@ textarea{min-height:95px;resize:vertical}
 }
 .camera-controls{display:flex;gap:8px;justify-content:center;margin-top:10px}
 .small-note{font-size:11px;color:var(--muted);margin-top:6px}
-.search-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
-.like-btn{
- min-height:44px;padding:11px 17px;border-radius:16px;
- background:rgba(255,255,255,.65);color:var(--text);font-weight:750
-}
-.like-btn.liked{background:rgba(200,93,103,.14);color:var(--danger)}
-.profile-link{cursor:pointer}
-.profile-stat-note{
- margin-top:10px;font-size:10px;color:var(--muted)
-}
+.about-content{line-height:1.65;color:var(--text);white-space:pre-wrap}
+
 @media(max-width:480px){
  .card{padding:15px}
  .chat-card{height:calc(100vh - 145px)}
  .message{max-width:84%}
- .stats{grid-template-columns:repeat(2,1fr)}
- .user-actions{flex-direction:column}
+ .discovery-card{min-height:500px}
+ .discovery-name{font-size:24px}
+ .stats{gap:5px}
+ .user-card-actions .btn{padding:9px 10px;font-size:11px}
 }
 </style>
 </head>
@@ -293,16 +302,8 @@ textarea{min-height:95px;resize:vertical}
 <section id="loginScreen" class="login hidden">
  <div class="login-card glass">
   <div class="login-logo">Veil</div>
-
-  <p class="login-text">
-   A clean and private social experience.
-  </p>
-
-  <div class="country-note">
-   🇧🇩 <strong>Only for Bangladeshi users</strong><br>
-   Veil is currently available only to users in Bangladesh.
-  </div>
-
+  <p class="login-text">A clean and private social experience.</p>
+  <div class="bd-note">Only for users in Bangladesh</div>
   <button id="googleLoginBtn" class="btn full">
    Continue with Google
   </button>
@@ -317,11 +318,11 @@ textarea{min-height:95px;resize:vertical}
   <div id="connectionStatus" class="status">Connecting…</div>
  </div>
 
- <div class="top-actions">
+ <div class="top-right">
 
   <button id="notificationBtn" class="icon-btn" title="Notifications">
-   🔔
-   <span id="notificationBadge" class="notify-badge hidden">0</span>
+   ♧
+   <span id="notificationDot" class="notification-dot hidden"></span>
   </button>
 
   <button id="topProfileBtn" style="background:none;padding:0">
@@ -335,59 +336,50 @@ textarea{min-height:95px;resize:vertical}
 
 <!-- HOME -->
 <section id="homePage" class="page active">
-
  <div class="card glass center">
   <h2>Welcome to Veil</h2>
   <p class="status">Your account is connected.</p>
  </div>
-
  <div id="homeProfile"></div>
-
 </section>
-
 
 <!-- FOR YOU -->
 <section id="foryouPage" class="page">
 
  <div class="search-box">
-  <input
-   id="searchInput"
-   class="search-input"
-   placeholder="🔍 Search username or name"
-   autocomplete="off"
-  >
+  <div class="search-wrap">
+   <span class="search-symbol">⌕</span>
+   <input
+    id="searchInput"
+    class="search-input"
+    placeholder="Search name or username…"
+    autocomplete="off">
+  </div>
  </div>
 
  <div id="searchResults"></div>
 
- <div id="foryouArea">
+ <div id="foryouArea" class="foryou-wrap">
+  <div id="foryouCard"></div>
 
-  <div class="foryou-wrap">
-   <div id="foryouCard"></div>
-
-   <div id="foryouActions" class="swipe-actions hidden">
-    <button id="passBtn" class="swipe-btn">✕</button>
-    <button id="followForYouBtn" class="swipe-btn primary">Follow</button>
-    <button id="nextBtn" class="swipe-btn">♥</button>
-   </div>
+  <div id="foryouActions" class="swipe-actions hidden">
+   <button id="passBtn" class="swipe-btn">✕</button>
+   <button id="followForYouBtn" class="swipe-btn primary">Follow</button>
+   <button id="likeForYouBtn" class="swipe-btn">♥</button>
   </div>
-
  </div>
 
 </section>
-
 
 <!-- PROFILE -->
 <section id="profilePage" class="page">
  <div id="profileContainer"></div>
 </section>
 
-
 <!-- SETTINGS -->
 <section id="settingsPage" class="page">
 
  <div class="card glass">
-
   <h2>Settings</h2>
 
   <button id="editProfileBtn" class="btn secondary full">
@@ -406,7 +398,6 @@ textarea{min-height:95px;resize:vertical}
    <div class="setting-left">
     <div class="setting-title">Online Status</div>
    </div>
-
    <button id="onlineToggle" class="toggle">
     <span></span>
    </button>
@@ -414,20 +405,14 @@ textarea{min-height:95px;resize:vertical}
 
   <div class="divider"></div>
 
-  <button id="aboutBtn" class="btn secondary full">
-   About Veil
-  </button>
+  <button id="aboutBtn" class="btn secondary full">About Veil</button>
 
   <div class="divider"></div>
 
-  <button id="logoutBtn" class="btn danger full">
-   Sign out
-  </button>
-
+  <button id="logoutBtn" class="btn danger full">Sign out</button>
  </div>
 
 </section>
-
 
 <!-- EDIT PROFILE -->
 <section id="editPage" class="page">
@@ -441,14 +426,14 @@ textarea{min-height:95px;resize:vertical}
 
   <div class="camera-box">
 
-   <img id="editAvatar" class="camera-preview" src="" alt="Selfie">
+   <img id="editAvatar" class="camera-preview" src="" alt="Profile">
 
    <video id="cameraVideo" autoplay playsinline></video>
    <canvas id="cameraCanvas" class="hidden"></canvas>
 
    <div class="camera-controls">
     <button id="openCameraBtn" class="btn secondary">Camera</button>
-    <button id="captureBtn" class="btn hidden">Capture Selfie</button>
+    <button id="captureBtn" class="btn hidden">Capture</button>
    </div>
 
    <div class="small-note">
@@ -464,7 +449,8 @@ textarea{min-height:95px;resize:vertical}
 
   <div class="field">
    <label>Username *</label>
-   <input id="usernameInput" maxlength="30" placeholder="your_username" autocomplete="off">
+   <input id="usernameInput" maxlength="30"
+    placeholder="your_username" autocomplete="off">
   </div>
 
   <div class="field">
@@ -524,18 +510,13 @@ textarea{min-height:95px;resize:vertical}
    <input id="ageInput" type="number" min="18" max="100">
   </div>
 
-  <button id="saveProfileBtn" class="btn full">
-   Save Profile
-  </button>
+  <button id="saveProfileBtn" class="btn full">Save Profile</button>
 
  </div>
-
 </section>
-
 
 <!-- CHAT -->
 <section id="chatPage" class="page">
-
  <div class="card glass chat-card">
 
   <div class="chat-header">
@@ -547,53 +528,20 @@ textarea{min-height:95px;resize:vertical}
    </div>
   </div>
 
-  <div class="chat-notice">
-   🔒 <strong>Private Chat</strong><br>
-   Text messages that cannot be delivered expire after 24 hours.
-   Photos that cannot be delivered expire after 3 minutes.
-   Delivered chat content is stored locally on your device.
-  </div>
-
-  <div id="pendingPhoto" class="pending-photo hidden">
-   <img id="pendingPhotoPreview" src="" alt="">
-   <div style="flex:1">
-    <strong>Photo ready</strong><br>
-    <span id="pendingPhotoName">Ready to send</span>
-   </div>
-   <button id="cancelPhotoBtn" class="close-btn">×</button>
+  <div class="expiry-note">
+   Messages are temporary. Undelivered text messages expire after 24 hours.
   </div>
 
   <div id="messages" class="messages"></div>
 
   <div class="composer">
-
-   <button id="photoBtn" class="photo-send-btn" title="Send photo">
-    🖼️
-   </button>
-
-   <input
-    id="messageInput"
-    maxlength="4000"
-    placeholder="Message…"
-   >
-
-   <button id="sendBtn" class="btn">
-    Send
-   </button>
-
-   <input
-    id="photoInput"
-    type="file"
-    accept="image/*"
-    class="hidden"
-   >
-
+   <input id="messageInput" maxlength="4000"
+    placeholder="Message…">
+   <button id="sendBtn" class="btn">Send</button>
   </div>
 
  </div>
-
 </section>
-
 
 <!-- NOTIFICATIONS -->
 <section id="notificationsPage" class="page">
@@ -601,20 +549,34 @@ textarea{min-height:95px;resize:vertical}
  <div class="card glass">
 
   <div class="chat-header">
-   <button id="notificationsBackBtn" class="back-btn">‹</button>
+   <button id="notificationBackBtn" class="back-btn">‹</button>
    <h2 style="margin:0">Notifications</h2>
   </div>
 
-  <div id="notificationsContainer"></div>
+  <div id="notificationsList"></div>
 
  </div>
 
 </section>
 
+<!-- FOLLOWERS -->
+<section id="followersPage" class="page">
+
+ <div class="card glass">
+
+  <div class="chat-header">
+   <button id="followersBackBtn" class="back-btn">‹</button>
+   <h2 style="margin:0">My Followers</h2>
+  </div>
+
+  <div id="followersList"></div>
+
+ </div>
+
+</section>
 
 <!-- ABOUT -->
 <section id="aboutPage" class="page">
-
  <div class="card glass">
 
   <div class="chat-header">
@@ -625,11 +587,9 @@ textarea{min-height:95px;resize:vertical}
   <div id="aboutContent" class="about-content"></div>
 
  </div>
-
 </section>
 
 </main>
-
 
 <nav class="bottom-nav glass">
 
@@ -658,40 +618,18 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
- getAuth,
- onAuthStateChanged,
- GoogleAuthProvider,
- signInWithPopup,
- signOut,
- setPersistence,
- browserLocalPersistence
+ getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,
+ signOut,setPersistence,browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
- getFirestore,
- doc,
- getDoc,
- setDoc,
- updateDoc,
- deleteDoc,
- collection,
- query,
- where,
- orderBy,
- onSnapshot,
- addDoc,
- serverTimestamp,
- limit,
- getDocs,
- increment
+ getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,
+ collection,query,where,orderBy,onSnapshot,addDoc,
+ serverTimestamp,limit,getDocs,Timestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
- getStorage,
- ref,
- uploadBytes,
- getDownloadURL,
- deleteObject
+ getStorage,ref,uploadBytes,getDownloadURL,deleteObject
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
 
 
@@ -710,7 +648,6 @@ const firebaseConfig={
 const VERIFIED_BADGE=
 "https://floraverse.github.io/veilchat/verified.png";
 
-
 const districts=[
 "Bagerhat","Bandarban","Barguna","Barishal","Bhola","Bogura",
 "Brahmanbaria","Chandpur","Chattogram","Chuadanga","Cox's Bazar",
@@ -726,31 +663,22 @@ const districts=[
 "Tangail"
 ];
 
-
 let auth,db,storage,currentUser,currentProfile,viewingProfile;
-
-let activeChatUser;
-let unsubscribeMessages=null;
-let unsubscribeIncoming=null;
-let unsubscribeNotifications=null;
-
+let activeChatUser,unsubscribeMessages;
 let followingState=new Set();
+let likedState=new Set();
 let forYouUsers=[];
 let forYouIndex=0;
-
 let cameraStream=null;
 let capturedPhotoBlob=null;
-
-let selectedChatPhoto=null;
+let notificationUnsubscribe=null;
 
 const $=id=>document.getElementById(id);
-
 
 const esc=s=>String(s??"").replace(
  /[&<>"']/g,
  m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])
 );
-
 
 const avatar=p=>p?.photoURL||
 "data:image/svg+xml;charset=UTF-8,"+
@@ -762,85 +690,53 @@ encodeURIComponent(
  '</svg>'
 );
 
-
 const badge=p=>p?.verified===true?
 `<img class="verified" src="${VERIFIED_BADGE}" alt="Verified">`:"";
 
-
 const chatId=(a,b)=>[a,b].sort().join("_");
-
-
-function localChatKey(uid,otherUid){
- return `veil_chat_${[uid,otherUid].sort().join("_")}`;
-}
-
-
-function getLocalMessages(otherUid){
-
- try{
-
-  return JSON.parse(
-   localStorage.getItem(
-    localChatKey(currentUser.uid,otherUid)
-   )||"[]"
-  );
-
- }catch(e){
-
-  return [];
-
- }
-
-}
-
-
-function saveLocalMessages(otherUid,messages){
-
- try{
-
-  localStorage.setItem(
-   localChatKey(currentUser.uid,otherUid),
-   JSON.stringify(messages.slice(-500))
-  );
-
- }catch(e){
-
-  console.error("Local chat storage failed",e);
-
- }
-
-}
-
-
-function addLocalMessage(otherUid,message){
-
- const arr=getLocalMessages(otherUid);
-
- arr.push(message);
-
- saveLocalMessages(otherUid,arr);
-
-}
-
 
 function loading(v){
  $("loading").classList.toggle("hidden",!v);
 }
 
-
 function toast(t){
-
  $("toast").textContent=t;
-
  $("toast").classList.remove("hidden");
-
  clearTimeout(window.tt);
-
  window.tt=setTimeout(
-  ()=>$("toast").classList.add("hidden"),
-  3000
+  ()=>$("toast").classList.add("hidden"),3000
  );
+}
 
+function localChatKey(uid1,uid2){
+ return "veil_chat_"+chatId(uid1,uid2);
+}
+
+function getLocalMessages(uid1,uid2){
+ try{
+  return JSON.parse(
+   localStorage.getItem(localChatKey(uid1,uid2))||"[]"
+  );
+ }catch(e){
+  return [];
+ }
+}
+
+function saveLocalMessages(uid1,uid2,messages){
+ try{
+  localStorage.setItem(
+   localChatKey(uid1,uid2),
+   JSON.stringify(messages.slice(-500))
+  );
+ }catch(e){}
+}
+
+function cleanupLocalMessages(uid1,uid2){
+ const now=Date.now();
+ const arr=getLocalMessages(uid1,uid2)
+  .filter(m=>!m.expiresAt||m.expiresAt>now);
+ saveLocalMessages(uid1,uid2,arr);
+ return arr;
 }
 
 
@@ -861,8 +757,7 @@ function showPage(id){
   );
  });
 
- if(id==="homePage")
-  renderHome();
+ if(id==="homePage")renderHome();
 
  if(id==="profilePage")
   renderProfile(viewingProfile||currentProfile);
@@ -870,11 +765,13 @@ function showPage(id){
  if(id==="settingsPage")
   renderSettings();
 
- if(id==="foryouPage")
-  loadForYou();
+ if(id==="foryouPage"){
+  if(forYouUsers.length) renderForYou();
+  else loadForYou();
+ }
 
  if(id==="notificationsPage")
-  loadNotificationsPage();
+  loadNotifications();
 
 }
 
@@ -918,7 +815,7 @@ async function loadProfile(){
    age:"Only Me",
    phone:"Only Me",
    followers:"Public",
-   following:"Only Me",
+   following:"Public",
    online:"Public",
    messages:"Everyone"
   },
@@ -926,68 +823,131 @@ async function loadProfile(){
  };
 
  return false;
-
 }
 
-
 function updateTopProfile(){
-
  $("topProfileImage").src=avatar(currentProfile);
-
 }
 
 
 /* Home */
 
-function renderHome(){
+async function getFollowersCount(uid){
+ try{
+  const s=await getDocs(
+   query(
+    collection(db,"follows"),
+    where("followingId","==",uid),
+    limit(500)
+   )
+  );
+  return s.size;
+ }catch(e){
+  return 0;
+ }
+}
+
+async function getFollowingCount(uid){
+ try{
+  const s=await getDocs(
+   query(
+    collection(db,"follows"),
+    where("followerId","==",uid),
+    limit(500)
+   )
+  );
+  return s.size;
+ }catch(e){
+  return 0;
+ }
+}
+
+async function getFriendsCount(uid){
+ try{
+  const s=await getDocs(
+   query(
+    collection(db,"follows"),
+    where("followerId","==",uid),
+    limit(500)
+   )
+  );
+
+  let count=0;
+
+  for(const d of s.docs){
+
+   const x=d.data();
+
+   if(!x.followingId)continue;
+
+   const mutual=await getDoc(
+    doc(db,"follows",`${x.followingId}_${uid}`)
+   );
+
+   if(mutual.exists())count++;
+
+  }
+
+  return count;
+
+ }catch(e){
+  console.error(e);
+  return 0;
+ }
+}
+
+async function getLikeCount(uid){
+ try{
+  const s=await getDocs(
+   query(
+    collection(db,"likes"),
+    where("targetId","==",uid),
+    limit(500)
+   )
+  );
+  return s.size;
+ }catch(e){
+  return 0;
+ }
+}
+
+async function getVisitCount(uid){
+ try{
+  const s=await getDocs(
+   query(
+    collection(db,"profileVisits"),
+    where("profileId","==",uid),
+    limit(1000)
+   )
+  );
+  return s.size;
+ }catch(e){
+  return 0;
+ }
+}
+
+async function renderHome(){
 
  const p=currentProfile;
 
  $("homeProfile").innerHTML=`
  <div class="card glass center">
-
-  <img
-   class="avatar profile-link"
-   src="${esc(avatar(p))}"
-   alt=""
-   id="homeProfileAvatar"
-  >
-
-  <div class="profile-name profile-link" id="homeProfileName">
+  <img class="avatar" src="${esc(avatar(p))}" alt="">
+  <div class="profile-name">
    ${esc(p.name)}${badge(p)}
   </div>
-
-  <div class="username">
-   @${esc(p.username)}
-  </div>
-
+  <div class="username">@${esc(p.username)}</div>
   <div class="profile-basic">
    ${esc(p.gender)} · ${esc(p.district)}
   </div>
-
  </div>`;
-
- $("homeProfileAvatar").onclick=()=>{
-  viewingProfile=currentProfile;
-  showPage("profilePage");
- };
-
- $("homeProfileName").onclick=()=>{
-  viewingProfile=currentProfile;
-  showPage("profilePage");
- };
 
 }
 
 
 /* Privacy */
 
-const privacyOptions=[
- "Public",
- "Friends",
- "Only Me"
-];
-
+const privacyOptions=["Public","Friends","Only Me"];
 
 function privacySelect(key,label){
 
@@ -996,7 +956,6 @@ function privacySelect(key,label){
 
  return `
  <div class="setting-row">
-
   <div class="setting-left">
    <div class="setting-title">${label}</div>
   </div>
@@ -1004,15 +963,11 @@ function privacySelect(key,label){
   <button
    class="setting-value"
    data-privacy="${key}"
-   type="button"
-  >
+   type="button">
    ${esc(value)} <span>⌄</span>
   </button>
-
  </div>`;
-
 }
-
 
 function messagePrivacySelect(){
 
@@ -1021,27 +976,24 @@ function messagePrivacySelect(){
 
  return `
  <div class="setting-row">
-
   <div class="setting-left">
    <div class="setting-title">Who can message me?</div>
   </div>
 
   <button
    class="setting-value"
-   id="messagePrivacyBtn"
-   type="button"
-  >
+   data-message-privacy
+   type="button">
    ${esc(value)} <span>⌄</span>
   </button>
-
  </div>`;
-
 }
 
+const messagePrivacyOptions=[
+ "Everyone","Followers","Friends","Only Me"
+];
 
 function renderSettings(){
-
- const v=currentProfile.visibility||{};
 
  $("privacyContainer").innerHTML=
   privacySelect("bio","Bio")+
@@ -1050,13 +1002,13 @@ function renderSettings(){
   privacySelect("followers","Followers")+
   messagePrivacySelect();
 
- const online=v.online||"Public";
+ const online=
+  currentProfile.visibility?.online||"Public";
 
  $("onlineToggle").classList.toggle(
   "on",
   online!=="Only Me"
  );
-
 
  document.querySelectorAll("[data-privacy]")
  .forEach(btn=>{
@@ -1098,47 +1050,45 @@ function renderSettings(){
 
  });
 
+ const msgBtn=$("[data-message-privacy]");
 
- $("messagePrivacyBtn").onclick=async()=>{
+ if(msgBtn){
 
-  const options=[
-   "Everyone",
-   "Followers",
-   "Friends",
-   "Only Me"
-  ];
+  msgBtn.onclick=async()=>{
 
-  const current=
-   currentProfile.visibility?.messages||"Everyone";
+   const current=
+    currentProfile.visibility?.messages||"Everyone";
 
-  const next=
-   options[
-    (options.indexOf(current)+1)%options.length
-   ];
+   const next=
+    messagePrivacyOptions[
+     (messagePrivacyOptions.indexOf(current)+1)%
+     messagePrivacyOptions.length
+    ];
 
-  currentProfile.visibility={
-   ...(currentProfile.visibility||{}),
-   messages:next
+   currentProfile.visibility={
+    ...(currentProfile.visibility||{}),
+    messages:next
+   };
+
+   try{
+
+    await updateDoc(
+     doc(db,"users",currentUser.uid),
+     {visibility:currentProfile.visibility}
+    );
+
+    renderSettings();
+
+   }catch(e){
+
+    console.error(e);
+    toast("Message privacy update failed.");
+
+   }
+
   };
 
-  try{
-
-   await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {visibility:currentProfile.visibility}
-   );
-
-   renderSettings();
-
-  }catch(e){
-
-   console.error(e);
-   toast("Message privacy update failed.");
-
-  }
-
- };
-
+ }
 
  $("onlineToggle").onclick=async()=>{
 
@@ -1178,28 +1128,218 @@ function renderSettings(){
 
 async function canSeeField(owner,key){
 
- if(owner.uid===currentUser.uid)
-  return true;
+ if(owner.uid===currentUser.uid)return true;
 
  const setting=
   owner.visibility?.[key]||"Only Me";
 
- if(setting==="Public")
-  return true;
+ if(setting==="Public")return true;
 
- if(setting==="Only Me")
-  return false;
+ if(setting==="Only Me")return false;
 
  if(setting==="Friends"){
 
-  return await areFriends(
-   currentUser.uid,
-   owner.uid
+  const a=await getDoc(
+   doc(db,"follows",`${currentUser.uid}_${owner.uid}`)
   );
 
+  const b=await getDoc(
+   doc(db,"follows",`${owner.uid}_${currentUser.uid}`)
+  );
+
+  return a.exists()&&b.exists();
  }
 
  return false;
+}
+
+
+/* Profile */
+
+async function registerProfileVisit(p){
+
+ if(!p||p.uid===currentUser.uid)return;
+
+ const id=`${currentUser.uid}_${p.uid}`;
+
+ try{
+
+  const r=doc(db,"profileVisits",id);
+  const existing=await getDoc(r);
+
+  if(!existing.exists()){
+
+   await setDoc(r,{
+    visitorId:currentUser.uid,
+    profileId:p.uid,
+    createdAt:serverTimestamp()
+   });
+
+  }
+
+ }catch(e){
+  console.error(e);
+ }
+}
+
+async function renderProfile(p){
+
+ if(!p)return;
+
+ const me=p.uid===currentUser.uid;
+
+ if(!me)
+  registerProfileVisit(p);
+
+ let bio="";
+ let age="";
+ let phone="";
+
+ if(await canSeeField(p,"bio")&&p.bio)
+  bio=`<div class="bio">${esc(p.bio)}</div>`;
+
+ if(await canSeeField(p,"age")&&p.age)
+  age=`<div class="status" style="margin-top:10px">
+   Age ${esc(p.age)}
+  </div>`;
+
+ if(await canSeeField(p,"phone")&&p.phone)
+  phone=`<div class="status" style="margin-top:6px">
+   ${esc(p.phone)}
+  </div>`;
+
+ const followers=await getFollowersCount(p.uid);
+ const friends=await getFriendsCount(p.uid);
+ const likes=await getLikeCount(p.uid);
+ const visits=await getVisitCount(p.uid);
+
+ let isFollowing=false;
+ let mutual=false;
+ let liked=false;
+
+ if(!me){
+
+  isFollowing=followingState.has(p.uid);
+  liked=likedState.has(p.uid);
+
+  const reverse=await getDoc(
+   doc(db,"follows",`${p.uid}_${currentUser.uid}`)
+  );
+
+  mutual=
+   isFollowing&&reverse.exists();
+
+ }
+
+ let action="";
+
+ if(me){
+
+  action=`
+   <button id="profileLikeBtn"
+    class="btn ${liked?"liked":""}">
+    ♥ ${likes}
+   </button>`;
+
+ }else{
+
+  action=`
+   <button id="profileFollowBtn"
+    class="btn ${isFollowing?"following":""}">
+    ${mutual?"Friends ✓":isFollowing?"Following":"Follow"}
+   </button>
+
+   <button id="profileLikeBtn"
+    class="btn ${liked?"liked":""}">
+    ♥
+   </button>
+
+   <button id="profileMessageBtn"
+    class="btn secondary">
+    Message
+   </button>`;
+ }
+
+ $("profileContainer").innerHTML=`
+ <div class="card glass center">
+
+  <img id="profileMainPhoto"
+   class="avatar"
+   src="${esc(avatar(p))}"
+   alt="">
+
+  <div class="profile-name">
+   ${esc(p.name)}${badge(p)}
+  </div>
+
+  <div class="username">
+   @${esc(p.username)}
+  </div>
+
+  <div class="profile-basic">
+   ${esc(p.gender)} ·
+   ${esc(p.district)} ·
+   ${esc(p.thana)}
+  </div>
+
+  ${bio}
+  ${age}
+  ${phone}
+
+  <div class="stats">
+
+   <div id="followersStat"
+    class="stat clickable">
+    <strong>${followers}</strong>
+    <small>Followers</small>
+   </div>
+
+   <div class="stat">
+    <strong>${friends}</strong>
+    <small>Friends</small>
+   </div>
+
+   <div class="stat">
+    <strong>${visits}</strong>
+    <small>Visits</small>
+   </div>
+
+  </div>
+
+  <div class="count-line">
+   <span>♥ ${likes} Likes</span>
+  </div>
+
+  <div class="profile-actions">
+   ${action}
+  </div>
+
+ </div>`;
+
+ $("followersStat").onclick=()=>{
+
+  if(me)
+   showFollowers();
+
+ };
+
+ if(!me){
+
+  $("profileFollowBtn").onclick=
+   ()=>toggleFollow(p);
+
+  $("profileLikeBtn").onclick=
+   ()=>toggleLike(p);
+
+  $("profileMessageBtn").onclick=
+   ()=>startChat(p);
+
+ }else{
+
+  $("profileLikeBtn").onclick=
+   ()=>toggleLike(p);
+
+ }
 
 }
 
@@ -1238,190 +1378,92 @@ async function loadFollowing(){
 }
 
 
-async function isFollowing(uid){
+/* Likes */
 
- return followingState.has(uid);
+async function loadLikes(){
 
-}
-
-
-async function areFriends(a,b){
-
- try{
-
-  const one=await getDoc(
-   doc(db,"follows",`${a}_${b}`)
-  );
-
-  const two=await getDoc(
-   doc(db,"follows",`${b}_${a}`)
-  );
-
-  return one.exists()&&two.exists();
-
- }catch(e){
-
-  return false;
-
- }
-
-}
-
-
-async function getFollowersCount(uid){
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followingId","==",uid),
-    limit(1000)
-   )
-  );
-
-  return s.size;
-
- }catch(e){
-
-  console.error(e);
-  return 0;
-
- }
-
-}
-
-
-async function getFollowingCount(uid){
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followerId","==",uid),
-    limit(1000)
-   )
-  );
-
-  return s.size;
-
- }catch(e){
-
-  return 0;
-
- }
-
-}
-
-
-async function getFriendsCount(uid){
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followerId","==",uid),
-    limit(1000)
-   )
-  );
-
-  let count=0;
-
-  for(const d of s.docs){
-
-   const x=d.data();
-
-   if(!x.followingId)
-    continue;
-
-   const back=await getDoc(
-    doc(db,"follows",`${x.followingId}_${uid}`)
-   );
-
-   if(back.exists())
-    count++;
-
-  }
-
-  return count;
-
- }catch(e){
-
-  console.error(e);
-  return 0;
-
- }
-
-}
-
-
-async function getLikesCount(uid){
+ likedState=new Set();
 
  try{
 
   const s=await getDocs(
    query(
     collection(db,"likes"),
-    where("targetId","==",uid),
-    limit(1000)
+    where("likerId","==",currentUser.uid),
+    limit(500)
    )
   );
 
-  return s.size;
+  s.forEach(d=>{
+
+   const x=d.data();
+
+   if(x.targetId)
+    likedState.add(x.targetId);
+
+  });
 
  }catch(e){
 
-  return 0;
+  console.error(e);
 
  }
 
 }
 
+async function createNotification(
+ recipientId,
+ type,
+ actor,
+ text
+){
 
-async function hasLiked(uid){
+ if(!recipientId||
+    recipientId===currentUser.uid)return;
 
  try{
 
-  const s=await getDoc(
-   doc(
+  await addDoc(
+   collection(
     db,
-    "likes",
-    `${currentUser.uid}_${uid}`
-   )
+    "notifications"
+   ),
+   {
+    recipientId,
+    actorId:currentUser.uid,
+    actorName:actor?.name||currentUser.displayName||"",
+    actorUsername:actor?.username||"",
+    actorPhoto:actor?.photoURL||currentUser.photoURL||"",
+    type,
+    text,
+    read:false,
+    createdAt:serverTimestamp()
+   }
   );
-
-  return s.exists();
 
  }catch(e){
 
-  return false;
+  console.error("notification",e);
 
  }
 
 }
-
 
 async function toggleLike(p){
 
- if(!p||p.uid===currentUser.uid)
-  return;
+ if(!p||p.uid===currentUser.uid)return;
 
- const id=
-  `${currentUser.uid}_${p.uid}`;
-
+ const id=`${currentUser.uid}_${p.uid}`;
  const r=doc(db,"likes",id);
+
+ const isLiked=likedState.has(p.uid);
 
  try{
 
-  const existing=await getDoc(r);
-
-  if(existing.exists()){
+  if(isLiked){
 
    await deleteDoc(r);
-
-   toast("Like removed.");
+   likedState.delete(p.uid);
 
   }else{
 
@@ -1431,18 +1473,21 @@ async function toggleLike(p){
     createdAt:serverTimestamp()
    });
 
+   likedState.add(p.uid);
+
    await createNotification(
     p.uid,
     "like",
-    `${currentProfile.name||"Someone"} liked your profile.`,
-    currentUser.uid
+    currentProfile,
+    "liked your profile."
    );
-
-   toast("Liked.");
 
   }
 
-  await renderProfile(p);
+  if(viewingProfile?.uid===p.uid)
+   renderProfile(p);
+
+  renderForYou();
 
  }catch(e){
 
@@ -1454,24 +1499,23 @@ async function toggleLike(p){
 }
 
 
+/* Follow */
+
 async function toggleFollow(p){
 
- if(!p||p.uid===currentUser.uid)
-  return;
+ if(!p||p.uid===currentUser.uid)return;
 
  const id=`${currentUser.uid}_${p.uid}`;
-
  const r=doc(db,"follows",id);
 
- const wasFollowing=
+ const isFollowing=
   followingState.has(p.uid);
 
  try{
 
-  if(wasFollowing){
+  if(isFollowing){
 
    await deleteDoc(r);
-
    followingState.delete(p.uid);
 
    toast("Unfollowed.");
@@ -1489,30 +1533,28 @@ async function toggleFollow(p){
    await createNotification(
     p.uid,
     "follow",
-    `${currentProfile.name||"Someone"} started following you.`,
-    currentUser.uid
+    currentProfile,
+    "started following you."
    );
 
-   const mutual=
-    await areFriends(
-     currentUser.uid,
-     p.uid
-    );
+   const reverse=await getDoc(
+    doc(db,"follows",`${p.uid}_${currentUser.uid}`)
+   );
 
-   if(mutual){
+   if(reverse.exists()){
 
     await createNotification(
      p.uid,
      "friend",
-     `You and ${currentProfile.name||"this user"} are now Friends.`,
-     currentUser.uid
+     currentProfile,
+     "you are now Friends."
     );
 
     await createNotification(
      currentUser.uid,
      "friend",
-     `You and ${p.name||"this user"} are now Friends.`,
-     p.uid
+     p,
+     "you are now Friends."
     );
 
     toast("You are now Friends ✓");
@@ -1525,351 +1567,17 @@ async function toggleFollow(p){
 
   }
 
-  await renderProfile(p);
+  await loadFollowing();
+
+  if(viewingProfile?.uid===p.uid)
+   renderProfile(p);
+
+  renderForYou();
 
  }catch(e){
 
   console.error(e);
   toast("Follow could not be updated.");
-
- }
-
-}
-
-
-/* Profile views */
-
-async function registerProfileView(owner){
-
- if(!owner||owner.uid===currentUser.uid)
-  return;
-
- const id=
-  `${owner.uid}_${currentUser.uid}`;
-
- try{
-
-  const r=doc(
-   db,
-   "profileViews",
-   id
-  );
-
-  const existing=await getDoc(r);
-
-  if(!existing.exists()){
-
-   await setDoc(r,{
-    profileOwnerId:owner.uid,
-    viewerId:currentUser.uid,
-    createdAt:serverTimestamp()
-   });
-
-   await setDoc(
-    doc(db,"users",owner.uid),
-    {
-     profileViewsCount:increment(1)
-    },
-    {merge:true}
-   );
-
-  }
-
- }catch(e){
-
-  console.error("Profile view failed",e);
-
- }
-
-}
-
-
-/* Followers list */
-
-async function showMyFollowers(){
-
- if(viewingProfile?.uid!==currentUser.uid)
-  return;
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followingId","==",currentUser.uid),
-    limit(500)
-   )
-  );
-
-  const users=[];
-
-  for(const d of s.docs){
-
-   const x=d.data();
-
-   if(!x.followerId)
-    continue;
-
-   const p=await getDoc(
-    doc(db,"users",x.followerId)
-   );
-
-   if(p.exists())
-    users.push({
-     uid:p.id,
-     ...p.data()
-    });
-
-  }
-
-  $("modalContent").innerHTML=`
-
-   <div class="modal-top">
-    <h3>My Followers</h3>
-    <button id="closeModalBtn" class="close-btn">×</button>
-   </div>
-
-   ${
-    users.length
-    ?users.map(p=>`
-
-     <div class="user-card glass">
-
-      <img
-       class="avatar small profile-link"
-       src="${esc(avatar(p))}"
-      >
-
-      <div class="user-card-info">
-       <div class="user-name profile-link">
-        ${esc(p.name)}${badge(p)}
-       </div>
-
-       <div class="user-meta">
-        @${esc(p.username)}
-       </div>
-      </div>
-
-     </div>
-
-    `).join("")
-    :`<div class="search-empty">
-       You don't have any followers yet.
-      </div>`
-   }
-  `;
-
-  $("closeModalBtn").onclick=closeModal;
-
-  document.querySelectorAll("#modalContent .profile-link")
-  .forEach((el,i)=>{
-
-   el.onclick=()=>{
-
-    const p=users[i];
-
-    closeModal();
-
-    viewingProfile=p;
-
-    showPage("profilePage");
-
-   };
-
-  });
-
-  openModal();
-
- }catch(e){
-
-  console.error(e);
-  toast("Followers could not be loaded.");
-
- }
-
-}
-
-
-/* Profile */
-
-async function renderProfile(p){
-
- if(!p)
-  return;
-
- const me=p.uid===currentUser.uid;
-
- if(!me)
-  await registerProfileView(p);
-
- let bio="";
- let age="";
- let phone="";
-
- if(await canSeeField(p,"bio")&&p.bio)
-  bio=`<div class="bio">${esc(p.bio)}</div>`;
-
- if(await canSeeField(p,"age")&&p.age)
-  age=`
-   <div class="status" style="margin-top:10px">
-    Age ${esc(p.age)}
-   </div>`;
-
- if(await canSeeField(p,"phone")&&p.phone)
-  phone=`
-   <div class="status" style="margin-top:6px">
-    ${esc(p.phone)}
-   </div>`;
-
- const followers=
-  await getFollowersCount(p.uid);
-
- const friends=
-  await getFriendsCount(p.uid);
-
- const likes=
-  await getLikesCount(p.uid);
-
- const views=
-  Number(p.profileViewsCount||0);
-
- const liked=
-  !me&&await hasLiked(p.uid);
-
- let action="";
-
- if(me){
-
-  action=`
-   <button id="profileEditBtn" class="btn secondary">
-    Edit Profile
-   </button>
-
-   <button id="profileFollowersBtn" class="btn secondary">
-    My Followers
-   </button>`;
-
- }else{
-
-  const following=
-   followingState.has(p.uid);
-
-  const friendsNow=
-   await areFriends(
-    currentUser.uid,
-    p.uid
-   );
-
-  action=`
-
-   <button id="profileFollowBtn"
-    class="btn ${friendsNow?"friend":following?"following":""}">
-    ${friendsNow?"Friends ✓":following?"Following":"Follow"}
-   </button>
-
-   <button id="profileMessageBtn"
-    class="btn secondary">
-    Message
-   </button>
-
-   <button id="profileLikeBtn"
-    class="like-btn ${liked?"liked":""}">
-    ${liked?"♥ Liked":"♡ Like"}
-   </button>
-  `;
-
- }
-
- $("profileContainer").innerHTML=`
-
- <div class="card glass center">
-
-  <img
-   id="profileMainAvatar"
-   class="avatar"
-   src="${esc(avatar(p))}"
-   alt=""
-  >
-
-  <div
-   id="profileMainName"
-   class="profile-name"
-  >
-   ${esc(p.name)}${badge(p)}
-  </div>
-
-  <div class="username">
-   @${esc(p.username)}
-  </div>
-
-  <div class="profile-basic">
-   ${esc(p.gender)} ·
-   ${esc(p.district)} ·
-   ${esc(p.thana)}
-  </div>
-
-  ${bio}
-  ${age}
-  ${phone}
-
-  <div class="stats">
-
-   <div
-    class="stat ${me?"clickable":""}"
-    id="${me?"followersStat":""}"
-   >
-    <strong>${followers}</strong>
-    <small>Followers</small>
-   </div>
-
-   <div class="stat">
-    <strong>${friends}</strong>
-    <small>Friends</small>
-   </div>
-
-   <div class="stat">
-    <strong>${views}</strong>
-    <small>Views</small>
-   </div>
-
-   <div class="stat">
-    <strong>${likes}</strong>
-    <small>Likes</small>
-   </div>
-
-  </div>
-
-  <div class="profile-stat-note">
-   Following count and following list are private.
-  </div>
-
-  <div class="profile-actions">
-   ${action}
-  </div>
-
- </div>`;
-
- if(me){
-
-  $("profileEditBtn").onclick=
-   openEdit;
-
-  $("profileFollowersBtn").onclick=
-   showMyFollowers;
-
-  $("followersStat").onclick=
-   showMyFollowers;
-
- }else{
-
-  $("profileFollowBtn").onclick=
-   ()=>toggleFollow(p);
-
-  $("profileMessageBtn").onclick=
-   ()=>startChat(p);
-
-  $("profileLikeBtn").onclick=
-   ()=>toggleLike(p);
 
  }
 
@@ -1920,13 +1628,9 @@ async function loadForYou(){
 
 }
 
-
 function currentForYou(){
-
  return forYouUsers[forYouIndex]||null;
-
 }
-
 
 function renderForYou(){
 
@@ -1940,29 +1644,26 @@ function renderForYou(){
    </div>`;
 
   $("foryouActions").classList.add("hidden");
-
   return;
 
  }
 
+ const isFollowing=followingState.has(p.uid);
+ const isLiked=likedState.has(p.uid);
+
  $("foryouCard").innerHTML=`
  <div class="discovery-card glass">
 
-  <img
-   id="forYouPhoto"
-   class="discovery-photo"
+  <img class="discovery-photo"
    src="${esc(avatar(p))}"
    alt=""
-  >
+   id="forYouPhoto">
 
   <div class="discovery-overlay"></div>
 
-  <div class="discovery-info">
+  <div class="discovery-info" id="forYouInfo">
 
-   <div
-    id="forYouName"
-    class="discovery-name profile-link"
-   >
+   <div class="discovery-name">
     ${esc(p.name)}${badge(p)}
    </div>
 
@@ -1985,20 +1686,23 @@ function renderForYou(){
   showPage("profilePage");
  };
 
- $("forYouName").onclick=()=>{
+ $("forYouInfo").onclick=()=>{
   viewingProfile=p;
   showPage("profilePage");
  };
-
- const isFollowing=
-  followingState.has(p.uid);
 
  $("followForYouBtn").textContent=
   isFollowing?"Following":"Follow";
 
  $("followForYouBtn").classList.toggle(
-  "following",
-  isFollowing
+  "following",isFollowing
+ );
+
+ $("likeForYouBtn").textContent=
+  isLiked?"♥ Liked":"♥";
+
+ $("likeForYouBtn").classList.toggle(
+  "liked",isLiked
  );
 
  $("foryouActions").classList.remove("hidden");
@@ -2006,33 +1710,19 @@ function renderForYou(){
  $("followForYouBtn").onclick=
   ()=>toggleFollow(p);
 
-}
+ $("likeForYouBtn").onclick=
+  ()=>toggleLike(p);
 
+}
 
 function nextForYou(){
 
  forYouIndex++;
-
  renderForYou();
 
 }
 
-
 $("passBtn").onclick=nextForYou;
-
-$("nextBtn").onclick=async()=>{
-
- const p=currentForYou();
-
- if(p){
-
-  await toggleLike(p);
-
- }
-
- nextForYou();
-
-};
 
 
 /* Search */
@@ -2044,14 +1734,13 @@ $("searchInput").oninput=()=>{
  clearTimeout(searchTimer);
 
  searchTimer=setTimeout(
-  searchUsers,
-  350
+  performSearch,
+  250
  );
 
 };
 
-
-async function searchUsers(){
+async function performSearch(){
 
  const term=
   $("searchInput").value.trim().toLowerCase();
@@ -2060,7 +1749,6 @@ async function searchUsers(){
 
   $("searchResults").innerHTML="";
   $("foryouArea").classList.remove("hidden");
-
   return;
 
  }
@@ -2068,158 +1756,153 @@ async function searchUsers(){
  $("foryouArea").classList.add("hidden");
 
  $("searchResults").innerHTML=
-  `<div class="card glass search-empty">
-    Searching…
-   </div>`;
+  `<div class="card glass empty">Searching…</div>`;
 
  try{
 
   const s=await getDocs(
    query(
     collection(db,"users"),
-    limit(300)
+    limit(100)
    )
   );
 
   const results=s.docs
    .map(d=>({uid:d.id,...d.data()}))
-   .filter(p=>{
-
-    if(p.uid===currentUser.uid)
-     return false;
-
-    const username=
-     String(p.usernameLower||p.username||"").toLowerCase();
-
-    const name=
-     String(p.nameLower||p.name||"").toLowerCase();
-
-    return username.includes(term)||name.includes(term);
-
-   })
+   .filter(p=>
+    p.uid!==currentUser.uid &&
+    (
+     String(p.name||"").toLowerCase().includes(term)||
+     String(p.username||"").toLowerCase().includes(term)||
+     String(p.usernameLower||"").includes(term)
+    )
+   )
    .slice(0,30);
 
   if(!results.length){
 
    $("searchResults").innerHTML=
-    `<div class="card glass search-empty">
-      No user found.
-     </div>`;
+    `<div class="card glass empty">
+     No user found.
+    </div>`;
 
    return;
 
   }
 
   $("searchResults").innerHTML=
-   results.map(p=>`
+   results.map(p=>{
 
-    <div
-     class="user-card glass"
-     data-user-id="${esc(p.uid)}"
-    >
+    const following=
+     followingState.has(p.uid);
+
+    return `
+    <div class="user-card glass">
 
      <img
       class="avatar small search-profile"
+      data-uid="${esc(p.uid)}"
       src="${esc(avatar(p))}"
-      alt=""
-     >
+      alt="">
 
-     <div class="user-card-info search-profile">
+     <div class="user-card-info search-profile"
+      data-uid="${esc(p.uid)}">
+
       <div class="user-name">
        ${esc(p.name)}${badge(p)}
       </div>
+
       <div class="user-meta">
-       @${esc(p.username)}
+       @${esc(p.username)} · ${esc(p.district||"")}
       </div>
+
      </div>
 
-     <div class="user-actions">
+     <div class="user-card-actions">
 
       <button
        class="btn secondary search-message"
-       data-id="${esc(p.uid)}"
-      >
+       data-uid="${esc(p.uid)}">
        Message
       </button>
 
       <button
-       class="btn search-follow"
-       data-id="${esc(p.uid)}"
-      >
-       ${followingState.has(p.uid)?"Following":"Follow"}
+       class="btn ${following?"following":""} search-follow"
+       data-uid="${esc(p.uid)}">
+       ${following?"Following":"Follow"}
       </button>
 
      </div>
 
-    </div>
-
-   `).join("");
+    </div>`;
+   }).join("");
 
   document.querySelectorAll(".search-profile")
-  .forEach(el=>{
+   .forEach(el=>{
 
-   el.onclick=()=>{
+    el.onclick=()=>{
 
-    const uid=el.closest(".user-card").dataset.userId;
+     const p=results.find(
+      x=>x.uid===el.dataset.uid
+     );
 
-    const p=results.find(x=>x.uid===uid);
+     if(p){
 
-    if(p){
+      viewingProfile=p;
+      showPage("profilePage");
 
-     viewingProfile=p;
-     showPage("profilePage");
+     }
 
-    }
+    };
 
-   };
-
-  });
-
-
-  document.querySelectorAll(".search-message")
-  .forEach(btn=>{
-
-   btn.onclick=()=>{
-
-    const p=results.find(
-     x=>x.uid===btn.dataset.id
-    );
-
-    if(p)
-     startChat(p);
-
-   };
-
-  });
-
+   });
 
   document.querySelectorAll(".search-follow")
-  .forEach(btn=>{
+   .forEach(btn=>{
 
-   btn.onclick=async()=>{
+    btn.onclick=async e=>{
 
-    const p=results.find(
-     x=>x.uid===btn.dataset.id
-    );
+     e.stopPropagation();
 
-    if(p){
+     const p=results.find(
+      x=>x.uid===btn.dataset.uid
+     );
 
-     await toggleFollow(p);
+     if(p){
 
-     searchUsers();
+      await toggleFollow(p);
+      performSearch();
 
-    }
+     }
 
-   };
+    };
 
-  });
+   });
+
+  document.querySelectorAll(".search-message")
+   .forEach(btn=>{
+
+    btn.onclick=async e=>{
+
+     e.stopPropagation();
+
+     const p=results.find(
+      x=>x.uid===btn.dataset.uid
+     );
+
+     if(p)
+      startChat(p);
+
+    };
+
+   });
 
  }catch(e){
 
   console.error(e);
 
   $("searchResults").innerHTML=
-   `<div class="card glass search-empty">
+   `<div class="card glass empty">
     Search failed.
    </div>`;
 
@@ -2228,15 +1911,520 @@ async function searchUsers(){
 }
 
 
-/* Message privacy */
+/* Followers */
 
-async function canMessage(receiver){
+async function showFollowers(){
 
- if(receiver.uid===currentUser.uid)
+ if(!currentUser)return;
+
+ showPage("followersPage");
+
+ $("followersList").innerHTML=
+  `<div class="empty">Loading followers…</div>`;
+
+ try{
+
+  const s=await getDocs(
+   query(
+    collection(db,"follows"),
+    where("followingId","==",currentUser.uid),
+    limit(500)
+   )
+  );
+
+  if(!s.size){
+
+   $("followersList").innerHTML=
+    `<div class="empty">No followers yet.</div>`;
+
+   return;
+
+  }
+
+  const people=[];
+
+  for(const d of s.docs){
+
+   const x=d.data();
+
+   if(!x.followerId)continue;
+
+   const u=await getDoc(
+    doc(db,"users",x.followerId)
+   );
+
+   if(u.exists())
+    people.push({
+     uid:u.id,
+     ...u.data()
+    });
+
+  }
+
+  $("followersList").innerHTML=
+   people.map(p=>`
+    <div class="user-card glass">
+
+     <img
+      class="avatar small follower-profile"
+      data-uid="${esc(p.uid)}"
+      src="${esc(avatar(p))}">
+
+     <div
+      class="user-card-info follower-profile"
+      data-uid="${esc(p.uid)}">
+
+      <div class="user-name">
+       ${esc(p.name)}${badge(p)}
+      </div>
+
+      <div class="user-meta">
+       @${esc(p.username)}
+      </div>
+
+     </div>
+
+     <button
+      class="btn secondary follower-message"
+      data-uid="${esc(p.uid)}">
+      Message
+     </button>
+
+    </div>
+   `).join("");
+
+  document.querySelectorAll(".follower-profile")
+   .forEach(el=>{
+
+    el.onclick=async()=>{
+
+     const p=people.find(
+      x=>x.uid===el.dataset.uid
+     );
+
+     if(p){
+
+      viewingProfile=p;
+      showPage("profilePage");
+
+     }
+
+    };
+
+   });
+
+  document.querySelectorAll(".follower-message")
+   .forEach(btn=>{
+
+    btn.onclick=()=>{
+
+     const p=people.find(
+      x=>x.uid===btn.dataset.uid
+     );
+
+     if(p)startChat(p);
+
+    };
+
+   });
+
+ }catch(e){
+
+  console.error(e);
+
+  $("followersList").innerHTML=
+   `<div class="empty">
+    Unable to load followers.
+   </div>`;
+
+ }
+
+}
+
+
+/* Edit Profile */
+
+function openEdit(){
+
+ capturedPhotoBlob=null;
+
+ $("editAvatar").src=avatar(currentProfile);
+
+ $("nameInput").value=currentProfile.name||"";
+ $("usernameInput").value=currentProfile.username||"";
+ $("genderInput").value=currentProfile.gender||"";
+ $("dobInput").value=currentProfile.dateOfBirth||"";
+ $("districtInput").value=currentProfile.district||"";
+ $("thanaInput").value=currentProfile.thana||"";
+ $("postOfficeInput").value=currentProfile.postOffice||"";
+ $("postalCodeInput").value=currentProfile.postalCode||"";
+ $("phoneInput").value=currentProfile.phone||"";
+ $("nidInput").value=currentProfile.nidNumber||"";
+ $("bioInput").value=currentProfile.bio||"";
+ $("ageInput").value=currentProfile.age||"";
+
+ showPage("editPage");
+
+}
+
+
+/* Camera */
+
+async function openCamera(){
+
+ try{
+
+  cameraStream=
+   await navigator.mediaDevices.getUserMedia({
+    video:{facingMode:"user"},
+    audio:false
+   });
+
+  $("cameraVideo").srcObject=cameraStream;
+  $("cameraVideo").style.display="block";
+  $("editAvatar").classList.add("hidden");
+  $("captureBtn").classList.remove("hidden");
+
+ }catch(e){
+
+  console.error(e);
+  toast("Camera permission is required.");
+
+ }
+
+}
+
+function stopCamera(){
+
+ if(cameraStream){
+
+  cameraStream.getTracks().forEach(t=>t.stop());
+  cameraStream=null;
+
+ }
+
+ $("cameraVideo").style.display="none";
+ $("captureBtn").classList.add("hidden");
+
+}
+
+function captureSelfie(){
+
+ const video=$("cameraVideo");
+ const canvas=$("cameraCanvas");
+
+ if(!video.videoWidth){
+
+  toast("Camera is not ready.");
+  return;
+
+ }
+
+ canvas.width=video.videoWidth;
+ canvas.height=video.videoHeight;
+
+ const ctx=canvas.getContext("2d");
+
+ ctx.drawImage(
+  video,0,0,canvas.width,canvas.height
+ );
+
+ canvas.toBlob(blob=>{
+
+  if(!blob)return;
+
+  capturedPhotoBlob=blob;
+
+  $("editAvatar").src=
+   URL.createObjectURL(blob);
+
+  $("editAvatar").classList.remove("hidden");
+
+  stopCamera();
+
+ }, "image/jpeg", .88);
+
+}
+
+
+/* Username */
+
+async function usernameAvailable(u){
+
+ const s=await getDocs(
+  query(
+   collection(db,"users"),
+   where(
+    "usernameLower",
+    "==",
+    u.toLowerCase()
+   ),
+   limit(2)
+  )
+ );
+
+ return s.docs.every(
+  d=>d.id===currentUser.uid
+ );
+
+}
+
+
+/* Delete old profile image */
+
+async function deleteOldProfileImage(url){
+
+ if(!url||
+    !url.includes("firebasestorage.googleapis.com"))
+  return;
+
+ try{
+
+  await deleteObject(
+   ref(storage,url)
+  );
+
+ }catch(e){
+
+  console.warn(
+   "Old profile image could not be deleted",
+   e
+  );
+
+ }
+
+}
+
+
+/* Save Profile */
+
+async function saveProfile(){
+
+ const name=$("nameInput").value.trim();
+
+ const username=
+  $("usernameInput").value
+  .trim()
+  .replace(/^@/,"");
+
+ const gender=$("genderInput").value;
+ const dateOfBirth=$("dobInput").value;
+ const district=$("districtInput").value;
+ const thana=$("thanaInput").value.trim();
+ const postOffice=$("postOfficeInput").value.trim();
+ const postalCode=$("postalCodeInput").value.trim();
+ const phone=$("phoneInput").value.trim();
+ const nidNumber=$("nidInput").value.trim();
+ const bio=$("bioInput").value.trim().slice(0,300);
+
+ const age=$("ageInput").value?
+  Number($("ageInput").value):"";
+
+ if(
+  !name||
+  !username||
+  !gender||
+  !dateOfBirth||
+  !district||
+  !thana||
+  !postOffice||
+  !postalCode||
+  !phone||
+  !nidNumber||
+  !bio||
+  !age
+ ){
+
+  toast("Please complete all required fields.");
+  return;
+
+ }
+
+ if(!/^[A-Za-z0-9_.]{3,30}$/.test(username)){
+
+  toast("Username must be 3–30 letters, numbers, _ or .");
+  return;
+
+ }
+
+ if(age<18||age>100){
+
+  toast("Age must be between 18 and 100.");
+  return;
+
+ }
+
+ if(!currentProfile.photoURL&&!capturedPhotoBlob){
+
+  toast("Please take a selfie.");
+  return;
+
+ }
+
+ loading(true);
+
+ try{
+
+  if(
+   username.toLowerCase()!==
+   (currentProfile.usernameLower||"")
+  ){
+
+   if(!await usernameAvailable(username)){
+
+    toast("This username is already taken.");
+    loading(false);
+    return;
+
+   }
+
+  }
+
+  let photoURL=
+   currentProfile.photoURL||"";
+
+  const oldPhotoURL=photoURL;
+
+  if(capturedPhotoBlob){
+
+   const r=ref(
+    storage,
+    `profilePhotos/${currentUser.uid}/${Date.now()}.jpg`
+   );
+
+   await uploadBytes(
+    r,
+    capturedPhotoBlob,
+    {contentType:"image/jpeg"}
+   );
+
+   photoURL=await getDownloadURL(r);
+
+  }
+
+  const oldVisibility=
+   currentProfile.visibility||{
+    bio:"Public",
+    age:"Only Me",
+    phone:"Only Me",
+    followers:"Public",
+    following:"Public",
+    online:"Public",
+    messages:"Everyone"
+   };
+
+  if(!oldVisibility.messages)
+   oldVisibility.messages="Everyone";
+
+  const data={
+
+   uid:currentUser.uid,
+
+   name,
+   nameLower:name.toLowerCase(),
+
+   username,
+   usernameLower:username.toLowerCase(),
+
+   gender,
+   dateOfBirth,
+
+   district,
+   thana,
+   postOffice,
+   postalCode,
+
+   phone,
+   nidNumber,
+
+   bio,
+   age,
+
+   photoURL,
+
+   visibility:oldVisibility,
+
+   updatedAt:serverTimestamp()
+
+  };
+
+  const r=doc(
+   db,
+   "users",
+   currentUser.uid
+  );
+
+  const old=await getDoc(r);
+
+  if(old.exists()){
+
+   await updateDoc(r,data);
+
+  }else{
+
+   await setDoc(r,{
+    ...data,
+    verified:false,
+    createdAt:serverTimestamp()
+   });
+
+  }
+
+  /* Delete old profile photo only after new one is saved */
+
+  if(
+   capturedPhotoBlob&&
+   oldPhotoURL&&
+   oldPhotoURL!==photoURL
+  ){
+
+   await deleteOldProfileImage(oldPhotoURL);
+
+  }
+
+  capturedPhotoBlob=null;
+
+  await loadProfile();
+  await loadFollowing();
+  await loadLikes();
+
+  updateTopProfile();
+
+  viewingProfile=currentProfile;
+
+  renderHome();
+
+  showPage("profilePage");
+
+  toast("Profile saved.");
+
+ }catch(e){
+
+  console.error(e);
+
+  toast(
+   e.message||
+   "Profile could not be saved."
+  );
+
+ }finally{
+
+  loading(false);
+
+ }
+
+}
+
+
+/* Messaging permission */
+
+async function canMessage(p){
+
+ if(!p||p.uid===currentUser.uid)
   return false;
 
  const setting=
-  receiver.visibility?.messages||"Everyone";
+  p.visibility?.messages||"Everyone";
 
  if(setting==="Everyone")
   return true;
@@ -2244,31 +2432,26 @@ async function canMessage(receiver){
  if(setting==="Only Me")
   return false;
 
- if(setting==="Followers"){
+ const followedByMe=
+  followingState.has(p.uid);
 
-  const r=await getDoc(
-   doc(
-    db,
-    "follows",
-    `${receiver.uid}_${currentUser.uid}`
-   )
-  );
-
-  return r.exists();
-
- }
+ if(setting==="Followers")
+  return followedByMe;
 
  if(setting==="Friends"){
 
-  return await areFriends(
-   currentUser.uid,
-   receiver.uid
+  if(!followedByMe)
+   return false;
+
+  const reverse=await getDoc(
+   doc(db,"follows",`${p.uid}_${currentUser.uid}`)
   );
+
+  return reverse.exists();
 
  }
 
- return false;
-
+ return true;
 }
 
 
@@ -2276,11 +2459,9 @@ async function canMessage(receiver){
 
 async function startChat(p){
 
- if(!p)
-  return;
+ if(!p)return;
 
- const allowed=
-  await canMessage(p);
+ const allowed=await canMessage(p);
 
  if(!allowed){
 
@@ -2297,37 +2478,64 @@ async function startChat(p){
  $("chatSubtitle").textContent=
   "@"+p.username;
 
- selectedChatPhoto=null;
-
- $("pendingPhoto").classList.add("hidden");
-
  showPage("chatPage");
 
  renderLocalChat();
 
- listenIncomingMessages();
+ listenMessages();
 
 }
 
+function renderLocalChat(remoteMessages=[]){
 
-function renderLocalChat(){
+ if(!activeChatUser)return;
 
- if(!activeChatUser)
-  return;
+ let local=cleanupLocalMessages(
+  currentUser.uid,
+  activeChatUser.uid
+ );
 
- const arr=
-  getLocalMessages(
-   activeChatUser.uid
+ const map=new Map();
+
+ local.forEach(m=>{
+  if(m.localId)
+   map.set(m.localId,m);
+ });
+
+ remoteMessages.forEach(m=>{
+
+  if(m.id)
+   map.set(m.id,m);
+
+ });
+
+ const arr=[...map.values()]
+  .filter(m=>
+   !m.expiresAt||
+   Number(m.expiresAt)>Date.now()
+  )
+  .sort((a,b)=>
+   Number(a.createdAtMs||0)-
+   Number(b.createdAtMs||0)
   );
 
  const box=$("messages");
-
  box.innerHTML="";
+
+ if(!arr.length){
+
+  box.innerHTML=
+   `<div class="empty">
+    No messages yet.
+   </div>`;
+
+  return;
+
+ }
 
  arr.forEach(m=>{
 
-  const el=
-   document.createElement("div");
+  const el=document.createElement("div");
 
   el.className=
    "message "+
@@ -2337,37 +2545,23 @@ function renderLocalChat(){
     :"theirs"
    );
 
-  if(m.type==="image"){
+  el.textContent=m.text||"";
 
-   const img=
-    document.createElement("img");
+  const time=document.createElement("span");
 
-   img.src=m.data;
+  time.className="message-time";
 
-   img.alt="Photo";
+  const d=new Date(
+   Number(m.createdAtMs||Date.now())
+  );
 
-   el.appendChild(img);
+  time.textContent=
+   d.toLocaleTimeString([],{
+    hour:"2-digit",
+    minute:"2-digit"
+   });
 
-  }else{
-
-   el.textContent=m.text||"";
-
-  }
-
-  if(m.time){
-
-   const tm=
-    document.createElement("div");
-
-   tm.className="message-time";
-
-   tm.textContent=
-    new Date(m.time).toLocaleString();
-
-   el.appendChild(tm);
-
-  }
-
+  el.appendChild(time);
   box.appendChild(el);
 
  });
@@ -2376,139 +2570,105 @@ function renderLocalChat(){
 
 }
 
+function listenMessages(){
 
-function listenIncomingMessages(){
+ if(unsubscribeMessages)
+  unsubscribeMessages();
 
- if(unsubscribeIncoming)
-  unsubscribeIncoming();
-
- if(!currentUser)
-  return;
+ if(!activeChatUser)return;
 
  const q=query(
-  collection(db,"tempMessages"),
-  where("receiverId","==",currentUser.uid),
-  limit(200)
+  collection(
+   db,
+   "chats",
+   chatId(
+    currentUser.uid,
+    activeChatUser.uid
+   ),
+   "messages"
+  ),
+  orderBy("createdAt","asc"),
+  limit(300)
  );
 
- unsubscribeIncoming=
+ unsubscribeMessages=
   onSnapshot(q,async s=>{
 
-   for(const d of s.docs){
+   const remote=[];
+
+   s.forEach(d=>{
 
     const m=d.data();
 
-    if(!m.expiresAt)
-     continue;
+    let createdAtMs=Date.now();
 
-    const expiry=
-     m.expiresAt.toMillis
-     ?m.expiresAt.toMillis()
-     :Number(m.expiresAt);
+    if(m.createdAt?.toMillis)
+     createdAtMs=m.createdAt.toMillis();
+    else if(m.createdAtMs)
+     createdAtMs=Number(m.createdAtMs);
 
-    if(Date.now()>=expiry){
+    const expiresAt=
+     Number(m.expiresAtMs||(
+      createdAtMs+24*60*60*1000
+     ));
 
-     try{
-      await deleteDoc(d.ref);
-     }catch(e){}
+    if(expiresAt<=Date.now()){
 
-     continue;
+     deleteDoc(d.ref).catch(()=>{});
+     return;
 
     }
 
-    await receiveTemporaryMessage(
-     d.id,
-     m
-    );
+    remote.push({
+     id:d.id,
+     senderId:m.senderId,
+     receiverId:m.receiverId,
+     text:m.text||"",
+     createdAtMs,
+     expiresAt
+    });
 
-   }
+   });
+
+   const local=cleanupLocalMessages(
+    currentUser.uid,
+    activeChatUser.uid
+   );
+
+   const combined=[
+    ...local.filter(l=>
+     !remote.some(r=>r.id===l.remoteId)
+    ),
+    ...remote
+   ];
+
+   saveLocalMessages(
+    currentUser.uid,
+    activeChatUser.uid,
+    combined
+   );
+
+   renderLocalChat(combined);
 
   },e=>{
 
-   console.error("Incoming message listener",e);
+   console.error(e);
+   renderLocalChat();
+   toast("Chat connection failed.");
 
- });
-
-}
-
-
-async function receiveTemporaryMessage(id,m){
-
- const otherUid=m.senderId;
-
- const local={
-  id,
-  senderId:m.senderId,
-  receiverId:m.receiverId,
-  type:m.type||"text",
-  text:m.text||"",
-  data:m.data||"",
-  time:Date.now()
- };
-
- addLocalMessage(
-  otherUid,
-  local
- );
-
- try{
-
-  await deleteDoc(
-   doc(db,"tempMessages",id)
-  );
-
- }catch(e){
-
-  console.error("Temporary message deletion failed",e);
-
- }
-
- if(
-  activeChatUser&&
-  activeChatUser.uid===otherUid
- ){
-
-  renderLocalChat();
-
- }
-
- if(
-  !activeChatUser||
-  activeChatUser.uid!==otherUid
- ){
-
-  const sender=await getDoc(
-   doc(db,"users",otherUid)
-  );
-
-  const senderName=
-   sender.exists()
-   ?sender.data().name
-   :"Someone";
-
-  await createNotification(
-   currentUser.uid,
-   "message",
-   `New message from ${senderName}.`,
-   otherUid
-  );
-
- }
+  });
 
 }
-
 
 async function sendMessage(){
 
- if(!activeChatUser)
-  return;
+ if(!activeChatUser)return;
 
- const allowed=
-  await canMessage(activeChatUser);
+ const allowed=await canMessage(activeChatUser);
 
  if(!allowed){
 
-  toast("Message not allowed.");
+  toast("This user is not accepting messages from you.");
   return;
 
  }
@@ -2518,247 +2678,258 @@ async function sendMessage(){
  const text=
   input.value.trim();
 
- if(!text)
-  return;
+ if(!text)return;
 
  input.value="";
+
+ const id=
+  chatId(
+   currentUser.uid,
+   activeChatUser.uid
+  );
 
  const now=Date.now();
 
  const expiresAt=
-  now+(24*60*60*1000);
+  now+24*60*60*1000;
 
- const local={
-  id:"local_"+now,
+ const localId=
+  "local_"+Date.now()+"_"+Math.random()
+  .toString(36).slice(2);
+
+ const localMessage={
+  localId,
   senderId:currentUser.uid,
   receiverId:activeChatUser.uid,
-  type:"text",
   text,
-  time:now
+  createdAtMs:now,
+  expiresAt
  };
 
- addLocalMessage(
+ const local=cleanupLocalMessages(
+  currentUser.uid,
+  activeChatUser.uid
+ );
+
+ local.push(localMessage);
+
+ saveLocalMessages(
+  currentUser.uid,
   activeChatUser.uid,
   local
  );
 
- renderLocalChat();
+ renderLocalChat(local);
 
  try{
 
-  await addDoc(
-   collection(db,"tempMessages"),
+  const added=await addDoc(
+   collection(
+    db,
+    "chats",
+    id,
+    "messages"
+   ),
    {
     senderId:currentUser.uid,
     receiverId:activeChatUser.uid,
-    type:"text",
     text,
     createdAt:serverTimestamp(),
-    expiresAt:new Date(expiresAt)
+    createdAtMs:now,
+    expiresAtMs:expiresAt,
+    read:false
    }
+  );
+
+  localMessage.remoteId=added.id;
+
+  saveLocalMessages(
+   currentUser.uid,
+   activeChatUser.uid,
+   local
+  );
+
+  await setDoc(
+   doc(db,"chats",id),
+   {
+    participants:[
+     currentUser.uid,
+     activeChatUser.uid
+    ],
+    lastMessage:text.slice(0,200),
+    updatedAt:serverTimestamp()
+   },
+   {merge:true}
   );
 
  }catch(e){
 
   console.error(e);
 
-  const arr=
-   getLocalMessages(activeChatUser.uid)
-   .filter(x=>x.id!==local.id);
+  /* Keep it local so it can retry later */
 
-  saveLocalMessages(
-   activeChatUser.uid,
-   arr
-  );
-
-  renderLocalChat();
-
-  input.value=text;
-
-  toast("Message could not be sent.");
+  toast("Message saved locally; delivery is pending.");
 
  }
 
 }
 
 
-/* Picture */
+/* Notifications */
 
-$("photoBtn").onclick=()=>{
- $("photoInput").click();
-};
+async function loadNotifications(){
 
-
-$("photoInput").onchange=e=>{
-
- const file=e.target.files?.[0];
-
- if(!file)
-  return;
-
- if(file.size>8*1024*1024){
-
-  toast("Photo must be under 8 MB.");
-
-  $("photoInput").value="";
-
-  return;
-
- }
-
- selectedChatPhoto=file;
-
- $("pendingPhotoPreview").src=
-  URL.createObjectURL(file);
-
- $("pendingPhotoName").textContent=
-  file.name;
-
- $("pendingPhoto").classList.remove("hidden");
-
-};
-
-
-$("cancelPhotoBtn").onclick=()=>{
-
- selectedChatPhoto=null;
-
- $("photoInput").value="";
-
- $("pendingPhoto").classList.add("hidden");
-
-};
-
-
-async function sendPhoto(){
-
- if(!activeChatUser||!selectedChatPhoto)
-  return;
-
- const allowed=
-  await canMessage(activeChatUser);
-
- if(!allowed){
-
-  toast("Message not allowed.");
-  return;
-
- }
-
- const file=selectedChatPhoto;
-
- const now=Date.now();
-
- const expiresAt=
-  now+(3*60*1000);
-
- loading(true);
+ $("notificationsList").innerHTML=
+  `<div class="empty">Loading…</div>`;
 
  try{
 
-  const storageRef=ref(
-   storage,
-   `temporaryChatPhotos/${currentUser.uid}/${now}_${file.name}`
+  const s=await getDocs(
+   query(
+    collection(db,"notifications"),
+    where(
+     "recipientId",
+     "==",
+     currentUser.uid
+    ),
+    limit(100)
+   )
   );
 
-  await uploadBytes(
-   storageRef,
-   file,
-   {contentType:file.type}
-  );
+  const arr=s.docs
+   .map(d=>({
+    id:d.id,
+    ...d.data()
+   }))
+   .sort((a,b)=>{
 
-  const url=
-   await getDownloadURL(storageRef);
+    const aa=a.createdAt?.toMillis?
+     a.createdAt.toMillis():0;
 
-  await addDoc(
-   collection(db,"tempMessages"),
-   {
-    senderId:currentUser.uid,
-    receiverId:activeChatUser.uid,
-    type:"image",
-    data:url,
-    storagePath:storageRef.fullPath,
-    createdAt:serverTimestamp(),
-    expiresAt:new Date(expiresAt)
-   }
-  );
+    const bb=b.createdAt?.toMillis?
+     b.createdAt.toMillis():0;
 
-  selectedChatPhoto=null;
+    return bb-aa;
 
-  $("photoInput").value="";
+   });
 
-  $("pendingPhoto").classList.add("hidden");
+  if(!arr.length){
 
-  toast("Photo sent for delivery.");
+   $("notificationsList").innerHTML=
+    `<div class="empty">
+     No notifications yet.
+    </div>`;
+
+   return;
+
+  }
+
+  $("notificationsList").innerHTML=
+   arr.map(n=>{
+
+    const time=n.createdAt?.toDate?
+     n.createdAt.toDate().toLocaleString():"";
+
+    return `
+    <div class="notification ${n.read?"":"unread"}"
+     data-notification="${esc(n.id)}">
+
+     <img class="notification-avatar"
+      src="${esc(n.actorPhoto||avatar({}))}">
+
+     <div class="notification-text">
+      <strong>${esc(n.actorName||"Someone")}</strong>
+      ${esc(n.text||"")}
+      <div class="notification-time">
+       ${esc(time)}
+      </div>
+     </div>
+
+    </div>`;
+
+   }).join("");
+
+  await markNotificationsRead(arr);
+
+  updateNotificationDot(false);
 
  }catch(e){
 
   console.error(e);
 
-  toast(
-   e.message||
-   "Photo could not be sent."
-  );
-
- }finally{
-
-  loading(false);
+  $("notificationsList").innerHTML=
+   `<div class="empty">
+    Notifications could not be loaded.
+   </div>`;
 
  }
 
 }
 
+async function markNotificationsRead(arr){
 
-$("pendingPhoto").onclick=e=>{
+ for(const n of arr){
 
- if(e.target.id==="cancelPhotoBtn")
-  return;
+  if(!n.read){
 
-};
+   try{
 
+    await updateDoc(
+     doc(db,"notifications",n.id),
+     {read:true}
+    );
 
-$("sendBtn").onclick=async()=>{
+   }catch(e){}
 
- if(selectedChatPhoto){
-
-  await sendPhoto();
-
- }else{
-
-  await sendMessage();
+  }
 
  }
 
-};
+}
 
+function listenNotifications(){
 
-$("messageInput").onkeydown=e=>{
+ if(notificationUnsubscribe)
+  notificationUnsubscribe();
 
- if(
-  e.key==="Enter"&&
-  !e.shiftKey
- ){
+ const q=query(
+  collection(db,"notifications"),
+  where(
+   "recipientId",
+   "==",
+   currentUser.uid
+  ),
+  limit(50)
+ );
 
-  e.preventDefault();
-  $("sendBtn").click();
+ notificationUnsubscribe=
+  onSnapshot(q,s=>{
 
- }
+   let unread=false;
 
-};
+   s.forEach(d=>{
 
+    if(d.data().read===false)
+     unread=true;
 
-$("chatBackBtn").onclick=()=>{
+   });
 
- if(unsubscribeMessages)
-  unsubscribeMessages();
+   updateNotificationDot(unread);
 
- activeChatUser=null;
+  },e=>{
 
- selectedChatPhoto=null;
+   console.error(e);
 
- showPage("foryouPage");
+  });
 
-};
+}
+
+function updateNotificationDot(v){
+
+ $("notificationDot")
+  .classList.toggle("hidden",!v);
+
+}
 
 
 /* About */
@@ -2794,719 +2965,6 @@ async function loadAbout(){
 
   $("aboutContent").textContent=
    "About information could not be loaded.";
-
- }
-
-}
-
-
-/* Notifications */
-
-async function createNotification(
- recipientId,
- type,
- text,
- actorId=""
-){
-
- if(!recipientId||recipientId===currentUser.uid&&type==="message")
-  return;
-
- try{
-
-  await addDoc(
-   collection(
-    db,
-    "notifications"
-   ),
-   {
-    recipientId,
-    actorId,
-    type,
-    text,
-    read:false,
-    createdAt:serverTimestamp()
-   }
-  );
-
- }catch(e){
-
-  console.error("Notification create failed",e);
-
- }
-
-}
-
-
-function notificationIcon(type){
-
- if(type==="follow")return"➕";
- if(type==="like")return"♥";
- if(type==="friend")return"🤝";
- if(type==="message")return"💬";
-
- return"🔔";
-
-}
-
-
-function formatNotificationTime(ts){
-
- if(!ts)
-  return "";
-
- const d=
-  ts.toDate
-  ?ts.toDate()
-  :new Date(ts);
-
- return d.toLocaleString();
-
-}
-
-
-async function updateNotificationBadge(){
-
- if(!currentUser)
-  return;
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"notifications"),
-    where("recipientId","==",currentUser.uid),
-    where("read","==",false),
-    limit(100)
-   )
-  );
-
-  const count=s.size;
-
-  $("notificationBadge").textContent=
-   count>99?"99+":String(count);
-
-  $("notificationBadge").classList.toggle(
-   "hidden",
-   count===0
-  );
-
- }catch(e){
-
-  console.error("Notification badge",e);
-
- }
-
-}
-
-
-function listenNotificationBadge(){
-
- if(unsubscribeNotifications)
-  unsubscribeNotifications();
-
- if(!currentUser)
-  return;
-
- const q=query(
-  collection(db,"notifications"),
-  where("recipientId","==",currentUser.uid),
-  where("read","==",false),
-  limit(100)
- );
-
- unsubscribeNotifications=
-  onSnapshot(q,s=>{
-
-   const count=s.size;
-
-   $("notificationBadge").textContent=
-    count>99?"99+":String(count);
-
-   $("notificationBadge").classList.toggle(
-    "hidden",
-    count===0
-   );
-
-  },e=>{
-
-   console.error("Notification listener",e);
-
- });
-
-}
-
-
-async function loadNotificationsPage(){
-
- $("notificationsContainer").innerHTML=
-  `<div class="search-empty">Loading…</div>`;
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"notifications"),
-    where("recipientId","==",currentUser.uid),
-    limit(200)
-   )
-  );
-
-  const list=s.docs
-   .map(d=>({
-    id:d.id,
-    ...d.data()
-   }))
-   .sort((a,b)=>{
-
-    const at=a.createdAt?.toMillis?.()||0;
-    const bt=b.createdAt?.toMillis?.()||0;
-
-    return bt-at;
-
-   });
-
-  if(!list.length){
-
-   $("notificationsContainer").innerHTML=
-    `<div class="search-empty">
-      No notifications yet.
-     </div>`;
-
-   return;
-
-  }
-
-  $("notificationsContainer").innerHTML=
-   list.map(n=>`
-
-    <div
-     class="notification-item ${n.read?"":"unread"}"
-     data-notification-id="${esc(n.id)}"
-     data-actor-id="${esc(n.actorId||"")}"
-    >
-
-     <div class="notification-icon">
-      ${notificationIcon(n.type)}
-     </div>
-
-     <div>
-
-      <div class="notification-text">
-       ${esc(n.text||"")}
-      </div>
-
-      <div class="notification-time">
-       ${esc(formatNotificationTime(n.createdAt))}
-      </div>
-
-     </div>
-
-    </div>
-
-   `).join("");
-
-
-  document.querySelectorAll(".notification-item")
-  .forEach(el=>{
-
-   el.onclick=async()=>{
-
-    const id=
-     el.dataset.notificationId;
-
-    try{
-
-     await updateDoc(
-      doc(db,"notifications",id),
-      {read:true}
-     );
-
-    }catch(e){}
-
-    el.classList.remove("unread");
-
-    await updateNotificationBadge();
-
-    const actorId=
-     el.dataset.actorId;
-
-    if(actorId){
-
-     const p=await getDoc(
-      doc(db,"users",actorId)
-     );
-
-     if(p.exists()){
-
-      viewingProfile={
-       uid:p.id,
-       ...p.data()
-      };
-
-      showPage("profilePage");
-
-     }
-
-    }
-
-   };
-
-  });
-
- }catch(e){
-
-  console.error(e);
-
-  $("notificationsContainer").innerHTML=
-   `<div class="search-empty">
-    Notifications could not be loaded.
-   </div>`;
-
- }
-
-}
-
-
-/* Modal */
-
-function openModal(){
-
- $("modal").classList.remove("hidden");
-
-}
-
-
-function closeModal(){
-
- $("modal").classList.add("hidden");
-
-}
-
-
-/* Edit Profile */
-
-function openEdit(){
-
- $("editAvatar").src=
-  avatar(currentProfile);
-
- $("nameInput").value=
-  currentProfile.name||"";
-
- $("usernameInput").value=
-  currentProfile.username||"";
-
- $("genderInput").value=
-  currentProfile.gender||"";
-
- $("dobInput").value=
-  currentProfile.dateOfBirth||"";
-
- $("districtInput").value=
-  currentProfile.district||"";
-
- $("thanaInput").value=
-  currentProfile.thana||"";
-
- $("postOfficeInput").value=
-  currentProfile.postOffice||"";
-
- $("postalCodeInput").value=
-  currentProfile.postalCode||"";
-
- $("phoneInput").value=
-  currentProfile.phone||"";
-
- $("nidInput").value=
-  currentProfile.nidNumber||"";
-
- $("bioInput").value=
-  currentProfile.bio||"";
-
- $("ageInput").value=
-  currentProfile.age||"";
-
- showPage("editPage");
-
-}
-
-
-/* Camera */
-
-async function openCamera(){
-
- try{
-
-  cameraStream=
-   await navigator.mediaDevices.getUserMedia({
-    video:{
-     facingMode:"user"
-    },
-    audio:false
-   });
-
-  $("cameraVideo").srcObject=
-   cameraStream;
-
-  $("cameraVideo").style.display=
-   "block";
-
-  $("editAvatar").classList.add("hidden");
-
-  $("captureBtn").classList.remove("hidden");
-
- }catch(e){
-
-  console.error(e);
-
-  toast("Camera permission is required.");
-
- }
-
-}
-
-
-function stopCamera(){
-
- if(cameraStream){
-
-  cameraStream.getTracks().forEach(
-   t=>t.stop()
-  );
-
-  cameraStream=null;
-
- }
-
- $("cameraVideo").style.display=
-  "none";
-
- $("captureBtn").classList.add("hidden");
-
-}
-
-
-function captureSelfie(){
-
- const video=$("cameraVideo");
-
- const canvas=$("cameraCanvas");
-
- if(!video.videoWidth){
-
-  toast("Camera is not ready.");
-
-  return;
-
- }
-
- canvas.width=
-  video.videoWidth;
-
- canvas.height=
-  video.videoHeight;
-
- const ctx=
-  canvas.getContext("2d");
-
- ctx.drawImage(
-  video,
-  0,
-  0,
-  canvas.width,
-  canvas.height
- );
-
- canvas.toBlob(blob=>{
-
-  if(!blob)
-   return;
-
-  capturedPhotoBlob=
-   blob;
-
-  $("editAvatar").src=
-   URL.createObjectURL(blob);
-
-  $("editAvatar").classList.remove("hidden");
-
-  stopCamera();
-
- },"image/jpeg",.88);
-
-}
-
-
-/* Username */
-
-async function usernameAvailable(u){
-
- const s=await getDocs(
-  query(
-   collection(db,"users"),
-   where(
-    "usernameLower",
-    "==",
-    u.toLowerCase()
-   ),
-   limit(2)
-  )
- );
-
- return s.docs.every(
-  d=>d.id===currentUser.uid
- );
-
-}
-
-
-/* Save Profile */
-
-async function saveProfile(){
-
- const name=
-  $("nameInput").value.trim();
-
- const username=
-  $("usernameInput").value
-  .trim()
-  .replace(/^@/,"");
-
- const gender=
-  $("genderInput").value;
-
- const dateOfBirth=
-  $("dobInput").value;
-
- const district=
-  $("districtInput").value;
-
- const thana=
-  $("thanaInput").value.trim();
-
- const postOffice=
-  $("postOfficeInput").value.trim();
-
- const postalCode=
-  $("postalCodeInput").value.trim();
-
- const phone=
-  $("phoneInput").value.trim();
-
- const nidNumber=
-  $("nidInput").value.trim();
-
- const bio=
-  $("bioInput").value.trim().slice(0,300);
-
- const age=
-  $("ageInput").value
-  ?Number($("ageInput").value)
-  :"";
-
-
- if(
-  !name||
-  !username||
-  !gender||
-  !dateOfBirth||
-  !district||
-  !thana||
-  !postOffice||
-  !postalCode||
-  !phone||
-  !nidNumber||
-  !bio||
-  !age
- ){
-
-  toast("Please complete all required fields.");
-
-  return;
-
- }
-
-
- if(!/^[A-Za-z0-9_.]{3,30}$/.test(username)){
-
-  toast(
-   "Username must be 3–30 letters, numbers, _ or ."
-  );
-
-  return;
-
- }
-
-
- if(age<18||age>100){
-
-  toast(
-   "Age must be between 18 and 100."
-  );
-
-  return;
-
- }
-
-
- if(
-  !currentProfile.photoURL&&
-  !capturedPhotoBlob
- ){
-
-  toast("Please take a selfie.");
-
-  return;
-
- }
-
-
- loading(true);
-
- try{
-
-  if(
-   username.toLowerCase()!==
-   (currentProfile.usernameLower||"")
-  ){
-
-   if(!await usernameAvailable(username)){
-
-    toast("This username is already taken.");
-
-    return;
-
-   }
-
-  }
-
-
-  let photoURL=
-   currentProfile.photoURL||"";
-
-
-  if(capturedPhotoBlob){
-
-   const r=ref(
-    storage,
-    `profilePhotos/${currentUser.uid}/${Date.now()}.jpg`
-   );
-
-   await uploadBytes(
-    r,
-    capturedPhotoBlob,
-    {contentType:"image/jpeg"}
-   );
-
-   photoURL=
-    await getDownloadURL(r);
-
-  }
-
-
-  const oldVisibility=
-   currentProfile.visibility||{
-    bio:"Public",
-    age:"Only Me",
-    phone:"Only Me",
-    followers:"Public",
-    following:"Only Me",
-    online:"Public",
-    messages:"Everyone"
-   };
-
-
-  const data={
-
-   uid:currentUser.uid,
-
-   name,
-   nameLower:name.toLowerCase(),
-
-   username,
-   usernameLower:username.toLowerCase(),
-
-   gender,
-   dateOfBirth,
-
-   district,
-   thana,
-   postOffice,
-   postalCode,
-
-   phone,
-   nidNumber,
-
-   bio,
-   age,
-
-   photoURL,
-
-   visibility:oldVisibility,
-
-   updatedAt:serverTimestamp()
-
-  };
-
-
-  const r=
-   doc(
-    db,
-    "users",
-    currentUser.uid
-   );
-
-
-  const old=
-   await getDoc(r);
-
-
-  if(old.exists()){
-
-   await updateDoc(r,data);
-
-  }else{
-
-   await setDoc(r,{
-    ...data,
-    verified:false,
-    profileViewsCount:0,
-    createdAt:serverTimestamp()
-   });
-
-  }
-
-
-  capturedPhotoBlob=null;
-
-  await loadProfile();
-
-  await loadFollowing();
-
-  updateTopProfile();
-
-  viewingProfile=
-   currentProfile;
-
-  renderHome();
-
-  showPage("profilePage");
-
-  toast("Profile saved.");
-
- }catch(e){
-
-  console.error(e);
-
-  toast(
-   e.message||
-   "Profile could not be saved."
-  );
-
- }finally{
-
-  loading(false);
 
  }
 
@@ -3555,14 +3013,7 @@ async function authState(user){
 
   currentUser=null;
 
-  if(unsubscribeIncoming)
-   unsubscribeIncoming();
-
-  if(unsubscribeNotifications)
-   unsubscribeNotifications();
-
   $("app").classList.add("hidden");
-
   $("loginScreen").classList.remove("hidden");
 
   loading(false);
@@ -3571,29 +3022,24 @@ async function authState(user){
 
  }
 
-
  currentUser=user;
 
  $("loginScreen").classList.add("hidden");
-
  $("app").classList.remove("hidden");
 
  $("connectionStatus").textContent=
   "Connected";
 
-
  try{
 
-  const exists=
-   await loadProfile();
+  const exists=await loadProfile();
 
   await loadFollowing();
+  await loadLikes();
 
   updateTopProfile();
 
-  listenIncomingMessages();
-
-  listenNotificationBadge();
+  listenNotifications();
 
   const incomplete=
    !exists||
@@ -3611,16 +3057,13 @@ async function authState(user){
    !currentProfile.bio||
    !currentProfile.age;
 
-
   if(incomplete){
 
    openEdit();
 
   }else{
 
-   viewingProfile=
-    currentProfile;
-
+   viewingProfile=currentProfile;
    showPage("homePage");
 
   }
@@ -3654,29 +3097,13 @@ districts.forEach(d=>{
 });
 
 
-/* Modal HTML */
-
-document.body.insertAdjacentHTML(
- "beforeend",
- `
- <div id="modal" class="modal hidden">
-  <div class="modal-card glass">
-   <div id="modalContent"></div>
-  </div>
- </div>
- `
-);
-
-
 /* Events */
 
 $("googleLoginBtn").onclick=
  googleLogin;
 
-
 $("editProfileBtn").onclick=
  openEdit;
-
 
 $("editBackBtn").onclick=()=>{
 
@@ -3688,32 +3115,73 @@ $("editBackBtn").onclick=()=>{
 
 };
 
-
 $("saveProfileBtn").onclick=
  saveProfile;
-
 
 $("logoutBtn").onclick=
  ()=>signOut(auth);
 
-
 $("topProfileBtn").onclick=()=>{
 
- viewingProfile=
-  currentProfile;
+ viewingProfile=currentProfile;
 
  showPage("profilePage");
 
 };
 
+$("notificationBtn").onclick=()=>{
+
+ showPage("notificationsPage");
+
+};
+
+$("notificationBackBtn").onclick=()=>{
+
+ showPage("homePage");
+
+};
+
+$("followersBackBtn").onclick=()=>{
+
+ viewingProfile=currentProfile;
+
+ showPage("profilePage");
+
+};
 
 $("openCameraBtn").onclick=
  openCamera;
 
-
 $("captureBtn").onclick=
  captureSelfie;
 
+$("sendBtn").onclick=
+ sendMessage;
+
+$("messageInput").onkeydown=e=>{
+
+ if(
+  e.key==="Enter"&&
+  !e.shiftKey
+ ){
+
+  e.preventDefault();
+  sendMessage();
+
+ }
+
+};
+
+$("chatBackBtn").onclick=()=>{
+
+ if(unsubscribeMessages)
+  unsubscribeMessages();
+
+ activeChatUser=null;
+
+ showPage("foryouPage");
+
+};
 
 $("aboutBtn").onclick=async()=>{
 
@@ -3723,36 +3191,18 @@ $("aboutBtn").onclick=async()=>{
 
 };
 
-
 $("aboutBackBtn").onclick=()=>{
 
  showPage("settingsPage");
 
 };
 
-
-$("notificationBtn").onclick=()=>{
-
- showPage("notificationsPage");
-
-};
-
-
-$("notificationsBackBtn").onclick=()=>{
-
- showPage("homePage");
-
-};
-
-
 document.querySelectorAll(".nav-item")
 .forEach(b=>{
 
  b.onclick=()=>{
 
-  showPage(
-   b.dataset.page
-  );
+  showPage(b.dataset.page);
 
  };
 
@@ -3768,14 +3218,11 @@ async function start(){
   const app=
    initializeApp(firebaseConfig);
 
-  auth=
-   getAuth(app);
+  auth=getAuth(app);
 
-  db=
-   getFirestore(app);
+  db=getFirestore(app);
 
-  storage=
-   getStorage(app);
+  storage=getStorage(app);
 
   await setPersistence(
    auth,
