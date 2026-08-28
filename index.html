@@ -1,3255 +1,3283 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#eaf8fa">
-<title>Veil</title>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>VEIL CHAT</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-:root{
- --bg:#eaf8fa;--glass:rgba(255,255,255,.52);
- --glass2:rgba(255,255,255,.72);--line:rgba(255,255,255,.82);
- --text:#18343c;--muted:#718990;--accent:#4c9ead;
- --danger:#c85d67;--shadow:0 15px 45px rgba(50,110,125,.13)
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Tahoma,sans-serif;
+    -webkit-tap-highlight-color:transparent;
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
 html,body{
- margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,
- Segoe UI,Roboto,sans-serif;color:var(--text);
- background:radial-gradient(circle at 15% 5%,#fff,transparent 32%),
- radial-gradient(circle at 90% 85%,#c9eef4,transparent 38%),var(--bg)
+    width:100%;
+    height:100%;
+    overflow:hidden;
 }
-body:before{
- content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;
- background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.65),transparent 25%),
- radial-gradient(circle at 70% 65%,rgba(123,211,226,.25),transparent 30%);
- filter:blur(45px)
+
+body{
+    color:#fff;
+    background:
+      radial-gradient(circle at 15% 15%,rgba(37,99,235,.25),transparent 30%),
+      radial-gradient(circle at 85% 85%,rgba(56,189,248,.18),transparent 35%),
+      linear-gradient(-45deg,#020617,#0f172a,#172554,#020617);
+    background-size:400% 400%;
+    animation:bgMove 18s ease infinite;
 }
-button,input,textarea,select{font:inherit}
-button{border:0;cursor:pointer}
-.hidden{display:none!important}
+
+@keyframes bgMove{
+    0%{background-position:0 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0 50%}
+}
+
+.app{
+    width:100%;
+    max-width:420px;
+    height:100%;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(15,23,42,.27);
+    backdrop-filter:blur(28px);
+    -webkit-backdrop-filter:blur(28px);
+
+    border-left:1px solid rgba(255,255,255,.12);
+    border-right:1px solid rgba(255,255,255,.12);
+}
+
+.screen{
+    position:absolute;
+    inset:0;
+    display:none;
+    flex-direction:column;
+    background:rgba(2,6,23,.10);
+}
+
+.screen.active{
+    display:flex;
+}
+
+header{
+    height:65px;
+    min-height:65px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 17px;
+
+    background:rgba(15,23,42,.23);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.header-logo{
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+    box-shadow:0 6px 20px rgba(56,189,248,.28);
+}
+
+header h2{
+    font-size:16px;
+    font-weight:650;
+    letter-spacing:.4px;
+}
+
+main{
+    flex:1;
+    overflow-y:auto;
+    padding:16px;
+    scrollbar-width:none;
+}
+
+main::-webkit-scrollbar{
+    display:none;
+}
+
+footer{
+    height:66px;
+    min-height:66px;
+
+    display:flex;
+
+    background:rgba(15,23,42,.35);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+nav{
+    width:100%;
+    display:flex;
+}
+
+nav a{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:11px;
+
+    cursor:pointer;
+}
+
+nav a i{
+    font-size:18px;
+}
+
+nav a.active{
+    color:#38bdf8;
+}
+
+/* GLASS */
+
 .glass{
- background:var(--glass);border:1px solid var(--line);
- box-shadow:var(--shadow);backdrop-filter:blur(25px);
- -webkit-backdrop-filter:blur(25px)
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.085);
+    box-shadow:
+      inset 0 1px rgba(255,255,255,.04),
+      0 8px 30px rgba(0,0,0,.08);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 }
-#loading{
- position:fixed;inset:0;z-index:9999;display:flex;
- align-items:center;justify-content:center;background:rgba(235,249,251,.82);
- backdrop-filter:blur(18px)
+
+/* LOGIN */
+
+.form-container{
+    height:100%;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
-.loader{text-align:center}.loader-logo{font-size:42px;font-weight:900}
-.spinner{
- width:28px;height:28px;margin:18px auto 0;border:3px solid rgba(76,158,173,.2);
- border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite
+
+.logo-container{
+    text-align:center;
+    margin-bottom:32px;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-.app{width:100%;max-width:720px;min-height:100vh;margin:auto;padding-bottom:94px}
-.topbar{
- position:sticky;top:10px;z-index:100;margin:10px 12px;padding:10px 13px;
- border-radius:23px;display:flex;align-items:center;justify-content:space-between
+
+.logo-icon{
+    width:70px;
+    height:70px;
+    margin:auto;
+    margin-bottom:15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+
+    box-shadow:
+      0 10px 30px rgba(56,189,248,.32);
 }
-.logo{font-size:24px;font-weight:900}.status{color:var(--muted);font-size:11px}
-.top-right{display:flex;align-items:center;gap:8px}
-.icon-btn{
- width:42px;height:42px;border-radius:50%;
- background:rgba(255,255,255,.6);color:var(--text);
- position:relative;font-size:20px
+
+.logo-icon i{
+    font-size:30px;
 }
-.notification-dot{
- position:absolute;right:5px;top:4px;width:9px;height:9px;
- background:var(--danger);border-radius:50%;border:2px solid white
+
+.logo-container h1{
+    font-size:24px;
+    letter-spacing:1px;
 }
-.top-profile{
- width:44px;height:44px;border-radius:50%;object-fit:cover;
- border:2px solid rgba(255,255,255,.9);background:#d9edf1
+
+.logo-container p{
+    color:#94a3b8;
+    font-size:12px;
+    margin-top:6px;
 }
-main{padding:4px 12px}.page{display:none}.page.active{display:block}
-.card{border-radius:25px;padding:18px;margin:12px 0}.center{text-align:center}
-h2,h3{margin-top:0}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box i{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#94a3b8;
+}
+
+.input-box input{
+    width:100%;
+    padding:15px 15px 15px 47px;
+
+    color:#fff;
+    outline:none;
+
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:15px;
+}
+
+.input-box input:focus{
+    border-color:rgba(56,189,248,.55);
+}
+
+.btn-primary{
+    width:100%;
+    padding:14px;
+
+    border:0;
+    border-radius:15px;
+
+    color:#fff;
+    font-size:15px;
+    font-weight:650;
+
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+
+    box-shadow:0 8px 20px rgba(37,99,235,.28);
+
+    cursor:pointer;
+}
+
+.btn-secondary{
+    width:100%;
+    padding:12px;
+
+    color:#fff;
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:13px;
+
+    cursor:pointer;
+}
+
+/* SEARCH */
+
+.search-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:11px 14px;
+    margin-bottom:14px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.search-bar i{
+    color:#94a3b8;
+}
+
+.search-bar input{
+    flex:1;
+
+    border:0;
+    outline:0;
+    background:transparent;
+
+    color:#fff;
+}
+
+.search-bar input::placeholder{
+    color:#64748b;
+}
+
+/* CHAT */
+
+.item{
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px;
+    margin-bottom:9px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.075);
+
+    cursor:pointer;
+}
+
 .avatar{
- width:94px;height:94px;border-radius:50%;object-fit:cover;
- background:#d9edf1;border:3px solid rgba(255,255,255,.9);
- box-shadow:0 9px 25px rgba(40,100,115,.15)
+    width:46px;
+    height:46px;
+    min-width:46px;
+
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(56,189,248,.13);
+    border:1px solid rgba(56,189,248,.25);
+
+    color:#38bdf8;
+    font-weight:700;
 }
-.avatar.small{width:55px;height:55px}
-.profile-name{margin-top:10px;font-size:23px;font-weight:800}
-.username{margin-top:3px;color:var(--muted);font-size:13px}
-.verified{
- width:18px;height:18px;object-fit:contain;vertical-align:-3px;margin-left:4px
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
-.profile-basic{margin-top:12px;color:var(--muted);font-size:13px}
-.bio{margin:16px auto 0;max-width:500px;line-height:1.55}
-.btn{
- min-height:44px;padding:11px 17px;border-radius:16px;background:var(--accent);
- color:white;font-weight:750
+
+.info{
+    flex:1;
+    min-width:0;
 }
-.btn:active{transform:scale(.98)}
-.btn.secondary{
- color:var(--text);background:rgba(255,255,255,.6);
- border:1px solid var(--line)
+
+.name-row{
+    display:flex;
+    align-items:center;
+    gap:5px;
 }
-.btn.danger{background:var(--danger)}.full{width:100%}
-.btn.following{background:rgba(76,158,173,.16);color:#397f8d}
-.btn.liked{background:rgba(200,93,103,.16);color:var(--danger)}
-.field{margin:13px 0}
-.field label{
- display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:700
+
+.name{
+    font-size:14px;
+    font-weight:650;
 }
-input,textarea,select{
- width:100%;border:1px solid rgba(100,155,165,.22);border-radius:16px;
- outline:none;color:var(--text);background:rgba(255,255,255,.55);padding:13px 14px
+
+.sub{
+    color:#94a3b8;
+    font-size:12px;
+    margin-top:3px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
-textarea{min-height:95px;resize:vertical}
-.login{
- min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px
+
+.verified-badge{
+    width:17px;
+    height:17px;
+    object-fit:contain;
+    display:inline-block;
 }
-.login-card{
- width:min(430px,100%);text-align:center;padding:30px 22px;border-radius:30px
+
+/* PROFILE */
+
+.profile-card{
+    padding:20px;
+    border-radius:20px;
+    text-align:center;
 }
-.login-logo{font-size:46px;font-weight:950}
-.login-text{color:var(--muted);line-height:1.5;margin:7px 0 8px}
-.bd-note{font-size:12px;color:var(--accent);margin-bottom:25px;font-weight:700}
-.bottom-nav{
- position:fixed;left:50%;bottom:10px;transform:translateX(-50%);
- z-index:500;width:min(696px,calc(100% - 20px));padding:7px;
- border-radius:25px;display:grid;grid-template-columns:repeat(3,1fr)
+
+.profile-photo-wrap{
+    position:relative;
+    width:105px;
+    height:105px;
+    margin:0 auto 15px;
 }
-.nav-item{
- padding:8px 4px;border-radius:18px;color:var(--muted);
- background:transparent;font-size:11px
+
+.profile-photo{
+    width:105px;
+    height:105px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(56,189,248,.13);
+    border:2px solid rgba(56,189,248,.6);
+
+    color:#38bdf8;
+    font-size:38px;
 }
-.nav-item.active{
- color:#397f8d;background:rgba(255,255,255,.65);font-weight:800
+
+.profile-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
-.nav-icon{display:block;font-size:20px;line-height:22px;margin-bottom:2px}
-.search-box{
- position:sticky;top:78px;z-index:20;margin:10px 0
+
+.camera-btn{
+    position:absolute;
+    right:-2px;
+    bottom:2px;
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:#fff;
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+
+    border:2px solid #0f172a;
+
+    cursor:pointer;
 }
-.search-input{
- padding-left:42px;
- background:rgba(255,255,255,.72)
+
+.profile-name{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+
+    font-size:19px;
+    font-weight:700;
 }
-.search-wrap{position:relative}
-.search-symbol{
- position:absolute;left:15px;top:50%;transform:translateY(-50%);
- color:var(--muted)
+
+.profile-username{
+    margin-top:5px;
+    color:#38bdf8;
+    font-size:13px;
 }
-.user-card{
- display:flex;align-items:center;gap:12px;margin:9px 0;padding:12px;border-radius:21px
+
+.profile-bio{
+    margin:10px 0 18px;
+    color:#94a3b8;
+    font-size:13px;
 }
-.user-card-info{flex:1;min-width:0}.user-name{font-weight:750}
-.user-meta{color:var(--muted);font-size:12px;margin-top:3px}
-.user-card-actions{display:flex;gap:6px;flex-shrink:0}
-.setting-row{
- display:flex;align-items:center;justify-content:space-between;
- gap:12px;padding:15px 0
+
+.profile-field{
+    text-align:left;
+    margin-bottom:10px;
 }
-.setting-left{min-width:0}.setting-title{font-weight:750}
-.setting-value{
- display:flex;align-items:center;gap:4px;flex-shrink:0;
- padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.58);
- font-size:12px;color:#397f8d
+
+.profile-field label{
+    display:block;
+    color:#94a3b8;
+    font-size:11px;
+    margin-bottom:5px;
 }
-.setting-value span{font-size:13px}
-.divider{height:1px;background:rgba(90,145,155,.13);margin:12px 0}
-.toggle{
- width:48px;height:27px;border-radius:20px;
- background:rgba(90,120,130,.25);padding:3px
+
+.profile-field input,
+.profile-field textarea{
+    width:100%;
+
+    color:#fff;
+    outline:none;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:11px;
+
+    padding:11px;
 }
-.toggle span{
- display:block;width:21px;height:21px;border-radius:50%;
- background:#fff;transition:.2s
+
+.profile-field textarea{
+    min-height:70px;
+    resize:none;
 }
-.toggle.on{background:var(--accent)}
-.toggle.on span{transform:translateX(21px)}
-.profile-actions{
- display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:18px
+
+/* CAMERA */
+
+.camera-area{
+    position:relative;
+    width:100%;
+    max-width:340px;
+    margin:auto;
+
+    overflow:hidden;
+    border-radius:22px;
+
+    background:#000;
+    border:1px solid rgba(255,255,255,.12);
 }
-.stats{
- display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px
+
+#cameraVideo{
+    width:100%;
+    display:block;
+    transform:scaleX(-1);
 }
-.stat{
- padding:12px 5px;border-radius:16px;background:rgba(255,255,255,.42);
- text-align:center
+
+.camera-overlay{
+    position:absolute;
+    inset:0;
+
+    pointer-events:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
-.stat strong{display:block;font-size:18px}.stat small{color:var(--muted);font-size:10px}
-.stat.clickable{cursor:pointer}
-.stat.hidden-stat{display:none}
-.chat-card{
- height:calc(100vh - 160px);min-height:430px;
- display:flex;flex-direction:column
+
+.face-guide{
+    width:205px;
+    height:270px;
+
+    border:2px solid rgba(255,255,255,.8);
+    border-radius:50%;
+    box-shadow:0 0 0 999px rgba(0,0,0,.28);
 }
-.chat-header{display:flex;align-items:center;gap:10px;padding-bottom:10px}
-.chat-title{font-weight:800}.chat-subtitle{color:var(--muted);font-size:11px}
-.back-btn{
- width:42px;height:42px;border-radius:50%;
- background:rgba(255,255,255,.55);color:var(--text);
- display:flex;align-items:center;justify-content:center;font-size:25px
+
+.camera-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
 }
-.messages{flex:1;overflow-y:auto;padding:8px 2px}
+
+.camera-buttons button{
+    flex:1;
+}
+
+/* SETTINGS */
+
+.settings-card{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    padding:15px;
+    margin-bottom:11px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.settings-info{
+    flex:1;
+}
+
+.settings-info h4{
+    font-size:14px;
+}
+
+.settings-info p{
+    color:#94a3b8;
+    font-size:11px;
+    margin-top:3px;
+}
+
+select{
+    color:#fff;
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:9px;
+
+    padding:7px;
+}
+
+/* MESSAGE */
+
+.chat-header-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.message-area{
+    flex:1;
+    overflow-y:auto;
+    padding:14px;
+
+    scrollbar-width:none;
+}
+
+.message-area::-webkit-scrollbar{
+    display:none;
+}
+
 .message{
- max-width:78%;margin:6px 0;padding:10px 13px;border-radius:18px;
- line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere
+    max-width:78%;
+    padding:9px 12px;
+    margin-bottom:8px;
+
+    font-size:13px;
+    line-height:1.4;
+
+    border-radius:16px;
 }
+
 .message.mine{
- margin-left:auto;background:rgba(76,158,173,.86);color:#fff;
- border-bottom-right-radius:5px
+    margin-left:auto;
+    background:linear-gradient(135deg,#2563eb,#0284c7);
+    border-bottom-right-radius:5px;
 }
+
 .message.theirs{
- background:rgba(255,255,255,.7);border-bottom-left-radius:5px
-}
-.message-time{display:block;font-size:9px;opacity:.65;margin-top:4px}
-.composer{display:flex;gap:8px;padding-top:8px}
-.composer input{margin:0}
-.expiry-note{
- margin:0 0 8px;padding:8px 10px;border-radius:12px;
- background:rgba(255,255,255,.5);color:var(--muted);
- font-size:10px;text-align:center
-}
-.toast{
- position:fixed;z-index:10000;left:50%;bottom:95px;
- transform:translateX(-50%);max-width:90%;padding:12px 16px;
- border-radius:16px;background:rgba(20,42,49,.9);color:white;
- font-size:13px;text-align:center
-}
-.notification{
- display:flex;gap:10px;padding:12px;border-radius:18px;
- margin:8px 0;background:rgba(255,255,255,.42)
-}
-.notification.unread{background:rgba(255,255,255,.72)}
-.notification-text{font-size:13px;line-height:1.4}
-.notification-time{font-size:10px;color:var(--muted);margin-top:4px}
-.notification-avatar{
- width:43px;height:43px;border-radius:50%;object-fit:cover;flex-shrink:0
-}
-.empty{text-align:center;padding:30px 15px;color:var(--muted)}
-.count-line{
- display:flex;justify-content:center;gap:15px;margin-top:12px;
- color:var(--muted);font-size:12px
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
+    border-bottom-left-radius:5px;
 }
 
-/* For You */
-.foryou-wrap{min-height:calc(100vh - 185px);display:flex;flex-direction:column}
-.discovery-card{
- position:relative;overflow:hidden;border-radius:30px;
- padding:0;margin:10px 0;min-height:550px;
- display:flex;flex-direction:column;justify-content:flex-end
+.message img{
+    max-width:100%;
+    border-radius:11px;
+    display:block;
 }
-.discovery-photo{
- position:absolute;inset:0;width:100%;height:100%;
- object-fit:cover;background:#d9edf1;cursor:pointer
-}
-.discovery-overlay{
- position:absolute;inset:35% 0 0;
- background:linear-gradient(transparent,rgba(10,35,40,.86))
-}
-.discovery-info{
- position:relative;z-index:2;color:white;padding:24px 20px;cursor:pointer
-}
-.discovery-name{font-size:27px;font-weight:850}
-.discovery-meta{font-size:13px;margin-top:7px;opacity:.9}
-.discovery-bio{font-size:14px;line-height:1.45;margin-top:10px}
-.swipe-actions{
- display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:10px;margin:10px 0
-}
-.swipe-btn{
- height:54px;border-radius:19px;background:rgba(255,255,255,.72);
- color:var(--text);font-size:20px;border:1px solid var(--line)
-}
-.swipe-btn.primary{background:var(--accent);color:white}
-.swipe-btn.liked{background:var(--danger);color:white}
-.no-users{padding:40px 20px;text-align:center;color:var(--muted)}
 
-.camera-preview{
- width:180px;height:180px;border-radius:50%;object-fit:cover;
- background:#d9edf1;border:4px solid rgba(255,255,255,.9)
+.message-input{
+    display:flex;
+    gap:8px;
+    padding:10px;
+
+    background:rgba(15,23,42,.4);
+    border-top:1px solid rgba(255,255,255,.08);
 }
-.camera-box{
- padding:15px;border-radius:22px;background:rgba(255,255,255,.35);
- text-align:center;margin-bottom:12px
+
+.message-input input{
+    flex:1;
+    padding:12px;
+
+    color:#fff;
+    outline:none;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:13px;
 }
-.camera-box video{
- width:100%;max-width:360px;border-radius:20px;
- background:#17333b;display:none
+
+.send-btn{
+    width:45px;
+    border:0;
+    border-radius:13px;
+
+    color:#fff;
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
 }
-.camera-controls{display:flex;gap:8px;justify-content:center;margin-top:10px}
-.small-note{font-size:11px;color:var(--muted);margin-top:6px}
-.about-content{line-height:1.65;color:var(--text);white-space:pre-wrap}
+
+/* ADMIN */
+
+.admin-only{
+    display:none;
+}
+
+.small-note{
+    color:#94a3b8;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.empty{
+    text-align:center;
+    color:#64748b;
+    padding:35px 10px;
+    font-size:13px;
+}
+
+.hidden{
+    display:none!important;
+}
 
 @media(max-width:480px){
- .card{padding:15px}
- .chat-card{height:calc(100vh - 145px)}
- .message{max-width:84%}
- .discovery-card{min-height:500px}
- .discovery-name{font-size:24px}
- .stats{gap:5px}
- .user-card-actions .btn{padding:9px 10px;font-size:11px}
+    .app{
+        border:0;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">
- <div class="loader">
-  <div class="loader-logo">Veil</div>
-  <div class="spinner"></div>
- </div>
+<div class="app">
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginScreen" class="screen active">
+
+<div class="form-container">
+
+<div class="logo-container">
+
+<div class="logo-icon">
+<i class="fa-solid fa-comments"></i>
 </div>
 
-<section id="loginScreen" class="login hidden">
- <div class="login-card glass">
-  <div class="login-logo">Veil</div>
-  <p class="login-text">A clean and private social experience.</p>
-  <div class="bd-note">Only for users in Bangladesh</div>
-  <button id="googleLoginBtn" class="btn full">
-   Continue with Google
-  </button>
- </div>
+<h1>VEIL CHAT</h1>
+
+<p>Private • Simple • Secure</p>
+
+</div>
+
+<div class="form-group">
+
+<div class="input-box">
+
+<i class="fa-solid fa-phone"></i>
+
+<input
+id="phoneNumber"
+type="tel"
+autocomplete="tel"
+placeholder="Enter mobile number">
+
+</div>
+
+</div>
+
+<div id="recaptcha-container"></div>
+
+<button
+class="btn-primary"
+onclick="requestOTP()">
+
+Get OTP
+
+</button>
+
+</div>
+
 </section>
 
-<div id="app" class="app hidden">
 
-<header class="topbar glass">
- <div>
-  <div class="logo">Veil</div>
-  <div id="connectionStatus" class="status">Connecting…</div>
- </div>
+<!-- ================= OTP ================= -->
 
- <div class="top-right">
+<section id="otpScreen" class="screen">
 
-  <button id="notificationBtn" class="icon-btn" title="Notifications">
-   ♧
-   <span id="notificationDot" class="notification-dot hidden"></span>
-  </button>
+<div class="form-container">
 
-  <button id="topProfileBtn" style="background:none;padding:0">
-   <img id="topProfileImage" class="top-profile" src="" alt="Profile">
-  </button>
+<div class="logo-container">
 
- </div>
+<div class="logo-icon">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+
+<h1>Verify OTP</h1>
+
+<p id="otpInfo">Enter the code sent to your phone</p>
+
+</div>
+
+<div class="form-group">
+
+<div class="input-box">
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+id="otpInput"
+inputmode="numeric"
+maxlength="6"
+placeholder="6-digit OTP">
+
+</div>
+
+</div>
+
+<button
+class="btn-primary"
+onclick="verifyOTP()">
+
+Verify & Continue
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="homeScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<div class="header-logo">
+<i class="fa-solid fa-comments"></i>
+</div>
+
+<h2>VEIL CHAT</h2>
+
+</div>
+
+<div
+class="avatar"
+style="width:38px;height:38px;min-width:38px"
+onclick="openProfile()"
+id="headerAvatar">
+
+<i class="fa-solid fa-user"></i>
+
+</div>
+
 </header>
 
 <main>
 
-<!-- HOME -->
-<section id="homePage" class="page active">
- <div class="card glass center">
-  <h2>Welcome to Veil</h2>
-  <p class="status">Your account is connected.</p>
- </div>
- <div id="homeProfile"></div>
-</section>
+<div class="search-bar">
 
-<!-- FOR YOU -->
-<section id="foryouPage" class="page">
+<i class="fa-solid fa-magnifying-glass"></i>
 
- <div class="search-box">
-  <div class="search-wrap">
-   <span class="search-symbol">⌕</span>
-   <input
-    id="searchInput"
-    class="search-input"
-    placeholder="Search name or username…"
-    autocomplete="off">
-  </div>
- </div>
-
- <div id="searchResults"></div>
-
- <div id="foryouArea" class="foryou-wrap">
-  <div id="foryouCard"></div>
-
-  <div id="foryouActions" class="swipe-actions hidden">
-   <button id="passBtn" class="swipe-btn">✕</button>
-   <button id="followForYouBtn" class="swipe-btn primary">Follow</button>
-   <button id="likeForYouBtn" class="swipe-btn">♥</button>
-  </div>
- </div>
-
-</section>
-
-<!-- PROFILE -->
-<section id="profilePage" class="page">
- <div id="profileContainer"></div>
-</section>
-
-<!-- SETTINGS -->
-<section id="settingsPage" class="page">
-
- <div class="card glass">
-  <h2>Settings</h2>
-
-  <button id="editProfileBtn" class="btn secondary full">
-   Edit Profile
-  </button>
-
-  <div class="divider"></div>
-
-  <h3>Privacy</h3>
-
-  <div id="privacyContainer"></div>
-
-  <div class="divider"></div>
-
-  <div class="setting-row">
-   <div class="setting-left">
-    <div class="setting-title">Online Status</div>
-   </div>
-   <button id="onlineToggle" class="toggle">
-    <span></span>
-   </button>
-  </div>
-
-  <div class="divider"></div>
-
-  <button id="aboutBtn" class="btn secondary full">About Veil</button>
-
-  <div class="divider"></div>
-
-  <button id="logoutBtn" class="btn danger full">Sign out</button>
- </div>
-
-</section>
-
-<!-- EDIT PROFILE -->
-<section id="editPage" class="page">
-
- <div class="card glass">
-
-  <div class="chat-header">
-   <button id="editBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">Edit Profile</h2>
-  </div>
-
-  <div class="camera-box">
-
-   <img id="editAvatar" class="camera-preview" src="" alt="Profile">
-
-   <video id="cameraVideo" autoplay playsinline></video>
-   <canvas id="cameraCanvas" class="hidden"></canvas>
-
-   <div class="camera-controls">
-    <button id="openCameraBtn" class="btn secondary">Camera</button>
-    <button id="captureBtn" class="btn hidden">Capture</button>
-   </div>
-
-   <div class="small-note">
-    Profile photo must be taken with the camera.
-   </div>
-
-  </div>
-
-  <div class="field">
-   <label>Name *</label>
-   <input id="nameInput" maxlength="80" autocomplete="name">
-  </div>
-
-  <div class="field">
-   <label>Username *</label>
-   <input id="usernameInput" maxlength="30"
-    placeholder="your_username" autocomplete="off">
-  </div>
-
-  <div class="field">
-   <label>Gender *</label>
-   <select id="genderInput">
-    <option value="">Select gender</option>
-    <option>Male</option>
-    <option>Female</option>
-    <option>Other</option>
-   </select>
-  </div>
-
-  <div class="field">
-   <label>Date of Birth *</label>
-   <input id="dobInput" type="date">
-  </div>
-
-  <div class="field">
-   <label>District *</label>
-   <select id="districtInput">
-    <option value="">Select district</option>
-   </select>
-  </div>
-
-  <div class="field">
-   <label>Thana / Upazila *</label>
-   <input id="thanaInput" maxlength="80">
-  </div>
-
-  <div class="field">
-   <label>Post Office *</label>
-   <input id="postOfficeInput" maxlength="100">
-  </div>
-
-  <div class="field">
-   <label>Postal Code *</label>
-   <input id="postalCodeInput" maxlength="20" inputmode="numeric">
-  </div>
-
-  <div class="field">
-   <label>Phone Number *</label>
-   <input id="phoneInput" maxlength="30" inputmode="tel">
-  </div>
-
-  <div class="field">
-   <label>NID Number *</label>
-   <input id="nidInput" maxlength="30" inputmode="numeric">
-  </div>
-
-  <div class="field">
-   <label>Bio *</label>
-   <textarea id="bioInput" maxlength="300"></textarea>
-  </div>
-
-  <div class="field">
-   <label>Age *</label>
-   <input id="ageInput" type="number" min="18" max="100">
-  </div>
-
-  <button id="saveProfileBtn" class="btn full">Save Profile</button>
-
- </div>
-</section>
-
-<!-- CHAT -->
-<section id="chatPage" class="page">
- <div class="card glass chat-card">
-
-  <div class="chat-header">
-   <button id="chatBackBtn" class="back-btn">‹</button>
-
-   <div>
-    <div id="chatTitle" class="chat-title">Chat</div>
-    <div id="chatSubtitle" class="chat-subtitle"></div>
-   </div>
-  </div>
-
-  <div class="expiry-note">
-   Messages are temporary. Undelivered text messages expire after 24 hours.
-  </div>
-
-  <div id="messages" class="messages"></div>
-
-  <div class="composer">
-   <input id="messageInput" maxlength="4000"
-    placeholder="Message…">
-   <button id="sendBtn" class="btn">Send</button>
-  </div>
-
- </div>
-</section>
-
-<!-- NOTIFICATIONS -->
-<section id="notificationsPage" class="page">
-
- <div class="card glass">
-
-  <div class="chat-header">
-   <button id="notificationBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">Notifications</h2>
-  </div>
-
-  <div id="notificationsList"></div>
-
- </div>
-
-</section>
-
-<!-- FOLLOWERS -->
-<section id="followersPage" class="page">
-
- <div class="card glass">
-
-  <div class="chat-header">
-   <button id="followersBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">My Followers</h2>
-  </div>
-
-  <div id="followersList"></div>
-
- </div>
-
-</section>
-
-<!-- ABOUT -->
-<section id="aboutPage" class="page">
- <div class="card glass">
-
-  <div class="chat-header">
-   <button id="aboutBackBtn" class="back-btn">‹</button>
-   <h2 style="margin:0">About</h2>
-  </div>
-
-  <div id="aboutContent" class="about-content"></div>
-
- </div>
-</section>
-
-</main>
-
-<nav class="bottom-nav glass">
-
- <button class="nav-item active" data-page="homePage">
-  <span class="nav-icon">⌂</span>Home
- </button>
-
- <button class="nav-item" data-page="foryouPage">
-  <span class="nav-icon">♡</span>For You
- </button>
-
- <button class="nav-item" data-page="settingsPage">
-  <span class="nav-icon">⚙</span>Settings
- </button>
-
-</nav>
+<input
+id="searchUser"
+placeholder="Search people..."
+oninput="searchUsers(this.value)">
 
 </div>
 
-<div id="toast" class="toast hidden"></div>
+<div id="chatListContainer"></div>
+
+</main>
+
+<footer>
+
+<nav>
+
+<a class="active" onclick="switchTab('home')">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</a>
+
+<a onclick="switchTab('contacts')">
+<i class="fa-solid fa-address-book"></i>
+<span>Contacts</span>
+</a>
+
+<a onclick="switchTab('settings')">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</a>
+
+</nav>
+
+</footer>
+
+</section>
+
+
+<!-- ================= CONTACTS ================= -->
+
+<section id="contactsScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<div class="header-logo">
+<i class="fa-solid fa-address-book"></i>
+</div>
+
+<h2>Contacts</h2>
+
+</div>
+
+</header>
+
+<main>
+
+<div id="appUsersList"></div>
+
+</main>
+
+<footer>
+
+<nav>
+
+<a onclick="switchTab('home')">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</a>
+
+<a class="active">
+<i class="fa-solid fa-address-book"></i>
+<span>Contacts</span>
+</a>
+
+<a onclick="switchTab('settings')">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</a>
+
+</nav>
+
+</footer>
+
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<section id="settingsScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<div class="header-logo">
+<i class="fa-solid fa-gear"></i>
+</div>
+
+<h2>Settings</h2>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="settings-card">
+
+<div class="settings-info">
+
+<h4>App Language</h4>
+
+<p>Choose your interface language</p>
+
+</div>
+
+<select
+id="languageSelector"
+onchange="changeLanguage(this.value)">
+
+<option value="en">English</option>
+<option value="bn">বাংলা</option>
+<option value="hi">हिन्दी</option>
+
+</select>
+
+</div>
+
+
+<div class="settings-card">
+
+<div class="settings-info">
+
+<h4>Account</h4>
+
+<p id="accountPhone">Loading...</p>
+
+</div>
+
+</div>
+
+
+<div class="settings-card">
+
+<div class="settings-info">
+
+<h4>Last Active</h4>
+
+<p id="lastActiveText">Loading...</p>
+
+</div>
+
+</div>
+
+
+<div class="settings-card">
+
+<div class="settings-info">
+
+<h4>Sign Out</h4>
+
+<p>Sign out from this device</p>
+
+</div>
+
+<button
+class="btn-secondary"
+style="width:auto;padding:8px 12px"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
+</main>
+
+<footer>
+
+<nav>
+
+<a onclick="switchTab('home')">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</a>
+
+<a onclick="switchTab('contacts')">
+<i class="fa-solid fa-address-book"></i>
+<span>Contacts</span>
+</a>
+
+<a class="active">
+<i class="fa-solid fa-gear"></i>
+<span>Settings</span>
+</a>
+
+</nav>
+
+</footer>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section id="profileScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<i
+class="fa-solid fa-arrow-left"
+style="cursor:pointer"
+onclick="switchScreen('homeScreen')">
+</i>
+
+<h2>My Profile</h2>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="profile-card glass">
+
+<div class="profile-photo-wrap">
+
+<div
+id="profilePhoto"
+class="profile-photo">
+
+<i class="fa-solid fa-user"></i>
+
+</div>
+
+<button
+class="camera-btn"
+onclick="openCamera()">
+
+<i class="fa-solid fa-camera"></i>
+
+</button>
+
+</div>
+
+
+<div
+class="profile-name"
+id="profileName">
+
+New User
+
+</div>
+
+
+<div
+class="profile-username"
+id="profileUsername">
+
+@username
+
+</div>
+
+
+<div
+class="profile-bio"
+id="profileBio">
+
+Add information about yourself.
+
+</div>
+
+
+<!-- VERIFICATION STATUS -->
+
+<div
+id="verificationStatus"
+style="margin-bottom:18px">
+
+</div>
+
+
+<div class="profile-field">
+
+<label>Name</label>
+
+<input
+id="editName"
+maxlength="40"
+placeholder="Your name">
+
+</div>
+
+
+<div class="profile-field">
+
+<label>Username</label>
+
+<input
+id="editUsername"
+maxlength="25"
+placeholder="Username">
+
+</div>
+
+
+<div class="profile-field">
+
+<label>Bio</label>
+
+<textarea
+id="editBio"
+maxlength="160"
+placeholder="About you"></textarea>
+
+</div>
+
+
+<div class="profile-field">
+
+<label>About / Profession</label>
+
+<input
+id="editProfession"
+maxlength="60"
+placeholder="Artist, student, business, etc.">
+
+</div>
+
+
+<div class="profile-field">
+
+<label>Location</label>
+
+<input
+id="editLocation"
+maxlength="60"
+placeholder="City / Country">
+
+</div>
+
+
+<div class="profile-field">
+
+<label>Website</label>
+
+<input
+id="editWebsite"
+maxlength="100"
+placeholder="https://...">
+
+</div>
+
+
+<button
+class="btn-primary"
+onclick="saveProfile()">
+
+Save Profile
+
+</button>
+
+<br>
+
+<button
+class="btn-secondary"
+onclick="openCamera()">
+
+<i class="fa-solid fa-camera"></i>
+&nbsp; Take Selfie
+
+</button>
+
+<p class="small-note" style="margin-top:12px">
+
+Your selfie is compressed before being saved.
+No gallery upload is provided.
+
+</p>
+
+</div>
+
+</main>
+
+</section>
+
+
+<!-- ================= CAMERA ================= -->
+
+<section id="cameraScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<i
+class="fa-solid fa-arrow-left"
+style="cursor:pointer"
+onclick="closeCamera()">
+</i>
+
+<h2>Selfie Verification</h2>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="camera-area">
+
+<video
+id="cameraVideo"
+autoplay
+playsinline
+muted>
+</video>
+
+<div class="camera-overlay">
+
+<div class="face-guide"></div>
+
+</div>
+
+</div>
+
+
+<p
+style="
+text-align:center;
+color:#94a3b8;
+font-size:12px;
+margin:14px 0">
+
+Keep your face clearly inside the frame and take a selfie.
+
+</p>
+
+
+<div class="camera-buttons">
+
+<button
+class="btn-secondary"
+onclick="closeCamera()">
+
+Cancel
+
+</button>
+
+<button
+class="btn-primary"
+onclick="captureSelfie()">
+
+<i class="fa-solid fa-camera"></i>
+&nbsp; Capture
+
+</button>
+
+</div>
+
+<canvas
+id="selfieCanvas"
+class="hidden">
+</canvas>
+
+</main>
+
+</section>
+
+
+<!-- ================= CHAT ================= -->
+
+<section id="chatScreen" class="screen">
+
+<header>
+
+<div class="chat-header-user">
+
+<i
+class="fa-solid fa-arrow-left"
+style="cursor:pointer"
+onclick="closeChat()">
+</i>
+
+<div
+id="chatHeaderAvatar"
+class="avatar"
+style="width:38px;height:38px;min-width:38px">
+</div>
+
+<div>
+
+<div
+id="chatHeaderName"
+class="name">
+User
+</div>
+
+<div
+id="chatHeaderStatus"
+class="sub">
+Online
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<div
+id="messageArea"
+class="message-area">
+</div>
+
+
+<div class="message-input">
+
+<input
+id="messageInput"
+maxlength="500"
+placeholder="Message..."
+onkeydown="handleMessageKey(event)">
+
+<label
+style="
+width:44px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer">
+
+<i
+class="fa-solid fa-image"
+style="color:#38bdf8">
+</i>
+
+<input
+id="imageInput"
+type="file"
+accept="image/*"
+capture="environment"
+style="display:none"
+onchange="sendImage(this)">
+
+</label>
+
+<button
+class="send-btn"
+onclick="sendMessage()">
+
+<i class="fa-solid fa-paper-plane"></i>
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADMIN ================= -->
+
+<section id="adminScreen" class="screen">
+
+<header>
+
+<div class="header-left">
+
+<div class="header-logo">
+<i class="fa-solid fa-shield"></i>
+</div>
+
+<h2>Admin</h2>
+
+</div>
+
+</header>
+
+<main>
+
+<div id="adminUsersList"></div>
+
+</main>
+
+</section>
+
+</div>
+
+
+<!-- FIREBASE -->
 
 <script type="module">
 
 import {
- initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
 import {
- getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithPopup,
- signOut,setPersistence,browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    getAuth,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 import {
- getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,
- collection,query,where,orderBy,onSnapshot,addDoc,
- serverTimestamp,limit,getDocs,Timestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-import {
- getStorage,ref,uploadBytes,getDownloadURL,deleteObject
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
-
-
-/* Firebase */
-
-const firebaseConfig={
- apiKey:"AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
- authDomain:"flora-veilchat.firebaseapp.com",
- projectId:"flora-veilchat",
- storageBucket:"flora-veilchat.firebasestorage.app",
- messagingSenderId:"352485676905",
- appId:"1:352485676905:web:8beb0df80a0daea2cccff8",
- measurementId:"G-CQKB9Z8VP1"
-};
-
-const VERIFIED_BADGE=
-"https://floraverse.github.io/veilchat/verified.png";
-
-const districts=[
-"Bagerhat","Bandarban","Barguna","Barishal","Bhola","Bogura",
-"Brahmanbaria","Chandpur","Chattogram","Chuadanga","Cox's Bazar",
-"Cumilla","Dhaka","Dinajpur","Faridpur","Feni","Gaibandha",
-"Gazipur","Gopalganj","Habiganj","Jamalpur","Jashore","Jhalokathi",
-"Jhenaidah","Joypurhat","Khagrachhari","Khulna","Kishoreganj",
-"Kurigram","Kushtia","Lakshmipur","Lalmonirhat","Madaripur",
-"Magura","Manikganj","Meherpur","Moulvibazar","Munshiganj",
-"Mymensingh","Naogaon","Narail","Narayanganj","Narsingdi",
-"Natore","Netrokona","Nilphamari","Noakhali","Pabna","Panchagarh",
-"Patuakhali","Pirojpur","Rajbari","Rajshahi","Rangamati","Rangpur",
-"Satkhira","Shariatpur","Sherpur","Sirajganj","Sunamganj","Sylhet",
-"Tangail"
-];
-
-let auth,db,storage,currentUser,currentProfile,viewingProfile;
-let activeChatUser,unsubscribeMessages;
-let followingState=new Set();
-let likedState=new Set();
-let forYouUsers=[];
-let forYouIndex=0;
-let cameraStream=null;
-let capturedPhotoBlob=null;
-let notificationUnsubscribe=null;
-
-const $=id=>document.getElementById(id);
-
-const esc=s=>String(s??"").replace(
- /[&<>"']/g,
- m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])
-);
-
-const avatar=p=>p?.photoURL||
-"data:image/svg+xml;charset=UTF-8,"+
-encodeURIComponent(
- '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">'+
- '<rect width="100%" height="100%" fill="#dceff3"/>'+
- '<circle cx="150" cy="110" r="52" fill="#7faeb8"/>'+
- '<path d="M50 280c15-70 55-100 100-100s85 30 100 100" fill="#7faeb8"/>'+
- '</svg>'
-);
-
-const badge=p=>p?.verified===true?
-`<img class="verified" src="${VERIFIED_BADGE}" alt="Verified">`:"";
-
-const chatId=(a,b)=>[a,b].sort().join("_");
-
-function loading(v){
- $("loading").classList.toggle("hidden",!v);
-}
-
-function toast(t){
- $("toast").textContent=t;
- $("toast").classList.remove("hidden");
- clearTimeout(window.tt);
- window.tt=setTimeout(
-  ()=>$("toast").classList.add("hidden"),3000
- );
-}
-
-function localChatKey(uid1,uid2){
- return "veil_chat_"+chatId(uid1,uid2);
-}
-
-function getLocalMessages(uid1,uid2){
- try{
-  return JSON.parse(
-   localStorage.getItem(localChatKey(uid1,uid2))||"[]"
-  );
- }catch(e){
-  return [];
- }
-}
-
-function saveLocalMessages(uid1,uid2,messages){
- try{
-  localStorage.setItem(
-   localChatKey(uid1,uid2),
-   JSON.stringify(messages.slice(-500))
-  );
- }catch(e){}
-}
-
-function cleanupLocalMessages(uid1,uid2){
- const now=Date.now();
- const arr=getLocalMessages(uid1,uid2)
-  .filter(m=>!m.expiresAt||m.expiresAt>now);
- saveLocalMessages(uid1,uid2,arr);
- return arr;
-}
-
-
-/* Pages */
-
-function showPage(id){
-
- document.querySelectorAll(".page")
- .forEach(x=>x.classList.remove("active"));
-
- $(id).classList.add("active");
-
- document.querySelectorAll(".nav-item")
- .forEach(x=>{
-  x.classList.toggle(
-   "active",
-   x.dataset.page===id
-  );
- });
-
- if(id==="homePage")renderHome();
-
- if(id==="profilePage")
-  renderProfile(viewingProfile||currentProfile);
-
- if(id==="settingsPage")
-  renderSettings();
-
- if(id==="foryouPage"){
-  if(forYouUsers.length) renderForYou();
-  else loadForYou();
- }
-
- if(id==="notificationsPage")
-  loadNotifications();
-
-}
-
-
-/* Profile */
-
-async function loadProfile(){
-
- const s=await getDoc(
-  doc(db,"users",currentUser.uid)
- );
-
- if(s.exists()){
-
-  currentProfile={
-   uid:currentUser.uid,
-   ...s.data()
-  };
-
-  return true;
- }
-
- currentProfile={
-  uid:currentUser.uid,
-  name:currentUser.displayName||"",
-  username:"",
-  usernameLower:"",
-  gender:"",
-  district:"",
-  thana:"",
-  postOffice:"",
-  postalCode:"",
-  dateOfBirth:"",
-  photoURL:"",
-  bio:"",
-  age:"",
-  phone:"",
-  nidNumber:"",
-  visibility:{
-   bio:"Public",
-   age:"Only Me",
-   phone:"Only Me",
-   followers:"Public",
-   following:"Public",
-   online:"Public",
-   messages:"Everyone"
-  },
-  verified:false
- };
-
- return false;
-}
-
-function updateTopProfile(){
- $("topProfileImage").src=avatar(currentProfile);
-}
-
-
-/* Home */
-
-async function getFollowersCount(uid){
- try{
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followingId","==",uid),
-    limit(500)
-   )
-  );
-  return s.size;
- }catch(e){
-  return 0;
- }
-}
-
-async function getFollowingCount(uid){
- try{
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followerId","==",uid),
-    limit(500)
-   )
-  );
-  return s.size;
- }catch(e){
-  return 0;
- }
-}
-
-async function getFriendsCount(uid){
- try{
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followerId","==",uid),
-    limit(500)
-   )
-  );
-
-  let count=0;
-
-  for(const d of s.docs){
-
-   const x=d.data();
-
-   if(!x.followingId)continue;
-
-   const mutual=await getDoc(
-    doc(db,"follows",`${x.followingId}_${uid}`)
-   );
-
-   if(mutual.exists())count++;
-
-  }
-
-  return count;
-
- }catch(e){
-  console.error(e);
-  return 0;
- }
-}
-
-async function getLikeCount(uid){
- try{
-  const s=await getDocs(
-   query(
-    collection(db,"likes"),
-    where("targetId","==",uid),
-    limit(500)
-   )
-  );
-  return s.size;
- }catch(e){
-  return 0;
- }
-}
-
-async function getVisitCount(uid){
- try{
-  const s=await getDocs(
-   query(
-    collection(db,"profileVisits"),
-    where("profileId","==",uid),
-    limit(1000)
-   )
-  );
-  return s.size;
- }catch(e){
-  return 0;
- }
-}
-
-async function renderHome(){
-
- const p=currentProfile;
-
- $("homeProfile").innerHTML=`
- <div class="card glass center">
-  <img class="avatar" src="${esc(avatar(p))}" alt="">
-  <div class="profile-name">
-   ${esc(p.name)}${badge(p)}
-  </div>
-  <div class="username">@${esc(p.username)}</div>
-  <div class="profile-basic">
-   ${esc(p.gender)} · ${esc(p.district)}
-  </div>
- </div>`;
-
-}
-
-
-/* Privacy */
-
-const privacyOptions=["Public","Friends","Only Me"];
-
-function privacySelect(key,label){
-
- const value=
-  currentProfile.visibility?.[key]||"Only Me";
-
- return `
- <div class="setting-row">
-  <div class="setting-left">
-   <div class="setting-title">${label}</div>
-  </div>
-
-  <button
-   class="setting-value"
-   data-privacy="${key}"
-   type="button">
-   ${esc(value)} <span>⌄</span>
-  </button>
- </div>`;
-}
-
-function messagePrivacySelect(){
-
- const value=
-  currentProfile.visibility?.messages||"Everyone";
-
- return `
- <div class="setting-row">
-  <div class="setting-left">
-   <div class="setting-title">Who can message me?</div>
-  </div>
-
-  <button
-   class="setting-value"
-   data-message-privacy
-   type="button">
-   ${esc(value)} <span>⌄</span>
-  </button>
- </div>`;
-}
-
-const messagePrivacyOptions=[
- "Everyone","Followers","Friends","Only Me"
-];
-
-function renderSettings(){
-
- $("privacyContainer").innerHTML=
-  privacySelect("bio","Bio")+
-  privacySelect("age","Age")+
-  privacySelect("phone","Phone Number")+
-  privacySelect("followers","Followers")+
-  messagePrivacySelect();
-
- const online=
-  currentProfile.visibility?.online||"Public";
-
- $("onlineToggle").classList.toggle(
-  "on",
-  online!=="Only Me"
- );
-
- document.querySelectorAll("[data-privacy]")
- .forEach(btn=>{
-
-  btn.onclick=async()=>{
-
-   const key=btn.dataset.privacy;
-
-   const current=
-    currentProfile.visibility?.[key]||"Only Me";
-
-   const next=
-    privacyOptions[
-     (privacyOptions.indexOf(current)+1)%privacyOptions.length
-    ];
-
-   currentProfile.visibility={
-    ...(currentProfile.visibility||{}),
-    [key]:next
-   };
-
-   try{
-
-    await updateDoc(
-     doc(db,"users",currentUser.uid),
-     {visibility:currentProfile.visibility}
-    );
-
-    renderSettings();
-
-   }catch(e){
-
-    console.error(e);
-    toast("Privacy update failed.");
-
-   }
-
-  };
-
- });
-
- const msgBtn=$("[data-message-privacy]");
-
- if(msgBtn){
-
-  msgBtn.onclick=async()=>{
-
-   const current=
-    currentProfile.visibility?.messages||"Everyone";
-
-   const next=
-    messagePrivacyOptions[
-     (messagePrivacyOptions.indexOf(current)+1)%
-     messagePrivacyOptions.length
-    ];
-
-   currentProfile.visibility={
-    ...(currentProfile.visibility||{}),
-    messages:next
-   };
-
-   try{
-
-    await updateDoc(
-     doc(db,"users",currentUser.uid),
-     {visibility:currentProfile.visibility}
-    );
-
-    renderSettings();
-
-   }catch(e){
-
-    console.error(e);
-    toast("Message privacy update failed.");
-
-   }
-
-  };
-
- }
-
- $("onlineToggle").onclick=async()=>{
-
-  const current=
-   currentProfile.visibility?.online||"Public";
-
-  const next=
-   current==="Public"?"Only Me":"Public";
-
-  currentProfile.visibility={
-   ...(currentProfile.visibility||{}),
-   online:next
-  };
-
-  try{
-
-   await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {visibility:currentProfile.visibility}
-   );
-
-   renderSettings();
-
-  }catch(e){
-
-   console.error(e);
-   toast("Online status update failed.");
-
-  }
-
- };
-
-}
-
-
-/* Visibility */
-
-async function canSeeField(owner,key){
-
- if(owner.uid===currentUser.uid)return true;
-
- const setting=
-  owner.visibility?.[key]||"Only Me";
-
- if(setting==="Public")return true;
-
- if(setting==="Only Me")return false;
-
- if(setting==="Friends"){
-
-  const a=await getDoc(
-   doc(db,"follows",`${currentUser.uid}_${owner.uid}`)
-  );
-
-  const b=await getDoc(
-   doc(db,"follows",`${owner.uid}_${currentUser.uid}`)
-  );
-
-  return a.exists()&&b.exists();
- }
-
- return false;
-}
-
-
-/* Profile */
-
-async function registerProfileVisit(p){
-
- if(!p||p.uid===currentUser.uid)return;
-
- const id=`${currentUser.uid}_${p.uid}`;
-
- try{
-
-  const r=doc(db,"profileVisits",id);
-  const existing=await getDoc(r);
-
-  if(!existing.exists()){
-
-   await setDoc(r,{
-    visitorId:currentUser.uid,
-    profileId:p.uid,
-    createdAt:serverTimestamp()
-   });
-
-  }
-
- }catch(e){
-  console.error(e);
- }
-}
-
-async function renderProfile(p){
-
- if(!p)return;
-
- const me=p.uid===currentUser.uid;
-
- if(!me)
-  registerProfileVisit(p);
-
- let bio="";
- let age="";
- let phone="";
-
- if(await canSeeField(p,"bio")&&p.bio)
-  bio=`<div class="bio">${esc(p.bio)}</div>`;
-
- if(await canSeeField(p,"age")&&p.age)
-  age=`<div class="status" style="margin-top:10px">
-   Age ${esc(p.age)}
-  </div>`;
-
- if(await canSeeField(p,"phone")&&p.phone)
-  phone=`<div class="status" style="margin-top:6px">
-   ${esc(p.phone)}
-  </div>`;
-
- const followers=await getFollowersCount(p.uid);
- const friends=await getFriendsCount(p.uid);
- const likes=await getLikeCount(p.uid);
- const visits=await getVisitCount(p.uid);
-
- let isFollowing=false;
- let mutual=false;
- let liked=false;
-
- if(!me){
-
-  isFollowing=followingState.has(p.uid);
-  liked=likedState.has(p.uid);
-
-  const reverse=await getDoc(
-   doc(db,"follows",`${p.uid}_${currentUser.uid}`)
-  );
-
-  mutual=
-   isFollowing&&reverse.exists();
-
- }
-
- let action="";
-
- if(me){
-
-  action=`
-   <button id="profileLikeBtn"
-    class="btn ${liked?"liked":""}">
-    ♥ ${likes}
-   </button>`;
-
- }else{
-
-  action=`
-   <button id="profileFollowBtn"
-    class="btn ${isFollowing?"following":""}">
-    ${mutual?"Friends ✓":isFollowing?"Following":"Follow"}
-   </button>
-
-   <button id="profileLikeBtn"
-    class="btn ${liked?"liked":""}">
-    ♥
-   </button>
-
-   <button id="profileMessageBtn"
-    class="btn secondary">
-    Message
-   </button>`;
- }
-
- $("profileContainer").innerHTML=`
- <div class="card glass center">
-
-  <img id="profileMainPhoto"
-   class="avatar"
-   src="${esc(avatar(p))}"
-   alt="">
-
-  <div class="profile-name">
-   ${esc(p.name)}${badge(p)}
-  </div>
-
-  <div class="username">
-   @${esc(p.username)}
-  </div>
-
-  <div class="profile-basic">
-   ${esc(p.gender)} ·
-   ${esc(p.district)} ·
-   ${esc(p.thana)}
-  </div>
-
-  ${bio}
-  ${age}
-  ${phone}
-
-  <div class="stats">
-
-   <div id="followersStat"
-    class="stat clickable">
-    <strong>${followers}</strong>
-    <small>Followers</small>
-   </div>
-
-   <div class="stat">
-    <strong>${friends}</strong>
-    <small>Friends</small>
-   </div>
-
-   <div class="stat">
-    <strong>${visits}</strong>
-    <small>Visits</small>
-   </div>
-
-  </div>
-
-  <div class="count-line">
-   <span>♥ ${likes} Likes</span>
-  </div>
-
-  <div class="profile-actions">
-   ${action}
-  </div>
-
- </div>`;
-
- $("followersStat").onclick=()=>{
-
-  if(me)
-   showFollowers();
-
- };
-
- if(!me){
-
-  $("profileFollowBtn").onclick=
-   ()=>toggleFollow(p);
-
-  $("profileLikeBtn").onclick=
-   ()=>toggleLike(p);
-
-  $("profileMessageBtn").onclick=
-   ()=>startChat(p);
-
- }else{
-
-  $("profileLikeBtn").onclick=
-   ()=>toggleLike(p);
-
- }
-
-}
-
-
-/* Follow */
-
-async function loadFollowing(){
-
- followingState=new Set();
-
- try{
-
-  const q=query(
-   collection(db,"follows"),
-   where("followerId","==",currentUser.uid),
-   limit(500)
-  );
-
-  const s=await getDocs(q);
-
-  s.forEach(d=>{
-
-   const x=d.data();
-
-   if(x.followingId)
-    followingState.add(x.followingId);
-
-  });
-
- }catch(e){
-
-  console.error(e);
-
- }
-
-}
-
-
-/* Likes */
-
-async function loadLikes(){
-
- likedState=new Set();
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"likes"),
-    where("likerId","==",currentUser.uid),
-    limit(500)
-   )
-  );
-
-  s.forEach(d=>{
-
-   const x=d.data();
-
-   if(x.targetId)
-    likedState.add(x.targetId);
-
-  });
-
- }catch(e){
-
-  console.error(e);
-
- }
-
-}
-
-async function createNotification(
- recipientId,
- type,
- actor,
- text
-){
-
- if(!recipientId||
-    recipientId===currentUser.uid)return;
-
- try{
-
-  await addDoc(
-   collection(
-    db,
-    "notifications"
-   ),
-   {
-    recipientId,
-    actorId:currentUser.uid,
-    actorName:actor?.name||currentUser.displayName||"",
-    actorUsername:actor?.username||"",
-    actorPhoto:actor?.photoURL||currentUser.photoURL||"",
-    type,
-    text,
-    read:false,
-    createdAt:serverTimestamp()
-   }
-  );
-
- }catch(e){
-
-  console.error("notification",e);
-
- }
-
-}
-
-async function toggleLike(p){
-
- if(!p||p.uid===currentUser.uid)return;
-
- const id=`${currentUser.uid}_${p.uid}`;
- const r=doc(db,"likes",id);
-
- const isLiked=likedState.has(p.uid);
-
- try{
-
-  if(isLiked){
-
-   await deleteDoc(r);
-   likedState.delete(p.uid);
-
-  }else{
-
-   await setDoc(r,{
-    likerId:currentUser.uid,
-    targetId:p.uid,
-    createdAt:serverTimestamp()
-   });
-
-   likedState.add(p.uid);
-
-   await createNotification(
-    p.uid,
-    "like",
-    currentProfile,
-    "liked your profile."
-   );
-
-  }
-
-  if(viewingProfile?.uid===p.uid)
-   renderProfile(p);
-
-  renderForYou();
-
- }catch(e){
-
-  console.error(e);
-  toast("Like could not be updated.");
-
- }
-
-}
-
-
-/* Follow */
-
-async function toggleFollow(p){
-
- if(!p||p.uid===currentUser.uid)return;
-
- const id=`${currentUser.uid}_${p.uid}`;
- const r=doc(db,"follows",id);
-
- const isFollowing=
-  followingState.has(p.uid);
-
- try{
-
-  if(isFollowing){
-
-   await deleteDoc(r);
-   followingState.delete(p.uid);
-
-   toast("Unfollowed.");
-
-  }else{
-
-   await setDoc(r,{
-    followerId:currentUser.uid,
-    followingId:p.uid,
-    createdAt:serverTimestamp()
-   });
-
-   followingState.add(p.uid);
-
-   await createNotification(
-    p.uid,
-    "follow",
-    currentProfile,
-    "started following you."
-   );
-
-   const reverse=await getDoc(
-    doc(db,"follows",`${p.uid}_${currentUser.uid}`)
-   );
-
-   if(reverse.exists()){
-
-    await createNotification(
-     p.uid,
-     "friend",
-     currentProfile,
-     "you are now Friends."
-    );
-
-    await createNotification(
-     currentUser.uid,
-     "friend",
-     p,
-     "you are now Friends."
-    );
-
-    toast("You are now Friends ✓");
-
-   }else{
-
-    toast("Following.");
-
-   }
-
-  }
-
-  await loadFollowing();
-
-  if(viewingProfile?.uid===p.uid)
-   renderProfile(p);
-
-  renderForYou();
-
- }catch(e){
-
-  console.error(e);
-  toast("Follow could not be updated.");
-
- }
-
-}
-
-
-/* For You */
-
-async function loadForYou(){
-
- $("foryouCard").innerHTML=
-  `<div class="card glass no-users">Loading…</div>`;
-
- $("foryouActions").classList.add("hidden");
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"users"),
-    limit(100)
-   )
-  );
-
-  forYouUsers=s.docs
-   .map(d=>({uid:d.id,...d.data()}))
-   .filter(p=>
-    p.uid!==currentUser.uid &&
-    p.photoURL &&
-    p.name &&
-    p.username
-   );
-
-  forYouIndex=0;
-
-  renderForYou();
-
- }catch(e){
-
-  console.error(e);
-
-  $("foryouCard").innerHTML=
-   `<div class="card glass no-users">
-    Unable to load profiles.
-   </div>`;
-
- }
-
-}
-
-function currentForYou(){
- return forYouUsers[forYouIndex]||null;
-}
-
-function renderForYou(){
-
- const p=currentForYou();
-
- if(!p){
-
-  $("foryouCard").innerHTML=`
-   <div class="card glass no-users">
-    No more profiles right now.
-   </div>`;
-
-  $("foryouActions").classList.add("hidden");
-  return;
-
- }
-
- const isFollowing=followingState.has(p.uid);
- const isLiked=likedState.has(p.uid);
-
- $("foryouCard").innerHTML=`
- <div class="discovery-card glass">
-
-  <img class="discovery-photo"
-   src="${esc(avatar(p))}"
-   alt=""
-   id="forYouPhoto">
-
-  <div class="discovery-overlay"></div>
-
-  <div class="discovery-info" id="forYouInfo">
-
-   <div class="discovery-name">
-    ${esc(p.name)}${badge(p)}
-   </div>
-
-   <div class="discovery-meta">
-    @${esc(p.username)}
-    · ${esc(p.gender)}
-    · ${esc(p.district)}
-   </div>
-
-   <div class="discovery-bio">
-    ${esc(p.bio||"")}
-   </div>
-
-  </div>
-
- </div>`;
-
- $("forYouPhoto").onclick=()=>{
-  viewingProfile=p;
-  showPage("profilePage");
- };
-
- $("forYouInfo").onclick=()=>{
-  viewingProfile=p;
-  showPage("profilePage");
- };
-
- $("followForYouBtn").textContent=
-  isFollowing?"Following":"Follow";
-
- $("followForYouBtn").classList.toggle(
-  "following",isFollowing
- );
-
- $("likeForYouBtn").textContent=
-  isLiked?"♥ Liked":"♥";
-
- $("likeForYouBtn").classList.toggle(
-  "liked",isLiked
- );
-
- $("foryouActions").classList.remove("hidden");
-
- $("followForYouBtn").onclick=
-  ()=>toggleFollow(p);
-
- $("likeForYouBtn").onclick=
-  ()=>toggleLike(p);
-
-}
-
-function nextForYou(){
-
- forYouIndex++;
- renderForYou();
-
-}
-
-$("passBtn").onclick=nextForYou;
-
-
-/* Search */
-
-let searchTimer=null;
-
-$("searchInput").oninput=()=>{
-
- clearTimeout(searchTimer);
-
- searchTimer=setTimeout(
-  performSearch,
-  250
- );
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    onSnapshot,
+    addDoc,
+    serverTimestamp,
+    deleteDoc,
+    Timestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+   ========================================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
+
+    authDomain:
+    "flora-veilchat.firebaseapp.com",
+
+    projectId:
+    "flora-veilchat",
+
+    storageBucket:
+    "flora-veilchat.firebasestorage.app",
+
+    messagingSenderId:
+    "352485676905",
+
+    appId:
+    "1:352485676905:web:8beb0df80a0daea2cccff8",
+
+    measurementId:
+    "G-CQKB9Z8VP1"
 
 };
 
-async function performSearch(){
 
- const term=
-  $("searchInput").value.trim().toLowerCase();
+const app = initializeApp(firebaseConfig);
 
- if(!term){
+const auth = getAuth(app);
 
-  $("searchResults").innerHTML="";
-  $("foryouArea").classList.remove("hidden");
-  return;
+const db = getFirestore(app);
 
- }
 
- $("foryouArea").classList.add("hidden");
+/* =========================================================
+   ADMIN UID
+   =========================================================
 
- $("searchResults").innerHTML=
-  `<div class="card glass empty">Searching…</div>`;
+   এখানে তোমার নিজের Firebase Auth UID বসাবে।
 
- try{
+   IMPORTANT:
+   Client-side ADMIN_UID একা নিরাপত্তা দেয় না।
+   Production admin permission Firestore Rules /
+   Firebase custom claims দিয়ে enforce করতে হবে.
+*/
 
-  const s=await getDocs(
-   query(
-    collection(db,"users"),
-    limit(100)
-   )
-  );
+const ADMIN_UID = "";
 
-  const results=s.docs
-   .map(d=>({uid:d.id,...d.data()}))
-   .filter(p=>
-    p.uid!==currentUser.uid &&
-    (
-     String(p.name||"").toLowerCase().includes(term)||
-     String(p.username||"").toLowerCase().includes(term)||
-     String(p.usernameLower||"").includes(term)
-    )
-   )
-   .slice(0,30);
 
-  if(!results.length){
+/* =========================================================
+   VERIFIED IMAGE
+   =========================================================
 
-   $("searchResults").innerHTML=
-    `<div class="card glass empty">
-     No user found.
-    </div>`;
+   তোমার নিজের verified.png একই HTML folder-এ রাখবে।
 
-   return;
+   যেমন:
 
-  }
+   /index.html
+   /verified.png
+*/
 
-  $("searchResults").innerHTML=
-   results.map(p=>{
+const VERIFIED_IMAGE = "verified.png";
 
-    const following=
-     followingState.has(p.uid);
 
-    return `
-    <div class="user-card glass">
+let confirmationResult = null;
 
-     <img
-      class="avatar small search-profile"
-      data-uid="${esc(p.uid)}"
-      src="${esc(avatar(p))}"
-      alt="">
+let currentUser = null;
 
-     <div class="user-card-info search-profile"
-      data-uid="${esc(p.uid)}">
+let currentChatUser = null;
 
-      <div class="user-name">
-       ${esc(p.name)}${badge(p)}
-      </div>
+let unsubscribeMessages = null;
 
-      <div class="user-meta">
-       @${esc(p.username)} · ${esc(p.district||"")}
-      </div>
+let cameraStream = null;
 
-     </div>
 
-     <div class="user-card-actions">
+/* =========================================================
+   BASIC UI
+   ========================================================= */
 
-      <button
-       class="btn secondary search-message"
-       data-uid="${esc(p.uid)}">
-       Message
-      </button>
+window.switchScreen = function(id){
 
-      <button
-       class="btn ${following?"following":""} search-follow"
-       data-uid="${esc(p.uid)}">
-       ${following?"Following":"Follow"}
-      </button>
+    document
+      .querySelectorAll(".screen")
+      .forEach(x => x.classList.remove("active"));
 
-     </div>
+    const screen = document.getElementById(id);
 
-    </div>`;
-   }).join("");
+    if(screen){
+        screen.classList.add("active");
+    }
 
-  document.querySelectorAll(".search-profile")
-   .forEach(el=>{
+};
 
-    el.onclick=()=>{
 
-     const p=results.find(
-      x=>x.uid===el.dataset.uid
-     );
+window.switchTab = function(tab){
 
-     if(p){
+    if(tab === "home"){
+        switchScreen("homeScreen");
+        loadChats();
+    }
 
-      viewingProfile=p;
-      showPage("profilePage");
+    if(tab === "contacts"){
+        switchScreen("contactsScreen");
+        loadContacts();
+    }
 
-     }
+    if(tab === "settings"){
+        switchScreen("settingsScreen");
+        updateSettingsInfo();
+    }
 
-    };
+};
 
-   });
 
-  document.querySelectorAll(".search-follow")
-   .forEach(btn=>{
+window.openProfile = function(){
 
-    btn.onclick=async e=>{
+    switchScreen("profileScreen");
 
-     e.stopPropagation();
+    loadProfile();
 
-     const p=results.find(
-      x=>x.uid===btn.dataset.uid
-     );
+};
 
-     if(p){
 
-      await toggleFollow(p);
-      performSearch();
+/* =========================================================
+   PHONE AUTH
+   ========================================================= */
 
-     }
+window.requestOTP = async function(){
 
-    };
+    const phone =
+      document.getElementById("phoneNumber")
+      .value
+      .trim();
 
-   });
+    if(!phone){
 
-  document.querySelectorAll(".search-message")
-   .forEach(btn=>{
+        alert("Enter your mobile number.");
 
-    btn.onclick=async e=>{
+        return;
+    }
 
-     e.stopPropagation();
+    if(!phone.startsWith("+")){
 
-     const p=results.find(
-      x=>x.uid===btn.dataset.uid
-     );
+        alert(
+          "Use international format.\nExample: +8801XXXXXXXXX"
+        );
 
-     if(p)
-      startChat(p);
+        return;
+    }
 
-    };
+    try{
 
-   });
+        if(!window.recaptchaVerifier){
 
- }catch(e){
+            window.recaptchaVerifier =
+              new RecaptchaVerifier(
+                auth,
+                "recaptcha-container",
+                {
+                    size:"invisible"
+                }
+              );
 
-  console.error(e);
+        }
 
-  $("searchResults").innerHTML=
-   `<div class="card glass empty">
-    Search failed.
-   </div>`;
+        confirmationResult =
+          await signInWithPhoneNumber(
+            auth,
+            phone,
+            window.recaptchaVerifier
+          );
 
- }
+        document.getElementById("otpInfo").innerText =
+          "Code sent to " + phone;
 
-}
+        switchScreen("otpScreen");
 
+    }catch(error){
 
-/* Followers */
+        console.error(error);
 
-async function showFollowers(){
-
- if(!currentUser)return;
-
- showPage("followersPage");
-
- $("followersList").innerHTML=
-  `<div class="empty">Loading followers…</div>`;
-
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"follows"),
-    where("followingId","==",currentUser.uid),
-    limit(500)
-   )
-  );
-
-  if(!s.size){
-
-   $("followersList").innerHTML=
-    `<div class="empty">No followers yet.</div>`;
-
-   return;
-
-  }
-
-  const people=[];
-
-  for(const d of s.docs){
-
-   const x=d.data();
-
-   if(!x.followerId)continue;
-
-   const u=await getDoc(
-    doc(db,"users",x.followerId)
-   );
-
-   if(u.exists())
-    people.push({
-     uid:u.id,
-     ...u.data()
-    });
-
-  }
-
-  $("followersList").innerHTML=
-   people.map(p=>`
-    <div class="user-card glass">
-
-     <img
-      class="avatar small follower-profile"
-      data-uid="${esc(p.uid)}"
-      src="${esc(avatar(p))}">
-
-     <div
-      class="user-card-info follower-profile"
-      data-uid="${esc(p.uid)}">
-
-      <div class="user-name">
-       ${esc(p.name)}${badge(p)}
-      </div>
-
-      <div class="user-meta">
-       @${esc(p.username)}
-      </div>
-
-     </div>
-
-     <button
-      class="btn secondary follower-message"
-      data-uid="${esc(p.uid)}">
-      Message
-     </button>
-
-    </div>
-   `).join("");
-
-  document.querySelectorAll(".follower-profile")
-   .forEach(el=>{
-
-    el.onclick=async()=>{
-
-     const p=people.find(
-      x=>x.uid===el.dataset.uid
-     );
-
-     if(p){
-
-      viewingProfile=p;
-      showPage("profilePage");
-
-     }
-
-    };
-
-   });
-
-  document.querySelectorAll(".follower-message")
-   .forEach(btn=>{
-
-    btn.onclick=()=>{
-
-     const p=people.find(
-      x=>x.uid===btn.dataset.uid
-     );
-
-     if(p)startChat(p);
-
-    };
-
-   });
-
- }catch(e){
-
-  console.error(e);
-
-  $("followersList").innerHTML=
-   `<div class="empty">
-    Unable to load followers.
-   </div>`;
-
- }
-
-}
-
-
-/* Edit Profile */
-
-function openEdit(){
-
- capturedPhotoBlob=null;
-
- $("editAvatar").src=avatar(currentProfile);
-
- $("nameInput").value=currentProfile.name||"";
- $("usernameInput").value=currentProfile.username||"";
- $("genderInput").value=currentProfile.gender||"";
- $("dobInput").value=currentProfile.dateOfBirth||"";
- $("districtInput").value=currentProfile.district||"";
- $("thanaInput").value=currentProfile.thana||"";
- $("postOfficeInput").value=currentProfile.postOffice||"";
- $("postalCodeInput").value=currentProfile.postalCode||"";
- $("phoneInput").value=currentProfile.phone||"";
- $("nidInput").value=currentProfile.nidNumber||"";
- $("bioInput").value=currentProfile.bio||"";
- $("ageInput").value=currentProfile.age||"";
-
- showPage("editPage");
-
-}
-
-
-/* Camera */
-
-async function openCamera(){
-
- try{
-
-  cameraStream=
-   await navigator.mediaDevices.getUserMedia({
-    video:{facingMode:"user"},
-    audio:false
-   });
-
-  $("cameraVideo").srcObject=cameraStream;
-  $("cameraVideo").style.display="block";
-  $("editAvatar").classList.add("hidden");
-  $("captureBtn").classList.remove("hidden");
-
- }catch(e){
-
-  console.error(e);
-  toast("Camera permission is required.");
-
- }
-
-}
-
-function stopCamera(){
-
- if(cameraStream){
-
-  cameraStream.getTracks().forEach(t=>t.stop());
-  cameraStream=null;
-
- }
-
- $("cameraVideo").style.display="none";
- $("captureBtn").classList.add("hidden");
-
-}
-
-function captureSelfie(){
-
- const video=$("cameraVideo");
- const canvas=$("cameraCanvas");
-
- if(!video.videoWidth){
-
-  toast("Camera is not ready.");
-  return;
-
- }
-
- canvas.width=video.videoWidth;
- canvas.height=video.videoHeight;
-
- const ctx=canvas.getContext("2d");
-
- ctx.drawImage(
-  video,0,0,canvas.width,canvas.height
- );
-
- canvas.toBlob(blob=>{
-
-  if(!blob)return;
-
-  capturedPhotoBlob=blob;
-
-  $("editAvatar").src=
-   URL.createObjectURL(blob);
-
-  $("editAvatar").classList.remove("hidden");
-
-  stopCamera();
-
- }, "image/jpeg", .88);
-
-}
-
-
-/* Username */
-
-async function usernameAvailable(u){
-
- const s=await getDocs(
-  query(
-   collection(db,"users"),
-   where(
-    "usernameLower",
-    "==",
-    u.toLowerCase()
-   ),
-   limit(2)
-  )
- );
-
- return s.docs.every(
-  d=>d.id===currentUser.uid
- );
-
-}
-
-
-/* Delete old profile image */
-
-async function deleteOldProfileImage(url){
-
- if(!url||
-    !url.includes("firebasestorage.googleapis.com"))
-  return;
-
- try{
-
-  await deleteObject(
-   ref(storage,url)
-  );
-
- }catch(e){
-
-  console.warn(
-   "Old profile image could not be deleted",
-   e
-  );
-
- }
-
-}
-
-
-/* Save Profile */
-
-async function saveProfile(){
-
- const name=$("nameInput").value.trim();
-
- const username=
-  $("usernameInput").value
-  .trim()
-  .replace(/^@/,"");
-
- const gender=$("genderInput").value;
- const dateOfBirth=$("dobInput").value;
- const district=$("districtInput").value;
- const thana=$("thanaInput").value.trim();
- const postOffice=$("postOfficeInput").value.trim();
- const postalCode=$("postalCodeInput").value.trim();
- const phone=$("phoneInput").value.trim();
- const nidNumber=$("nidInput").value.trim();
- const bio=$("bioInput").value.trim().slice(0,300);
-
- const age=$("ageInput").value?
-  Number($("ageInput").value):"";
-
- if(
-  !name||
-  !username||
-  !gender||
-  !dateOfBirth||
-  !district||
-  !thana||
-  !postOffice||
-  !postalCode||
-  !phone||
-  !nidNumber||
-  !bio||
-  !age
- ){
-
-  toast("Please complete all required fields.");
-  return;
-
- }
-
- if(!/^[A-Za-z0-9_.]{3,30}$/.test(username)){
-
-  toast("Username must be 3–30 letters, numbers, _ or .");
-  return;
-
- }
-
- if(age<18||age>100){
-
-  toast("Age must be between 18 and 100.");
-  return;
-
- }
-
- if(!currentProfile.photoURL&&!capturedPhotoBlob){
-
-  toast("Please take a selfie.");
-  return;
-
- }
-
- loading(true);
-
- try{
-
-  if(
-   username.toLowerCase()!==
-   (currentProfile.usernameLower||"")
-  ){
-
-   if(!await usernameAvailable(username)){
-
-    toast("This username is already taken.");
-    loading(false);
-    return;
-
-   }
-
-  }
-
-  let photoURL=
-   currentProfile.photoURL||"";
-
-  const oldPhotoURL=photoURL;
-
-  if(capturedPhotoBlob){
-
-   const r=ref(
-    storage,
-    `profilePhotos/${currentUser.uid}/${Date.now()}.jpg`
-   );
-
-   await uploadBytes(
-    r,
-    capturedPhotoBlob,
-    {contentType:"image/jpeg"}
-   );
-
-   photoURL=await getDownloadURL(r);
-
-  }
-
-  const oldVisibility=
-   currentProfile.visibility||{
-    bio:"Public",
-    age:"Only Me",
-    phone:"Only Me",
-    followers:"Public",
-    following:"Public",
-    online:"Public",
-    messages:"Everyone"
-   };
-
-  if(!oldVisibility.messages)
-   oldVisibility.messages="Everyone";
-
-  const data={
-
-   uid:currentUser.uid,
-
-   name,
-   nameLower:name.toLowerCase(),
-
-   username,
-   usernameLower:username.toLowerCase(),
-
-   gender,
-   dateOfBirth,
-
-   district,
-   thana,
-   postOffice,
-   postalCode,
-
-   phone,
-   nidNumber,
-
-   bio,
-   age,
-
-   photoURL,
-
-   visibility:oldVisibility,
-
-   updatedAt:serverTimestamp()
-
-  };
-
-  const r=doc(
-   db,
-   "users",
-   currentUser.uid
-  );
-
-  const old=await getDoc(r);
-
-  if(old.exists()){
-
-   await updateDoc(r,data);
-
-  }else{
-
-   await setDoc(r,{
-    ...data,
-    verified:false,
-    createdAt:serverTimestamp()
-   });
-
-  }
-
-  /* Delete old profile photo only after new one is saved */
-
-  if(
-   capturedPhotoBlob&&
-   oldPhotoURL&&
-   oldPhotoURL!==photoURL
-  ){
-
-   await deleteOldProfileImage(oldPhotoURL);
-
-  }
-
-  capturedPhotoBlob=null;
-
-  await loadProfile();
-  await loadFollowing();
-  await loadLikes();
-
-  updateTopProfile();
-
-  viewingProfile=currentProfile;
-
-  renderHome();
-
-  showPage("profilePage");
-
-  toast("Profile saved.");
-
- }catch(e){
-
-  console.error(e);
-
-  toast(
-   e.message||
-   "Profile could not be saved."
-  );
-
- }finally{
-
-  loading(false);
-
- }
-
-}
-
-
-/* Messaging permission */
-
-async function canMessage(p){
-
- if(!p||p.uid===currentUser.uid)
-  return false;
-
- const setting=
-  p.visibility?.messages||"Everyone";
-
- if(setting==="Everyone")
-  return true;
-
- if(setting==="Only Me")
-  return false;
-
- const followedByMe=
-  followingState.has(p.uid);
-
- if(setting==="Followers")
-  return followedByMe;
-
- if(setting==="Friends"){
-
-  if(!followedByMe)
-   return false;
-
-  const reverse=await getDoc(
-   doc(db,"follows",`${p.uid}_${currentUser.uid}`)
-  );
-
-  return reverse.exists();
-
- }
-
- return true;
-}
-
-
-/* Chat */
-
-async function startChat(p){
-
- if(!p)return;
-
- const allowed=await canMessage(p);
-
- if(!allowed){
-
-  toast("This user is not accepting messages from you.");
-  return;
-
- }
-
- activeChatUser=p;
-
- $("chatTitle").innerHTML=
-  esc(p.name)+badge(p);
-
- $("chatSubtitle").textContent=
-  "@"+p.username;
-
- showPage("chatPage");
-
- renderLocalChat();
-
- listenMessages();
-
-}
-
-function renderLocalChat(remoteMessages=[]){
-
- if(!activeChatUser)return;
-
- let local=cleanupLocalMessages(
-  currentUser.uid,
-  activeChatUser.uid
- );
-
- const map=new Map();
-
- local.forEach(m=>{
-  if(m.localId)
-   map.set(m.localId,m);
- });
-
- remoteMessages.forEach(m=>{
-
-  if(m.id)
-   map.set(m.id,m);
-
- });
-
- const arr=[...map.values()]
-  .filter(m=>
-   !m.expiresAt||
-   Number(m.expiresAt)>Date.now()
-  )
-  .sort((a,b)=>
-   Number(a.createdAtMs||0)-
-   Number(b.createdAtMs||0)
-  );
-
- const box=$("messages");
- box.innerHTML="";
-
- if(!arr.length){
-
-  box.innerHTML=
-   `<div class="empty">
-    No messages yet.
-   </div>`;
-
-  return;
-
- }
-
- arr.forEach(m=>{
-
-  const el=document.createElement("div");
-
-  el.className=
-   "message "+
-   (
-    m.senderId===currentUser.uid
-    ?"mine"
-    :"theirs"
-   );
-
-  el.textContent=m.text||"";
-
-  const time=document.createElement("span");
-
-  time.className="message-time";
-
-  const d=new Date(
-   Number(m.createdAtMs||Date.now())
-  );
-
-  time.textContent=
-   d.toLocaleTimeString([],{
-    hour:"2-digit",
-    minute:"2-digit"
-   });
-
-  el.appendChild(time);
-  box.appendChild(el);
-
- });
-
- box.scrollTop=box.scrollHeight;
-
-}
-
-function listenMessages(){
-
- if(unsubscribeMessages)
-  unsubscribeMessages();
-
- if(!activeChatUser)return;
-
- const q=query(
-  collection(
-   db,
-   "chats",
-   chatId(
-    currentUser.uid,
-    activeChatUser.uid
-   ),
-   "messages"
-  ),
-  orderBy("createdAt","asc"),
-  limit(300)
- );
-
- unsubscribeMessages=
-  onSnapshot(q,async s=>{
-
-   const remote=[];
-
-   s.forEach(d=>{
-
-    const m=d.data();
-
-    let createdAtMs=Date.now();
-
-    if(m.createdAt?.toMillis)
-     createdAtMs=m.createdAt.toMillis();
-    else if(m.createdAtMs)
-     createdAtMs=Number(m.createdAtMs);
-
-    const expiresAt=
-     Number(m.expiresAtMs||(
-      createdAtMs+24*60*60*1000
-     ));
-
-    if(expiresAt<=Date.now()){
-
-     deleteDoc(d.ref).catch(()=>{});
-     return;
+        alert(
+          "OTP could not be sent.\n\n" +
+          error.message
+        );
 
     }
 
-    remote.push({
-     id:d.id,
-     senderId:m.senderId,
-     receiverId:m.receiverId,
-     text:m.text||"",
-     createdAtMs,
-     expiresAt
-    });
+};
 
-   });
 
-   const local=cleanupLocalMessages(
-    currentUser.uid,
-    activeChatUser.uid
-   );
+window.verifyOTP = async function(){
 
-   const combined=[
-    ...local.filter(l=>
-     !remote.some(r=>r.id===l.remoteId)
-    ),
-    ...remote
-   ];
+    const code =
+      document.getElementById("otpInput")
+      .value
+      .trim();
 
-   saveLocalMessages(
-    currentUser.uid,
-    activeChatUser.uid,
-    combined
-   );
+    if(code.length !== 6){
 
-   renderLocalChat(combined);
+        alert("Enter the 6-digit OTP.");
 
-  },e=>{
+        return;
+    }
 
-   console.error(e);
-   renderLocalChat();
-   toast("Chat connection failed.");
+    if(!confirmationResult){
 
-  });
+        alert("Request OTP first.");
 
-}
+        return;
+    }
 
-async function sendMessage(){
+    try{
 
- if(!activeChatUser)return;
+        await confirmationResult.confirm(code);
 
- const allowed=await canMessage(activeChatUser);
+    }catch(error){
 
- if(!allowed){
+        console.error(error);
 
-  toast("This user is not accepting messages from you.");
-  return;
+        alert(
+          "OTP verification failed.\n\n" +
+          error.message
+        );
 
- }
+    }
 
- const input=$("messageInput");
+};
 
- const text=
-  input.value.trim();
 
- if(!text)return;
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
 
- input.value="";
+onAuthStateChanged(auth, async user => {
 
- const id=
-  chatId(
-   currentUser.uid,
-   activeChatUser.uid
-  );
+    currentUser = user;
 
- const now=Date.now();
+    if(!user){
 
- const expiresAt=
-  now+24*60*60*1000;
+        switchScreen("loginScreen");
 
- const localId=
-  "local_"+Date.now()+"_"+Math.random()
-  .toString(36).slice(2);
+        return;
+    }
 
- const localMessage={
-  localId,
-  senderId:currentUser.uid,
-  receiverId:activeChatUser.uid,
-  text,
-  createdAtMs:now,
-  expiresAt
- };
+    await createOrLoadAccount(user);
 
- const local=cleanupLocalMessages(
-  currentUser.uid,
-  activeChatUser.uid
- );
+    await updateLastActive();
 
- local.push(localMessage);
+    loadProfile();
 
- saveLocalMessages(
-  currentUser.uid,
-  activeChatUser.uid,
-  local
- );
+    loadChats();
 
- renderLocalChat(local);
+    switchScreen("homeScreen");
 
- try{
+});
 
-  const added=await addDoc(
-   collection(
-    db,
-    "chats",
-    id,
-    "messages"
-   ),
-   {
-    senderId:currentUser.uid,
-    receiverId:activeChatUser.uid,
-    text,
-    createdAt:serverTimestamp(),
-    createdAtMs:now,
-    expiresAtMs:expiresAt,
-    read:false
-   }
-  );
 
-  localMessage.remoteId=added.id;
+/* =========================================================
+   ACCOUNT
+   ========================================================= */
 
-  saveLocalMessages(
-   currentUser.uid,
-   activeChatUser.uid,
-   local
-  );
+async function createOrLoadAccount(user){
 
-  await setDoc(
-   doc(db,"chats",id),
-   {
-    participants:[
-     currentUser.uid,
-     activeChatUser.uid
-    ],
-    lastMessage:text.slice(0,200),
-    updatedAt:serverTimestamp()
-   },
-   {merge:true}
-  );
+    const ref =
+      doc(db,"users",user.uid);
 
- }catch(e){
+    const snap =
+      await getDoc(ref);
 
-  console.error(e);
+    if(!snap.exists()){
 
-  /* Keep it local so it can retry later */
+        await setDoc(ref,{
 
-  toast("Message saved locally; delivery is pending.");
+            uid:user.uid,
 
- }
+            phone:user.phoneNumber || "",
+
+            name:"",
+
+            username:"",
+
+            bio:"",
+
+            profession:"",
+
+            location:"",
+
+            website:"",
+
+            selfieData:"",
+
+            verified:false,
+
+            createdAt:serverTimestamp(),
+
+            lastActiveAt:serverTimestamp(),
+
+            accountExpiresAt:
+              Timestamp.fromDate(
+                new Date(
+                  Date.now() +
+                  180 * 24 * 60 * 60 * 1000
+                )
+              )
+
+        });
+
+    }
 
 }
 
 
-/* Notifications */
+/* =========================================================
+   6 MONTH ACTIVITY
+   ========================================================= */
 
-async function loadNotifications(){
+async function updateLastActive(){
 
- $("notificationsList").innerHTML=
-  `<div class="empty">Loading…</div>`;
+    if(!currentUser) return;
 
- try{
-
-  const s=await getDocs(
-   query(
-    collection(db,"notifications"),
-    where(
-     "recipientId",
-     "==",
-     currentUser.uid
-    ),
-    limit(100)
-   )
-  );
-
-  const arr=s.docs
-   .map(d=>({
-    id:d.id,
-    ...d.data()
-   }))
-   .sort((a,b)=>{
-
-    const aa=a.createdAt?.toMillis?
-     a.createdAt.toMillis():0;
-
-    const bb=b.createdAt?.toMillis?
-     b.createdAt.toMillis():0;
-
-    return bb-aa;
-
-   });
-
-  if(!arr.length){
-
-   $("notificationsList").innerHTML=
-    `<div class="empty">
-     No notifications yet.
-    </div>`;
-
-   return;
-
-  }
-
-  $("notificationsList").innerHTML=
-   arr.map(n=>{
-
-    const time=n.createdAt?.toDate?
-     n.createdAt.toDate().toLocaleString():"";
-
-    return `
-    <div class="notification ${n.read?"":"unread"}"
-     data-notification="${esc(n.id)}">
-
-     <img class="notification-avatar"
-      src="${esc(n.actorPhoto||avatar({}))}">
-
-     <div class="notification-text">
-      <strong>${esc(n.actorName||"Someone")}</strong>
-      ${esc(n.text||"")}
-      <div class="notification-time">
-       ${esc(time)}
-      </div>
-     </div>
-
-    </div>`;
-
-   }).join("");
-
-  await markNotificationsRead(arr);
-
-  updateNotificationDot(false);
-
- }catch(e){
-
-  console.error(e);
-
-  $("notificationsList").innerHTML=
-   `<div class="empty">
-    Notifications could not be loaded.
-   </div>`;
-
- }
-
-}
-
-async function markNotificationsRead(arr){
-
- for(const n of arr){
-
-  if(!n.read){
-
-   try{
+    const nextExpiry =
+      Timestamp.fromDate(
+        new Date(
+          Date.now() +
+          180 * 24 * 60 * 60 * 1000
+        )
+      );
 
     await updateDoc(
-     doc(db,"notifications",n.id),
-     {read:true}
+      doc(db,"users",currentUser.uid),
+      {
+          lastActiveAt:serverTimestamp(),
+          accountExpiresAt:nextExpiry
+      }
     );
 
-   }catch(e){}
-
-  }
-
- }
-
-}
-
-function listenNotifications(){
-
- if(notificationUnsubscribe)
-  notificationUnsubscribe();
-
- const q=query(
-  collection(db,"notifications"),
-  where(
-   "recipientId",
-   "==",
-   currentUser.uid
-  ),
-  limit(50)
- );
-
- notificationUnsubscribe=
-  onSnapshot(q,s=>{
-
-   let unread=false;
-
-   s.forEach(d=>{
-
-    if(d.data().read===false)
-     unread=true;
-
-   });
-
-   updateNotificationDot(unread);
-
-  },e=>{
-
-   console.error(e);
-
-  });
-
-}
-
-function updateNotificationDot(v){
-
- $("notificationDot")
-  .classList.toggle("hidden",!v);
-
 }
 
 
-/* About */
+/* =========================================================
+   PROFILE LOAD
+   ========================================================= */
 
-async function loadAbout(){
+async function loadProfile(){
 
- try{
+    if(!currentUser) return;
 
-  const s=await getDoc(
-   doc(db,"appConfig","about")
-  );
+    const snap =
+      await getDoc(
+        doc(db,"users",currentUser.uid)
+      );
 
-  if(!s.exists()){
+    if(!snap.exists()) return;
 
-   $("aboutContent").textContent=
-    "About information is not available.";
+    const data = snap.data();
 
-   return;
+    document.getElementById("profileName").innerText =
+      data.name || "New User";
 
-  }
+    document.getElementById("profileUsername").innerText =
+      data.username
+      ? "@" + data.username.replace(/^@/,"")
+      : "@username";
 
-  const data=s.data();
+    document.getElementById("profileBio").innerText =
+      data.bio || "Add information about yourself.";
 
-  $("aboutContent").textContent=
-   data.text||
-   data.content||
-   data.description||
-   "";
+    document.getElementById("editName").value =
+      data.name || "";
 
- }catch(e){
+    document.getElementById("editUsername").value =
+      data.username || "";
 
-  console.error(e);
+    document.getElementById("editBio").value =
+      data.bio || "";
 
-  $("aboutContent").textContent=
-   "About information could not be loaded.";
+    document.getElementById("editProfession").value =
+      data.profession || "";
 
- }
+    document.getElementById("editLocation").value =
+      data.location || "";
+
+    document.getElementById("editWebsite").value =
+      data.website || "";
+
+    renderProfilePhoto(
+      data.selfieData || ""
+    );
+
+    renderVerification(
+      data.verified === true
+    );
+
+    updateHeaderPhoto(
+      data.selfieData || ""
+    );
 
 }
 
 
-/* Login */
+/* =========================================================
+   PROFILE PHOTO
+   ========================================================= */
 
-async function googleLogin(){
+function renderProfilePhoto(data){
 
- try{
+    const box =
+      document.getElementById("profilePhoto");
 
-  loading(true);
+    box.innerHTML = "";
 
-  const provider=
-   new GoogleAuthProvider();
+    if(data){
 
-  await signInWithPopup(
-   auth,
-   provider
-  );
+        const img =
+          document.createElement("img");
 
- }catch(e){
+        img.src = data;
 
-  console.error(e);
+        img.alt = "Profile";
 
-  toast(
-   e.message||
-   "Google sign-in failed."
-  );
+        box.appendChild(img);
 
- }finally{
+    }else{
 
-  loading(false);
+        box.innerHTML =
+          '<i class="fa-solid fa-user"></i>';
 
- }
+    }
 
 }
 
 
-/* Auth */
+function updateHeaderPhoto(data){
 
-async function authState(user){
+    const box =
+      document.getElementById("headerAvatar");
 
- if(!user){
+    box.innerHTML = "";
 
-  currentUser=null;
+    if(data){
 
-  $("app").classList.add("hidden");
-  $("loginScreen").classList.remove("hidden");
+        const img =
+          document.createElement("img");
 
-  loading(false);
+        img.src = data;
 
-  return;
+        box.appendChild(img);
 
- }
+    }else{
 
- currentUser=user;
+        box.innerHTML =
+          '<i class="fa-solid fa-user"></i>';
 
- $("loginScreen").classList.add("hidden");
- $("app").classList.remove("hidden");
-
- $("connectionStatus").textContent=
-  "Connected";
-
- try{
-
-  const exists=await loadProfile();
-
-  await loadFollowing();
-  await loadLikes();
-
-  updateTopProfile();
-
-  listenNotifications();
-
-  const incomplete=
-   !exists||
-   !currentProfile.photoURL||
-   !currentProfile.name||
-   !currentProfile.username||
-   !currentProfile.gender||
-   !currentProfile.dateOfBirth||
-   !currentProfile.district||
-   !currentProfile.thana||
-   !currentProfile.postOffice||
-   !currentProfile.postalCode||
-   !currentProfile.phone||
-   !currentProfile.nidNumber||
-   !currentProfile.bio||
-   !currentProfile.age;
-
-  if(incomplete){
-
-   openEdit();
-
-  }else{
-
-   viewingProfile=currentProfile;
-   showPage("homePage");
-
-  }
-
- }catch(e){
-
-  console.error(e);
-
-  toast(
-   "Could not load your profile."
-  );
-
- }finally{
-
-  loading(false);
-
- }
+    }
 
 }
 
 
-/* Districts */
+/* =========================================================
+   VERIFICATION
+   ========================================================= */
 
-districts.forEach(d=>{
+function renderVerification(isVerified){
 
- $("districtInput").insertAdjacentHTML(
-  "beforeend",
-  `<option value="${esc(d)}">${esc(d)}</option>`
- );
+    const box =
+      document.getElementById("verificationStatus");
 
-});
+    if(isVerified){
 
+        box.innerHTML = `
 
-/* Events */
+          <div style="
+             display:inline-flex;
+             align-items:center;
+             gap:6px;
+             color:#38bdf8;
+             font-size:12px;
+             font-weight:600">
 
-$("googleLoginBtn").onclick=
- googleLogin;
+             <img
+               src="${VERIFIED_IMAGE}"
+               class="verified-badge"
+               alt="Verified">
 
-$("editProfileBtn").onclick=
- openEdit;
+             Verified
 
-$("editBackBtn").onclick=()=>{
+          </div>
 
- stopCamera();
+        `;
 
- capturedPhotoBlob=null;
+    }else{
 
- showPage("profilePage");
+        box.innerHTML = `
 
-};
+          <div style="
+             color:#94a3b8;
+             font-size:11px">
 
-$("saveProfileBtn").onclick=
- saveProfile;
+             Take a clear selfie to activate your
+             VEIL verification badge.
 
-$("logoutBtn").onclick=
- ()=>signOut(auth);
+          </div>
 
-$("topProfileBtn").onclick=()=>{
+        `;
 
- viewingProfile=currentProfile;
-
- showPage("profilePage");
-
-};
-
-$("notificationBtn").onclick=()=>{
-
- showPage("notificationsPage");
-
-};
-
-$("notificationBackBtn").onclick=()=>{
-
- showPage("homePage");
-
-};
-
-$("followersBackBtn").onclick=()=>{
-
- viewingProfile=currentProfile;
-
- showPage("profilePage");
-
-};
-
-$("openCameraBtn").onclick=
- openCamera;
-
-$("captureBtn").onclick=
- captureSelfie;
-
-$("sendBtn").onclick=
- sendMessage;
-
-$("messageInput").onkeydown=e=>{
-
- if(
-  e.key==="Enter"&&
-  !e.shiftKey
- ){
-
-  e.preventDefault();
-  sendMessage();
-
- }
-
-};
-
-$("chatBackBtn").onclick=()=>{
-
- if(unsubscribeMessages)
-  unsubscribeMessages();
-
- activeChatUser=null;
-
- showPage("foryouPage");
-
-};
-
-$("aboutBtn").onclick=async()=>{
-
- await loadAbout();
-
- showPage("aboutPage");
-
-};
-
-$("aboutBackBtn").onclick=()=>{
-
- showPage("settingsPage");
-
-};
-
-document.querySelectorAll(".nav-item")
-.forEach(b=>{
-
- b.onclick=()=>{
-
-  showPage(b.dataset.page);
-
- };
-
-});
-
-
-/* Firebase start */
-
-async function start(){
-
- try{
-
-  const app=
-   initializeApp(firebaseConfig);
-
-  auth=getAuth(app);
-
-  db=getFirestore(app);
-
-  storage=getStorage(app);
-
-  await setPersistence(
-   auth,
-   browserLocalPersistence
-  );
-
-  onAuthStateChanged(
-   auth,
-   authState
-  );
-
- }catch(e){
-
-  console.error(e);
-
-  loading(false);
-
-  toast(
-   "Firebase initialization failed."
-  );
-
- }
+    }
 
 }
 
-start();
+
+/* =========================================================
+   SAVE PROFILE
+   ========================================================= */
+
+window.saveProfile = async function(){
+
+    if(!currentUser) return;
+
+    const name =
+      document.getElementById("editName")
+      .value.trim();
+
+    const username =
+      document.getElementById("editUsername")
+      .value
+      .trim()
+      .replace(/^@/,"");
+
+    const bio =
+      document.getElementById("editBio")
+      .value.trim();
+
+    const profession =
+      document.getElementById("editProfession")
+      .value.trim();
+
+    const location =
+      document.getElementById("editLocation")
+      .value.trim();
+
+    const website =
+      document.getElementById("editWebsite")
+      .value.trim();
+
+    try{
+
+        await updateDoc(
+          doc(db,"users",currentUser.uid),
+          {
+              name,
+              username,
+              bio,
+              profession,
+              location,
+              website,
+              lastActiveAt:serverTimestamp(),
+
+              accountExpiresAt:
+                Timestamp.fromDate(
+                  new Date(
+                    Date.now() +
+                    180 * 24 * 60 * 60 * 1000
+                  )
+                )
+          }
+        );
+
+        await loadProfile();
+
+        alert("Profile updated.");
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Could not update profile.\n\n" +
+          error.message
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+window.openCamera = async function(){
+
+    try{
+
+        cameraStream =
+          await navigator.mediaDevices.getUserMedia({
+
+              video:{
+                  facingMode:"user",
+                  width:{ideal:720},
+                  height:{ideal:720}
+              },
+
+              audio:false
+
+          });
+
+        const video =
+          document.getElementById("cameraVideo");
+
+        video.srcObject =
+          cameraStream;
+
+        switchScreen("cameraScreen");
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Camera access is required for selfie verification."
+        );
+
+    }
+
+};
+
+
+window.closeCamera = function(){
+
+    if(cameraStream){
+
+        cameraStream
+          .getTracks()
+          .forEach(track => track.stop());
+
+        cameraStream = null;
+
+    }
+
+    switchScreen("profileScreen");
+
+};
+
+
+window.captureSelfie = async function(){
+
+    if(!currentUser || !cameraStream) return;
+
+    const video =
+      document.getElementById("cameraVideo");
+
+    const canvas =
+      document.getElementById("selfieCanvas");
+
+    /*
+      Small compressed JPEG.
+      This keeps the Firestore document much smaller.
+    */
+
+    const MAX = 500;
+
+    let width = video.videoWidth;
+
+    let height = video.videoHeight;
+
+    if(!width || !height){
+
+        alert("Camera is not ready.");
+
+        return;
+    }
+
+    if(width > height){
+
+        width = MAX;
+
+        height =
+          Math.round(
+            video.videoHeight /
+            video.videoWidth *
+            MAX
+          );
+
+    }else{
+
+        height = MAX;
+
+        width =
+          Math.round(
+            video.videoWidth /
+            video.videoHeight *
+            MAX
+          );
+
+    }
+
+    canvas.width = width;
+
+    canvas.height = height;
+
+    const ctx =
+      canvas.getContext("2d");
+
+    /*
+      Mirror selfie naturally.
+    */
+
+    ctx.translate(width,0);
+
+    ctx.scale(-1,1);
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      width,
+      height
+    );
+
+    const compressed =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.55
+      );
+
+    try{
+
+        /*
+          User explicitly wants the selfie itself
+          to control the badge.
+
+          Therefore a captured selfie becomes the
+          profile selfie and activates verified=true.
+        */
+
+        await updateDoc(
+          doc(db,"users",currentUser.uid),
+          {
+              selfieData:compressed,
+              verified:true,
+              lastActiveAt:serverTimestamp(),
+
+              accountExpiresAt:
+                Timestamp.fromDate(
+                  new Date(
+                    Date.now() +
+                    180 * 24 * 60 * 60 * 1000
+                  )
+                )
+          }
+        );
+
+        closeCamera();
+
+        await loadProfile();
+
+        alert(
+          "Selfie saved. Your VEIL verified badge is now active."
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Selfie could not be saved.\n\n" +
+          error.message
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   REMOVE SELFIE
+   ========================================================= */
+
+window.removeSelfie = async function(){
+
+    if(!currentUser) return;
+
+    try{
+
+        await updateDoc(
+          doc(db,"users",currentUser.uid),
+          {
+              selfieData:"",
+              verified:false
+          }
+        );
+
+        await loadProfile();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
+
+
+/* =========================================================
+   CONTACTS
+   ========================================================= */
+
+async function loadContacts(){
+
+    const box =
+      document.getElementById("appUsersList");
+
+    box.innerHTML =
+      '<div class="empty">Loading contacts...</div>';
+
+    try{
+
+        const q =
+          query(
+            collection(db,"users"),
+            limit(100)
+          );
+
+        const snap =
+          await getDocs(q);
+
+        box.innerHTML = "";
+
+        let count = 0;
+
+        snap.forEach(item => {
+
+            const data = item.data();
+
+            if(
+              !currentUser ||
+              data.uid === currentUser.uid
+            ) return;
+
+            count++;
+
+            box.appendChild(
+              createUserItem(data)
+            );
+
+        });
+
+        if(!count){
+
+            box.innerHTML =
+              '<div class="empty">No other users found.</div>';
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        box.innerHTML =
+          '<div class="empty">Could not load contacts.</div>';
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH USERS
+   ========================================================= */
+
+let searchTimer = null;
+
+window.searchUsers = function(value){
+
+    clearTimeout(searchTimer);
+
+    searchTimer =
+      setTimeout(
+        () => performSearch(value.trim()),
+        350
+      );
+
+};
+
+
+async function performSearch(value){
+
+    if(!value){
+
+        loadChats();
+
+        return;
+    }
+
+    const box =
+      document.getElementById("chatListContainer");
+
+    box.innerHTML =
+      '<div class="empty">Searching...</div>';
+
+    try{
+
+        /*
+          Exact username search.
+
+          Firestore does not provide unrestricted
+          "contains" search by itself.
+        */
+
+        const username =
+          value.replace(/^@/,"").toLowerCase();
+
+        const q =
+          query(
+            collection(db,"users"),
+            where("username","==",username),
+            limit(20)
+          );
+
+        const snap =
+          await getDocs(q);
+
+        box.innerHTML = "";
+
+        snap.forEach(item => {
+
+            const data = item.data();
+
+            if(
+              currentUser &&
+              data.uid !== currentUser.uid
+            ){
+
+                box.appendChild(
+                  createUserItem(data)
+                );
+
+            }
+
+        });
+
+        if(!box.children.length){
+
+            box.innerHTML =
+              '<div class="empty">No user found.</div>';
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        box.innerHTML =
+          '<div class="empty">Search failed.</div>';
+
+    }
+
+}
+
+
+/* =========================================================
+   USER ITEM
+   ========================================================= */
+
+function createUserItem(data){
+
+    const item =
+      document.createElement("div");
+
+    item.className = "item";
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "avatar";
+
+    if(data.selfieData){
+
+        const img =
+          document.createElement("img");
+
+        img.src =
+          data.selfieData;
+
+        avatar.appendChild(img);
+
+    }else{
+
+        avatar.innerHTML =
+          '<i class="fa-solid fa-user"></i>';
+
+    }
+
+    const info =
+      document.createElement("div");
+
+    info.className = "info";
+
+    const nameRow =
+      document.createElement("div");
+
+    nameRow.className =
+      "name-row";
+
+    const name =
+      document.createElement("span");
+
+    name.className =
+      "name";
+
+    name.innerText =
+      data.name || "User";
+
+    nameRow.appendChild(name);
+
+    if(data.verified === true){
+
+        const badge =
+          document.createElement("img");
+
+        badge.src =
+          VERIFIED_IMAGE;
+
+        badge.className =
+          "verified-badge";
+
+        badge.alt =
+          "Verified";
+
+        nameRow.appendChild(badge);
+
+    }
+
+    const sub =
+      document.createElement("div");
+
+    sub.className =
+      "sub";
+
+    sub.innerText =
+      data.username
+      ? "@" + data.username
+      : "VEIL user";
+
+    info.appendChild(nameRow);
+
+    info.appendChild(sub);
+
+    item.appendChild(avatar);
+
+    item.appendChild(info);
+
+    item.onclick = () =>
+      openChat(data);
+
+    return item;
+
+}
+
+
+/* =========================================================
+   CHAT LIST
+   ========================================================= */
+
+function loadChats(){
+
+    if(!currentUser) return;
+
+    const box =
+      document.getElementById("chatListContainer");
+
+    /*
+      Chat list requires chat documents.
+      No fake data is inserted.
+    */
+
+    box.innerHTML =
+      '<div class="empty">Your conversations will appear here.</div>';
+
+}
+
+
+/* =========================================================
+   OPEN CHAT
+   ========================================================= */
+
+window.openChat = function(user){
+
+    if(!currentUser || !user) return;
+
+    currentChatUser = user;
+
+    document.getElementById("chatHeaderName")
+      .innerText =
+      user.name || "User";
+
+    const headerAvatar =
+      document.getElementById("chatHeaderAvatar");
+
+    headerAvatar.innerHTML = "";
+
+    if(user.selfieData){
+
+        const img =
+          document.createElement("img");
+
+        img.src =
+          user.selfieData;
+
+        headerAvatar.appendChild(img);
+
+    }else{
+
+        headerAvatar.innerHTML =
+          '<i class="fa-solid fa-user"></i>';
+
+    }
+
+    switchScreen("chatScreen");
+
+    listenMessages();
+
+};
+
+
+window.closeChat = function(){
+
+    if(unsubscribeMessages){
+
+        unsubscribeMessages();
+
+        unsubscribeMessages = null;
+
+    }
+
+    currentChatUser = null;
+
+    switchScreen("homeScreen");
+
+};
+
+
+/* =========================================================
+   CHAT ID
+   ========================================================= */
+
+function makeChatId(a,b){
+
+    return [a,b].sort().join("_");
+
+}
+
+
+/* =========================================================
+   REALTIME MESSAGES
+   ========================================================= */
+
+function listenMessages(){
+
+    if(!currentUser || !currentChatUser) return;
+
+    if(unsubscribeMessages){
+
+        unsubscribeMessages();
+
+    }
+
+    const chatId =
+      makeChatId(
+        currentUser.uid,
+        currentChatUser.uid
+      );
+
+    const messagesRef =
+      collection(
+        db,
+        "chats",
+        chatId,
+        "messages"
+      );
+
+    const q =
+      query(
+        messagesRef,
+        orderBy("createdAt","asc"),
+        limit(100)
+      );
+
+    unsubscribeMessages =
+      onSnapshot(
+        q,
+        snapshot => {
+
+            const area =
+              document.getElementById(
+                "messageArea"
+              );
+
+            area.innerHTML = "";
+
+            snapshot.forEach(item => {
+
+                const data =
+                  item.data();
+
+                renderMessage(
+                  data,
+                  area
+                );
+
+            });
+
+            area.scrollTop =
+              area.scrollHeight;
+
+        },
+
+        error => {
+
+            console.error(error);
+
+        }
+
+      );
+
+}
+
+
+/* =========================================================
+   SEND TEXT
+   ========================================================= */
+
+window.sendMessage = async function(){
+
+    if(!currentUser || !currentChatUser) return;
+
+    const input =
+      document.getElementById("messageInput");
+
+    const text =
+      input.value.trim();
+
+    if(!text) return;
+
+    const chatId =
+      makeChatId(
+        currentUser.uid,
+        currentChatUser.uid
+      );
+
+    try{
+
+        await addDoc(
+          collection(
+            db,
+            "chats",
+            chatId,
+            "messages"
+          ),
+          {
+              senderId:currentUser.uid,
+
+              receiverId:
+                currentChatUser.uid,
+
+              type:"text",
+
+              text:text,
+
+              createdAt:serverTimestamp(),
+
+              /*
+                Maximum server-side lifetime target:
+                24 hours.
+              */
+
+              expiresAt:
+                Timestamp.fromDate(
+                  new Date(
+                    Date.now() +
+                    24 * 60 * 60 * 1000
+                  )
+                )
+          }
+        );
+
+        input.value = "";
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Message could not be sent.\n\n" +
+          error.message
+        );
+
+    }
+
+};
+
+
+window.handleMessageKey = function(event){
+
+    if(event.key === "Enter"){
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+};
+
+
+/* =========================================================
+   SEND IMAGE
+   ========================================================= */
+
+window.sendImage = async function(input){
+
+    const file =
+      input.files[0];
+
+    if(!file ||
+       !currentUser ||
+       !currentChatUser){
+
+        return;
+    }
+
+    if(!file.type.startsWith("image/")){
+
+        alert("Only images are allowed.");
+
+        return;
+    }
+
+    /*
+      Image is compressed locally.
+      No Firebase Storage is used.
+    */
+
+    try{
+
+        const compressed =
+          await compressImage(file);
+
+        const chatId =
+          makeChatId(
+            currentUser.uid,
+            currentChatUser.uid
+          );
+
+        await addDoc(
+          collection(
+            db,
+            "chats",
+            chatId,
+            "messages"
+          ),
+          {
+              senderId:currentUser.uid,
+
+              receiverId:
+                currentChatUser.uid,
+
+              type:"image",
+
+              imageData:compressed,
+
+              createdAt:serverTimestamp(),
+
+              expiresAt:
+                Timestamp.fromDate(
+                  new Date(
+                    Date.now() +
+                    24 * 60 * 60 * 1000
+                  )
+                )
+          }
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Image could not be sent.\n\n" +
+          error.message
+        );
+
+    }
+
+    input.value = "";
+
+};
+
+
+/* =========================================================
+   IMAGE COMPRESSION
+   ========================================================= */
+
+function compressImage(file){
+
+    return new Promise(
+      (resolve,reject) => {
+
+        const reader =
+          new FileReader();
+
+        reader.onload = event => {
+
+            const img =
+              new Image();
+
+            img.onload = () => {
+
+                const MAX = 900;
+
+                let width =
+                  img.width;
+
+                let height =
+                  img.height;
+
+                if(width > height){
+
+                    if(width > MAX){
+
+                        height =
+                          Math.round(
+                            height /
+                            width *
+                            MAX
+                          );
+
+                        width = MAX;
+
+                    }
+
+                }else{
+
+                    if(height > MAX){
+
+                        width =
+                          Math.round(
+                            width /
+                            height *
+                            MAX
+                          );
+
+                        height = MAX;
+
+                    }
+
+                }
+
+                const canvas =
+                  document.createElement(
+                    "canvas"
+                  );
+
+                canvas.width =
+                  width;
+
+                canvas.height =
+                  height;
+
+                const ctx =
+                  canvas.getContext(
+                    "2d"
+                  );
+
+                ctx.drawImage(
+                  img,
+                  0,
+                  0,
+                  width,
+                  height
+                );
+
+                resolve(
+                  canvas.toDataURL(
+                    "image/jpeg",
+                    .55
+                  )
+                );
+
+            };
+
+            img.onerror =
+              reject;
+
+            img.src =
+              event.target.result;
+
+        };
+
+        reader.onerror =
+          reject;
+
+        reader.readAsDataURL(file);
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER MESSAGE
+   ========================================================= */
+
+function renderMessage(data,area){
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "message " +
+      (
+        data.senderId === currentUser.uid
+        ? "mine"
+        : "theirs"
+      );
+
+    if(data.type === "image"){
+
+        const img =
+          document.createElement("img");
+
+        img.src =
+          data.imageData || "";
+
+        img.alt =
+          "Image";
+
+        div.appendChild(img);
+
+    }else{
+
+        div.innerText =
+          data.text || "";
+
+    }
+
+    area.appendChild(div);
+
+}
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+async function updateSettingsInfo(){
+
+    if(!currentUser) return;
+
+    document.getElementById("accountPhone")
+      .innerText =
+      currentUser.phoneNumber || "";
+
+    const snap =
+      await getDoc(
+        doc(db,"users",currentUser.uid)
+      );
+
+    if(snap.exists()){
+
+        const data =
+          snap.data();
+
+        document.getElementById(
+          "lastActiveText"
+        ).innerText =
+          data.lastActiveAt
+          ? "Active account"
+          : "Active";
+
+    }
+
+}
+
+
+/* =========================================================
+   LANGUAGE
+   ========================================================= */
+
+const languages = {
+
+    en:{
+        home:"Home",
+        contacts:"Contacts",
+        settings:"Settings"
+    },
+
+    bn:{
+        home:"হোম",
+        contacts:"কন্টাক্টস",
+        settings:"সেটিংস"
+    },
+
+    hi:{
+        home:"होम",
+        contacts:"संपर्क",
+        settings:"सेटिंग्स"
+    }
+
+};
+
+
+window.changeLanguage = function(lang){
+
+    const t =
+      languages[lang];
+
+    if(!t) return;
+
+    const nav =
+      document.querySelectorAll("nav");
+
+    nav.forEach(n => {
+
+        const spans =
+          n.querySelectorAll("span");
+
+        if(spans[0])
+          spans[0].innerText = t.home;
+
+        if(spans[1])
+          spans[1].innerText = t.contacts;
+
+        if(spans[2])
+          spans[2].innerText = t.settings;
+
+    });
+
+};
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+window.logout = async function(){
+
+    try{
+
+        await signOut(auth);
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+window.openAdmin = function(){
+
+    if(
+      !currentUser ||
+      !ADMIN_UID ||
+      currentUser.uid !== ADMIN_UID
+    ){
+
+        alert("Admin access denied.");
+
+        return;
+    }
+
+    switchScreen("adminScreen");
+
+    loadAdminUsers();
+
+};
+
+
+async function loadAdminUsers(){
+
+    const box =
+      document.getElementById(
+        "adminUsersList"
+      );
+
+    box.innerHTML =
+      '<div class="empty">Loading users...</div>';
+
+    const snap =
+      await getDocs(
+        query(
+          collection(db,"users"),
+          limit(200)
+        )
+      );
+
+    box.innerHTML = "";
+
+    snap.forEach(item => {
+
+        const data =
+          item.data();
+
+        const row =
+          createUserItem(data);
+
+        /*
+          Admin verification control.
+        */
+
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "btn-secondary";
+
+        button.style.width =
+          "auto";
+
+        button.style.padding =
+          "7px 10px";
+
+        button.innerText =
+          data.verified
+          ? "Remove Verified"
+          : "Verify";
+
+        button.onclick =
+          async event => {
+
+            event.stopPropagation();
+
+            await updateDoc(
+              doc(
+                db,
+                "users",
+                data.uid
+              ),
+              {
+                  verified:
+                    !data.verified
+              }
+            );
+
+            loadAdminUsers();
+
+          };
+
+        row.appendChild(button);
+
+        box.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================================================
+   AUTO ACCOUNT EXPIRATION NOTE
+   =========================================================
+
+   The browser cannot reliably delete an inactive
+   account after 180 days.
+
+   accountExpiresAt is written to Firestore.
+
+   For real automatic deletion, configure a trusted
+   server-side Firebase process / scheduled Cloud Function
+   or another server-side cleanup mechanism.
+
+   Firestore TTL can also be configured for message
+   expiresAt and accountExpiresAt where appropriate.
+*/
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+console.log("VEIL CHAT initialized.");
 
 </script>
+
 </body>
 </html>
