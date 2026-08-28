@@ -7,30 +7,39 @@
 
 <title>VEIL CHAT</title>
 
+<link rel="icon" href="verified.png">
+
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Segoe UI,Tahoma,sans-serif;
+    font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
     -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
     width:100%;
     height:100%;
-    overflow:hidden;
 }
 
 body{
     color:#fff;
+    overflow:hidden;
+
     background:
-      radial-gradient(circle at 15% 15%,rgba(37,99,235,.25),transparent 30%),
-      radial-gradient(circle at 85% 85%,rgba(56,189,248,.18),transparent 35%),
-      linear-gradient(-45deg,#020617,#0f172a,#172554,#020617);
+        radial-gradient(circle at 15% 10%,rgba(56,189,248,.28),transparent 30%),
+        radial-gradient(circle at 90% 85%,rgba(37,99,235,.25),transparent 35%),
+        linear-gradient(135deg,#020617,#0f172a,#172554,#020617);
+
     background-size:400% 400%;
     animation:bgMove 18s ease infinite;
 }
@@ -41,20 +50,35 @@ body{
     100%{background-position:0 50%}
 }
 
+button,
+input,
+textarea,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
 .app{
     width:100%;
-    max-width:420px;
-    height:100%;
+    max-width:430px;
+    height:100dvh;
     margin:auto;
     position:relative;
     overflow:hidden;
 
     background:rgba(15,23,42,.27);
-    backdrop-filter:blur(28px);
-    -webkit-backdrop-filter:blur(28px);
+    backdrop-filter:blur(30px);
+    -webkit-backdrop-filter:blur(30px);
 
     border-left:1px solid rgba(255,255,255,.12);
     border-right:1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45),
+        inset 0 0 60px rgba(255,255,255,.025);
 }
 
 .screen{
@@ -62,7 +86,6 @@ body{
     inset:0;
     display:none;
     flex-direction:column;
-    background:rgba(2,6,23,.10);
 }
 
 .screen.active{
@@ -70,20 +93,18 @@ body{
 }
 
 header{
-    height:65px;
-    min-height:65px;
-
+    min-height:64px;
+    height:64px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     padding:0 17px;
 
-    background:rgba(15,23,42,.23);
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
+    background:rgba(15,23,42,.20);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
 
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.09);
 }
 
 .header-left{
@@ -92,29 +113,53 @@ header{
     gap:10px;
 }
 
-.header-logo{
-    width:34px;
-    height:34px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:11px;
-
-    background:linear-gradient(135deg,#38bdf8,#2563eb);
-    box-shadow:0 6px 20px rgba(56,189,248,.28);
-}
-
-header h2{
+.header-left h2{
     font-size:16px;
     font-weight:650;
     letter-spacing:.4px;
 }
 
+.header-logo{
+    width:34px;
+    height:34px;
+    border-radius:11px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+
+    box-shadow:
+        0 7px 20px rgba(37,99,235,.35),
+        inset 0 1px 1px rgba(255,255,255,.35);
+}
+
+.profile-mini{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#38bdf8;
+    background:rgba(56,189,248,.12);
+    border:1px solid rgba(56,189,248,.38);
+}
+
+.profile-mini img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
 main{
     flex:1;
     overflow-y:auto;
+    overflow-x:hidden;
     padding:16px;
     scrollbar-width:none;
 }
@@ -124,20 +169,19 @@ main::-webkit-scrollbar{
 }
 
 footer{
-    height:66px;
-    min-height:66px;
+    min-height:65px;
+    height:65px;
 
-    display:flex;
+    background:rgba(15,23,42,.32);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
 
-    background:rgba(15,23,42,.35);
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
-
-    border-top:1px solid rgba(255,255,255,.08);
+    border-top:1px solid rgba(255,255,255,.09);
 }
 
 nav{
     width:100%;
+    height:100%;
     display:flex;
 }
 
@@ -153,7 +197,7 @@ nav a{
     text-decoration:none;
     font-size:11px;
 
-    cursor:pointer;
+    transition:.2s;
 }
 
 nav a i{
@@ -164,24 +208,23 @@ nav a.active{
     color:#38bdf8;
 }
 
-/* GLASS */
-
 .glass{
     background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.085);
-    box-shadow:
-      inset 0 1px rgba(255,255,255,.04),
-      0 8px 30px rgba(0,0,0,.08);
+    border:1px solid rgba(255,255,255,.09);
 
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 8px 30px rgba(0,0,0,.08);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
 }
 
-/* LOGIN */
-
 .form-container{
+    width:100%;
     height:100%;
     padding:25px;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -189,145 +232,166 @@ nav a.active{
 
 .logo-container{
     text-align:center;
-    margin-bottom:32px;
+    margin-bottom:30px;
 }
 
 .logo-icon{
-    width:70px;
-    height:70px;
-    margin:auto;
-    margin-bottom:15px;
+    width:76px;
+    height:76px;
+    margin:0 auto 15px;
+
+    border-radius:24px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:22px;
-
     background:linear-gradient(135deg,#38bdf8,#2563eb);
 
-    box-shadow:
-      0 10px 30px rgba(56,189,248,.32);
-}
+    font-size:32px;
 
-.logo-icon i{
-    font-size:30px;
+    box-shadow:
+        0 15px 35px rgba(37,99,235,.4),
+        inset 0 1px 2px rgba(255,255,255,.35);
 }
 
 .logo-container h1{
-    font-size:24px;
+    font-size:25px;
     letter-spacing:1px;
 }
 
 .logo-container p{
+    margin-top:7px;
     color:#94a3b8;
-    font-size:12px;
-    margin-top:6px;
+    font-size:13px;
 }
 
-.form-group{
-    margin-bottom:14px;
+.google-btn{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+
+    color:#fff;
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    font-weight:600;
+
+    transition:.2s;
+}
+
+.google-btn:active{
+    transform:scale(.98);
 }
 
 .input-box{
     position:relative;
+    margin-bottom:13px;
 }
 
 .input-box i{
     position:absolute;
-    left:16px;
+    left:15px;
     top:50%;
     transform:translateY(-50%);
     color:#94a3b8;
 }
 
-.input-box input{
+.input-box input,
+.input-box textarea{
     width:100%;
-    padding:15px 15px 15px 47px;
+    padding:14px 15px 14px 45px;
 
     color:#fff;
-    outline:none;
-
     background:rgba(255,255,255,.045);
+
     border:1px solid rgba(255,255,255,.09);
-    border-radius:15px;
+    border-radius:14px;
+
+    outline:none;
 }
 
-.input-box input:focus{
-    border-color:rgba(56,189,248,.55);
+.input-box textarea{
+    min-height:90px;
+    resize:none;
+    padding-left:15px;
 }
 
-.btn-primary{
+.btn{
     width:100%;
     padding:14px;
-
     border:0;
-    border-radius:15px;
+    border-radius:14px;
 
     color:#fff;
-    font-size:15px;
     font-weight:650;
 
     background:linear-gradient(135deg,#38bdf8,#2563eb);
 
-    box-shadow:0 8px 20px rgba(37,99,235,.28);
-
-    cursor:pointer;
+    box-shadow:0 8px 22px rgba(37,99,235,.28);
 }
 
-.btn-secondary{
-    width:100%;
-    padding:12px;
+.btn:active{
+    transform:scale(.98);
+}
 
-    color:#fff;
-    background:rgba(255,255,255,.05);
-
+.btn.secondary{
+    background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.1);
-    border-radius:13px;
-
-    cursor:pointer;
+    box-shadow:none;
 }
 
-/* SEARCH */
+.btn.danger{
+    background:rgba(239,68,68,.14);
+    border:1px solid rgba(239,68,68,.28);
+    color:#fca5a5;
+    box-shadow:none;
+}
 
-.search-bar{
+.search{
     display:flex;
     align-items:center;
     gap:10px;
 
-    padding:11px 14px;
-    margin-bottom:14px;
+    padding:12px 14px;
+    margin-bottom:15px;
 
     border-radius:14px;
-
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.08);
 }
 
-.search-bar i{
+.search i{
     color:#94a3b8;
 }
 
-.search-bar input{
-    flex:1;
-
+.search input{
+    width:100%;
     border:0;
     outline:0;
     background:transparent;
-
     color:#fff;
 }
 
-.search-bar input::placeholder{
+.search input::placeholder{
     color:#64748b;
 }
 
-/* CHAT */
+.section-title{
+    font-size:12px;
+    color:#38bdf8;
+    margin:15px 3px 9px;
+    font-weight:600;
+}
 
 .item{
+    width:100%;
     display:flex;
     align-items:center;
-
     gap:12px;
 
     padding:12px;
@@ -337,14 +401,13 @@ nav a.active{
 
     background:rgba(255,255,255,.045);
     border:1px solid rgba(255,255,255,.075);
-
-    cursor:pointer;
 }
 
 .avatar{
-    width:46px;
-    height:46px;
-    min-width:46px;
+    width:47px;
+    height:47px;
+    min-width:47px;
+    border-radius:50%;
 
     overflow:hidden;
 
@@ -352,13 +415,9 @@ nav a.active{
     align-items:center;
     justify-content:center;
 
-    border-radius:50%;
-
-    background:rgba(56,189,248,.13);
-    border:1px solid rgba(56,189,248,.25);
-
     color:#38bdf8;
-    font-weight:700;
+    background:rgba(56,189,248,.12);
+    border:1px solid rgba(56,189,248,.28);
 }
 
 .avatar img{
@@ -367,26 +426,25 @@ nav a.active{
     object-fit:cover;
 }
 
-.info{
+.item-info{
     flex:1;
     min-width:0;
 }
 
-.name-row{
+.item-name{
+    font-size:14px;
+    font-weight:650;
+
     display:flex;
     align-items:center;
     gap:5px;
 }
 
-.name{
-    font-size:14px;
-    font-weight:650;
-}
-
-.sub{
+.item-sub{
     color:#94a3b8;
     font-size:12px;
     margin-top:3px;
+
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -397,312 +455,336 @@ nav a.active{
     height:17px;
     object-fit:contain;
     display:inline-block;
+    vertical-align:middle;
 }
 
-/* PROFILE */
+.chat-empty{
+    text-align:center;
+    color:#64748b;
+    padding:45px 20px;
+}
 
 .profile-card{
-    padding:20px;
-    border-radius:20px;
+    padding:22px 16px;
+    border-radius:22px;
     text-align:center;
 }
 
 .profile-photo-wrap{
-    position:relative;
-    width:105px;
-    height:105px;
+    width:110px;
+    height:110px;
     margin:0 auto 15px;
+    position:relative;
 }
 
 .profile-photo{
-    width:105px;
-    height:105px;
-
+    width:110px;
+    height:110px;
     border-radius:50%;
-    overflow:hidden;
+
+    object-fit:cover;
+
+    background:rgba(56,189,248,.12);
+    border:2px solid rgba(56,189,248,.55);
+}
+
+.profile-empty{
+    width:110px;
+    height:110px;
+    border-radius:50%;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    background:rgba(56,189,248,.13);
-    border:2px solid rgba(56,189,248,.6);
+    background:rgba(56,189,248,.12);
+    border:2px solid rgba(56,189,248,.35);
 
     color:#38bdf8;
-    font-size:38px;
-}
-
-.profile-photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.camera-btn{
-    position:absolute;
-    right:-2px;
-    bottom:2px;
-
-    width:34px;
-    height:34px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    color:#fff;
-    background:linear-gradient(135deg,#38bdf8,#2563eb);
-
-    border:2px solid #0f172a;
-
-    cursor:pointer;
+    font-size:40px;
 }
 
 .profile-name{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:5px;
-
-    font-size:19px;
+    font-size:20px;
     font-weight:700;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
 }
 
-.profile-username{
-    margin-top:5px;
+.username{
     color:#38bdf8;
     font-size:13px;
+    margin-top:4px;
 }
 
-.profile-bio{
-    margin:10px 0 18px;
+.bio{
     color:#94a3b8;
     font-size:13px;
+    margin-top:10px;
+    line-height:1.5;
 }
 
-.profile-field{
+.profile-details{
+    margin-top:18px;
     text-align:left;
-    margin-bottom:10px;
 }
 
-.profile-field label{
-    display:block;
-    color:#94a3b8;
+.detail{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.detail:last-child{
+    border-bottom:0;
+}
+
+.detail-label{
+    color:#64748b;
     font-size:11px;
-    margin-bottom:5px;
 }
 
-.profile-field input,
-.profile-field textarea{
-    width:100%;
-
-    color:#fff;
-    outline:none;
-
-    background:rgba(255,255,255,.04);
-
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:11px;
-
-    padding:11px;
+.detail-value{
+    color:#e2e8f0;
+    font-size:13px;
+    margin-top:3px;
+    word-break:break-word;
 }
 
-.profile-field textarea{
-    min-height:70px;
-    resize:none;
+.action-row{
+    display:flex;
+    gap:9px;
+    margin-top:18px;
 }
 
-/* CAMERA */
+.action-row button{
+    flex:1;
+}
 
-.camera-area{
-    position:relative;
-    width:100%;
-    max-width:340px;
-    margin:auto;
-
-    overflow:hidden;
-    border-radius:22px;
-
-    background:#000;
-    border:1px solid rgba(255,255,255,.12);
+.camera-box{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border-radius:18px;
 }
 
 #cameraVideo{
     width:100%;
+    border-radius:15px;
+    background:#000;
     display:block;
-    transform:scaleX(-1);
 }
 
-.camera-overlay{
-    position:absolute;
-    inset:0;
-
-    pointer-events:none;
-
+.camera-actions{
     display:flex;
-    align-items:center;
-    justify-content:center;
+    gap:8px;
+    margin-top:10px;
 }
 
-.face-guide{
-    width:205px;
-    height:270px;
-
-    border:2px solid rgba(255,255,255,.8);
-    border-radius:50%;
-    box-shadow:0 0 0 999px rgba(0,0,0,.28);
-}
-
-.camera-buttons{
-    display:flex;
-    gap:10px;
-    margin-top:14px;
-}
-
-.camera-buttons button{
+.camera-actions button{
     flex:1;
 }
 
-/* SETTINGS */
+.edit-box{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    border-radius:18px;
+    text-align:left;
+}
 
-.settings-card{
+.setting{
+    padding:15px;
+    border-radius:17px;
+    margin-bottom:10px;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
-
-    padding:15px;
-    margin-bottom:11px;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.08);
 }
 
-.settings-info{
+.setting-info{
     flex:1;
 }
 
-.settings-info h4{
+.setting-info strong{
+    display:block;
     font-size:14px;
 }
 
-.settings-info p{
-    color:#94a3b8;
-    font-size:11px;
+.setting-info span{
+    display:block;
     margin-top:3px;
+    font-size:12px;
+    color:#94a3b8;
 }
 
 select{
     color:#fff;
     background:#0f172a;
-
-    border:1px solid rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.12);
+    padding:8px;
     border-radius:9px;
-
-    padding:7px;
+    outline:none;
 }
 
-/* MESSAGE */
-
-.chat-header-user{
+.chat-header{
     display:flex;
     align-items:center;
     gap:10px;
 }
 
-.message-area{
+.chat-header .back{
+    width:30px;
+    color:#94a3b8;
+    cursor:pointer;
+}
+
+.chat-user{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.messages{
     flex:1;
     overflow-y:auto;
-    padding:14px;
+    padding:15px;
 
     scrollbar-width:none;
 }
 
-.message-area::-webkit-scrollbar{
+.messages::-webkit-scrollbar{
     display:none;
 }
 
 .message{
-    max-width:78%;
-    padding:9px 12px;
+    display:flex;
     margin-bottom:8px;
-
-    font-size:13px;
-    line-height:1.4;
-
-    border-radius:16px;
 }
 
 .message.mine{
-    margin-left:auto;
-    background:linear-gradient(135deg,#2563eb,#0284c7);
-    border-bottom-right-radius:5px;
+    justify-content:flex-end;
 }
 
-.message.theirs{
-    background:rgba(255,255,255,.07);
+.bubble{
+    max-width:78%;
+    padding:9px 12px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,.065);
     border:1px solid rgba(255,255,255,.07);
-    border-bottom-left-radius:5px;
+
+    font-size:14px;
+    line-height:1.4;
+    word-break:break-word;
 }
 
-.message img{
-    max-width:100%;
-    border-radius:11px;
-    display:block;
+.mine .bubble{
+    background:rgba(37,99,235,.42);
 }
 
-.message-input{
+.message-time{
+    font-size:9px;
+    color:#94a3b8;
+    margin-top:4px;
+    text-align:right;
+}
+
+.chat-input-area{
+    padding:10px;
     display:flex;
     gap:8px;
-    padding:10px;
 
-    background:rgba(15,23,42,.4);
+    background:rgba(15,23,42,.35);
     border-top:1px solid rgba(255,255,255,.08);
 }
 
-.message-input input{
+.chat-input{
     flex:1;
-    padding:12px;
+
+    padding:12px 13px;
+    border-radius:14px;
 
     color:#fff;
-    outline:none;
-
     background:rgba(255,255,255,.05);
-
     border:1px solid rgba(255,255,255,.08);
-    border-radius:13px;
+    outline:none;
 }
 
 .send-btn{
-    width:45px;
+    width:46px;
     border:0;
-    border-radius:13px;
-
+    border-radius:14px;
     color:#fff;
     background:linear-gradient(135deg,#38bdf8,#2563eb);
 }
 
-/* ADMIN */
+.unread{
+    min-width:20px;
+    height:20px;
+    padding:0 5px;
 
-.admin-only{
-    display:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:#fff;
+    background:#2563eb;
+
+    font-size:10px;
+    font-weight:700;
 }
 
-.small-note{
-    color:#94a3b8;
-    font-size:11px;
-    line-height:1.5;
-}
+.toast{
+    position:absolute;
+    left:50%;
+    bottom:80px;
 
-.empty{
+    transform:translate(-50%,20px);
+    opacity:0;
+
+    z-index:100;
+
+    min-width:200px;
+    max-width:90%;
+
+    padding:11px 14px;
+
     text-align:center;
+
+    border-radius:13px;
+
+    background:rgba(15,23,42,.82);
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    transition:.25s;
+    pointer-events:none;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+.loading{
+    text-align:center;
+    padding:35px;
+    color:#94a3b8;
+}
+
+.small{
+    font-size:11px;
     color:#64748b;
-    padding:35px 10px;
-    font-size:13px;
+    line-height:1.5;
+    margin-top:8px;
 }
 
 .hidden{
@@ -721,7 +803,9 @@ select{
 
 <div class="app">
 
-<!-- ================= LOGIN ================= -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <section id="loginScreen" class="screen active">
 
@@ -735,89 +819,30 @@ select{
 
 <h1>VEIL CHAT</h1>
 
-<p>Private • Simple • Secure</p>
+<p>Private realtime messaging</p>
 
 </div>
 
-<div class="form-group">
+<button class="google-btn" id="googleLoginBtn">
 
-<div class="input-box">
+<i class="fa-brands fa-google"></i>
 
-<i class="fa-solid fa-phone"></i>
-
-<input
-id="phoneNumber"
-type="tel"
-autocomplete="tel"
-placeholder="Enter mobile number">
-
-</div>
-
-</div>
-
-<div id="recaptcha-container"></div>
-
-<button
-class="btn-primary"
-onclick="requestOTP()">
-
-Get OTP
+Continue with Google
 
 </button>
+
+<p class="small" style="text-align:center">
+Google account login is used instead of paid SMS OTP.
+</p>
 
 </div>
 
 </section>
 
 
-<!-- ================= OTP ================= -->
-
-<section id="otpScreen" class="screen">
-
-<div class="form-container">
-
-<div class="logo-container">
-
-<div class="logo-icon">
-<i class="fa-solid fa-shield-halved"></i>
-</div>
-
-<h1>Verify OTP</h1>
-
-<p id="otpInfo">Enter the code sent to your phone</p>
-
-</div>
-
-<div class="form-group">
-
-<div class="input-box">
-
-<i class="fa-solid fa-lock"></i>
-
-<input
-id="otpInput"
-inputmode="numeric"
-maxlength="6"
-placeholder="6-digit OTP">
-
-</div>
-
-</div>
-
-<button
-class="btn-primary"
-onclick="verifyOTP()">
-
-Verify & Continue
-
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ================= HOME ================= -->
+<!-- =====================================================
+     HOME
+===================================================== -->
 
 <section id="homeScreen" class="screen">
 
@@ -833,52 +858,72 @@ Verify & Continue
 
 </div>
 
-<div
-class="avatar"
-style="width:38px;height:38px;min-width:38px"
-onclick="openProfile()"
-id="headerAvatar">
-
+<div class="profile-mini" onclick="openProfile()">
 <i class="fa-solid fa-user"></i>
-
 </div>
 
 </header>
 
+
 <main>
 
-<div class="search-bar">
+<div class="search glass">
 
 <i class="fa-solid fa-magnifying-glass"></i>
 
 <input
-id="searchUser"
-placeholder="Search people..."
-oninput="searchUsers(this.value)">
+id="userSearch"
+type="text"
+placeholder="Search users..."
+autocomplete="off"
+>
 
 </div>
 
-<div id="chatListContainer"></div>
+<div id="searchResults"></div>
+
+<div class="section-title">
+RECENT CHATS
+</div>
+
+<div id="chatList">
+
+<div class="loading">
+Loading chats...
+</div>
+
+</div>
 
 </main>
+
 
 <footer>
 
 <nav>
 
-<a class="active" onclick="switchTab('home')">
+<a id="homeTab"
+   class="active"
+   onclick="switchTab('home')">
+
 <i class="fa-solid fa-house"></i>
 <span>Home</span>
+
 </a>
 
-<a onclick="switchTab('contacts')">
+<a id="contactsTab"
+   onclick="switchTab('contacts')">
+
 <i class="fa-solid fa-address-book"></i>
 <span>Contacts</span>
+
 </a>
 
-<a onclick="switchTab('settings')">
+<a id="settingsTab"
+   onclick="switchTab('settings')">
+
 <i class="fa-solid fa-gear"></i>
 <span>Settings</span>
+
 </a>
 
 </nav>
@@ -888,7 +933,9 @@ oninput="searchUsers(this.value)">
 </section>
 
 
-<!-- ================= CONTACTS ================= -->
+<!-- =====================================================
+     CONTACTS
+===================================================== -->
 
 <section id="contactsScreen" class="screen">
 
@@ -904,13 +951,29 @@ oninput="searchUsers(this.value)">
 
 </div>
 
+<div class="profile-mini" onclick="openProfile()">
+<i class="fa-solid fa-user"></i>
+</div>
+
 </header>
+
 
 <main>
 
-<div id="appUsersList"></div>
+<div class="section-title">
+VEIL CHAT USERS
+</div>
+
+<div id="contactsList">
+
+<div class="loading">
+Loading users...
+</div>
+
+</div>
 
 </main>
+
 
 <footer>
 
@@ -921,14 +984,19 @@ oninput="searchUsers(this.value)">
 <span>Home</span>
 </a>
 
-<a class="active">
+<a class="active"
+   onclick="switchTab('contacts')">
+
 <i class="fa-solid fa-address-book"></i>
 <span>Contacts</span>
+
 </a>
 
 <a onclick="switchTab('settings')">
+
 <i class="fa-solid fa-gear"></i>
 <span>Settings</span>
+
 </a>
 
 </nav>
@@ -938,7 +1006,9 @@ oninput="searchUsers(this.value)">
 </section>
 
 
-<!-- ================= SETTINGS ================= -->
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
 
 <section id="settingsScreen" class="screen">
 
@@ -954,23 +1024,26 @@ oninput="searchUsers(this.value)">
 
 </div>
 
+<div class="profile-mini" onclick="openProfile()">
+<i class="fa-solid fa-user"></i>
+</div>
+
 </header>
+
 
 <main>
 
-<div class="settings-card">
+<div class="setting glass">
 
-<div class="settings-info">
+<div class="setting-info">
 
-<h4>App Language</h4>
+<strong>Language</strong>
 
-<p>Choose your interface language</p>
+<span>Choose application language</span>
 
 </div>
 
-<select
-id="languageSelector"
-onchange="changeLanguage(this.value)">
+<select id="language">
 
 <option value="en">English</option>
 <option value="bn">বাংলা</option>
@@ -981,44 +1054,40 @@ onchange="changeLanguage(this.value)">
 </div>
 
 
-<div class="settings-card">
+<div class="setting glass">
 
-<div class="settings-info">
+<div class="setting-info">
 
-<h4>Account</h4>
+<strong>Notifications</strong>
 
-<p id="accountPhone">Loading...</p>
-
-</div>
-
-</div>
-
-
-<div class="settings-card">
-
-<div class="settings-info">
-
-<h4>Last Active</h4>
-
-<p id="lastActiveText">Loading...</p>
-
-</div>
-
-</div>
-
-
-<div class="settings-card">
-
-<div class="settings-info">
-
-<h4>Sign Out</h4>
-
-<p>Sign out from this device</p>
+<span>Allow browser notifications</span>
 
 </div>
 
 <button
-class="btn-secondary"
+class="btn secondary"
+style="width:auto;padding:8px 12px"
+onclick="enableNotifications()">
+
+Enable
+
+</button>
+
+</div>
+
+
+<div class="setting glass">
+
+<div class="setting-info">
+
+<strong>Account</strong>
+
+<span id="accountStatus">Signed in</span>
+
+</div>
+
+<button
+class="btn danger"
 style="width:auto;padding:8px 12px"
 onclick="logout()">
 
@@ -1028,25 +1097,50 @@ Logout
 
 </div>
 
+
+<div class="setting glass">
+
+<div class="setting-info">
+
+<strong>Messages</strong>
+
+<span>Realtime Internet messaging</span>
+
+</div>
+
+<i class="fa-solid fa-lock"
+   style="color:#38bdf8">
+</i>
+
+</div>
+
 </main>
+
 
 <footer>
 
 <nav>
 
 <a onclick="switchTab('home')">
+
 <i class="fa-solid fa-house"></i>
 <span>Home</span>
+
 </a>
 
 <a onclick="switchTab('contacts')">
+
 <i class="fa-solid fa-address-book"></i>
 <span>Contacts</span>
+
 </a>
 
-<a class="active">
+<a class="active"
+   onclick="switchTab('settings')">
+
 <i class="fa-solid fa-gear"></i>
 <span>Settings</span>
+
 </a>
 
 </nav>
@@ -1056,7 +1150,9 @@ Logout
 </section>
 
 
-<!-- ================= PROFILE ================= -->
+<!-- =====================================================
+     PROFILE
+===================================================== -->
 
 <section id="profileScreen" class="screen">
 
@@ -1064,17 +1160,19 @@ Logout
 
 <div class="header-left">
 
-<i
-class="fa-solid fa-arrow-left"
-style="cursor:pointer"
-onclick="switchScreen('homeScreen')">
+<i class="fa-solid fa-arrow-left"
+   style="color:#94a3b8;cursor:pointer"
+   onclick="switchScreen('homeScreen')">
 </i>
 
 <h2>My Profile</h2>
 
 </div>
 
+<div></div>
+
 </header>
+
 
 <main>
 
@@ -1082,281 +1180,270 @@ onclick="switchScreen('homeScreen')">
 
 <div class="profile-photo-wrap">
 
-<div
-id="profilePhoto"
-class="profile-photo">
+<div id="profilePhotoContainer"
+     class="profile-empty">
 
 <i class="fa-solid fa-user"></i>
 
 </div>
 
-<button
-class="camera-btn"
-onclick="openCamera()">
+</div>
 
-<i class="fa-solid fa-camera"></i>
 
-</button>
+<div id="profileName"
+     class="profile-name">
+
+Loading...
 
 </div>
 
 
-<div
-class="profile-name"
-id="profileName">
-
-New User
-
-</div>
-
-
-<div
-class="profile-username"
-id="profileUsername">
+<div id="profileUsername"
+     class="username">
 
 @username
 
 </div>
 
 
-<div
-class="profile-bio"
-id="profileBio">
+<div id="profileBio"
+     class="bio">
 
-Add information about yourself.
-
-</div>
-
-
-<!-- VERIFICATION STATUS -->
-
-<div
-id="verificationStatus"
-style="margin-bottom:18px">
+No bio
 
 </div>
 
 
-<div class="profile-field">
+<div class="profile-details">
 
-<label>Name</label>
+<div class="detail">
+
+<div class="detail-label">
+EMAIL
+</div>
+
+<div id="profileEmail"
+     class="detail-value">
+-
+</div>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-label">
+PHONE
+</div>
+
+<div id="profilePhone"
+     class="detail-value">
+Not provided
+</div>
+
+</div>
+
+
+<div class="detail">
+
+<div class="detail-label">
+PROFILE STATUS
+</div>
+
+<div id="profileStatus"
+     class="detail-value">
+Not verified
+</div>
+
+</div>
+
+</div>
+
+
+<div class="action-row">
+
+<button
+class="btn"
+onclick="toggleEditProfile()">
+
+<i class="fa-solid fa-pen"></i>
+Edit Profile
+
+</button>
+
+</div>
+
+
+<!-- EDIT -->
+
+<div id="editBox"
+     class="edit-box glass">
+
+<div class="input-box">
 
 <input
 id="editName"
-maxlength="40"
-placeholder="Your name">
+type="text"
+placeholder="Your name"
+>
 
 </div>
 
 
-<div class="profile-field">
-
-<label>Username</label>
+<div class="input-box">
 
 <input
 id="editUsername"
-maxlength="25"
-placeholder="Username">
+type="text"
+placeholder="Username"
+>
 
 </div>
 
 
-<div class="profile-field">
-
-<label>Bio</label>
+<div class="input-box">
 
 <textarea
 id="editBio"
-maxlength="160"
-placeholder="About you"></textarea>
-
-</div>
-
-
-<div class="profile-field">
-
-<label>About / Profession</label>
-
-<input
-id="editProfession"
-maxlength="60"
-placeholder="Artist, student, business, etc.">
-
-</div>
-
-
-<div class="profile-field">
-
-<label>Location</label>
-
-<input
-id="editLocation"
-maxlength="60"
-placeholder="City / Country">
-
-</div>
-
-
-<div class="profile-field">
-
-<label>Website</label>
-
-<input
-id="editWebsite"
-maxlength="100"
-placeholder="https://...">
+placeholder="Write your bio..."
+></textarea>
 
 </div>
 
 
 <button
-class="btn-primary"
+class="btn"
 onclick="saveProfile()">
 
 Save Profile
 
 </button>
 
-<br>
+</div>
 
-<button
-class="btn-secondary"
-onclick="openCamera()">
 
-<i class="fa-solid fa-camera"></i>
-&nbsp; Take Selfie
+<!-- SELFIE -->
 
-</button>
+<div style="
+margin-top:22px;
+text-align:left;
+">
 
-<p class="small-note" style="margin-top:12px">
+<div class="section-title"
+     style="margin-left:0">
 
-Your selfie is compressed before being saved.
-No gallery upload is provided.
+SELFIE VERIFICATION
+
+</div>
+
+<p class="small">
+
+Take a clear selfie using your phone camera.
+The captured selfie becomes your profile picture.
+A verification badge is granted when a selfie
+is successfully saved to your profile.
 
 </p>
 
-</div>
 
-</main>
+<button
+id="cameraOpenBtn"
+class="btn"
+style="margin-top:10px"
+onclick="openCamera()">
 
-</section>
+<i class="fa-solid fa-camera"></i>
+Take Selfie
+
+</button>
 
 
-<!-- ================= CAMERA ================= -->
+<button
+id="removePhotoBtn"
+class="btn danger"
+style="margin-top:8px;display:none"
+onclick="removeProfilePhoto()">
 
-<section id="cameraScreen" class="screen">
+<i class="fa-solid fa-trash"></i>
+Remove Selfie
 
-<header>
+</button>
 
-<div class="header-left">
 
-<i
-class="fa-solid fa-arrow-left"
-style="cursor:pointer"
-onclick="closeCamera()">
-</i>
-
-<h2>Selfie Verification</h2>
-
-</div>
-
-</header>
-
-<main>
-
-<div class="camera-area">
+<div id="cameraBox"
+     class="camera-box glass">
 
 <video
 id="cameraVideo"
 autoplay
-playsinline
-muted>
+playsinline>
 </video>
 
-<div class="camera-overlay">
-
-<div class="face-guide"></div>
-
-</div>
-
-</div>
-
-
-<p
-style="
-text-align:center;
-color:#94a3b8;
-font-size:12px;
-margin:14px 0">
-
-Keep your face clearly inside the frame and take a selfie.
-
-</p>
-
-
-<div class="camera-buttons">
+<div class="camera-actions">
 
 <button
-class="btn-secondary"
+class="btn"
+onclick="captureSelfie()">
+
+<i class="fa-solid fa-camera"></i>
+Capture
+
+</button>
+
+<button
+class="btn secondary"
 onclick="closeCamera()">
 
 Cancel
 
 </button>
 
-<button
-class="btn-primary"
-onclick="captureSelfie()">
-
-<i class="fa-solid fa-camera"></i>
-&nbsp; Capture
-
-</button>
+</div>
 
 </div>
 
-<canvas
-id="selfieCanvas"
-class="hidden">
-</canvas>
+</div>
+
+</div>
 
 </main>
 
 </section>
 
 
-<!-- ================= CHAT ================= -->
+<!-- =====================================================
+     CHAT
+===================================================== -->
 
 <section id="chatScreen" class="screen">
 
 <header>
 
-<div class="chat-header-user">
+<div class="chat-header">
 
-<i
-class="fa-solid fa-arrow-left"
-style="cursor:pointer"
-onclick="closeChat()">
-</i>
+<div class="back"
+     onclick="switchScreen('homeScreen')">
 
-<div
-id="chatHeaderAvatar"
-class="avatar"
-style="width:38px;height:38px;min-width:38px">
+<i class="fa-solid fa-arrow-left"></i>
+
 </div>
+
+
+<div id="chatAvatar"
+     class="avatar"
+     style="width:38px;height:38px;min-width:38px">
+</div>
+
 
 <div>
 
-<div
-id="chatHeaderName"
-class="name">
-User
+<div id="chatName"
+     class="item-name">
+Chat
 </div>
 
-<div
-id="chatHeaderStatus"
-class="sub">
-Online
+<div id="chatUsername"
+     class="item-sub">
 </div>
 
 </div>
@@ -1366,42 +1453,22 @@ Online
 </header>
 
 
-<div
-id="messageArea"
-class="message-area">
+<div id="messages"
+     class="messages">
+
 </div>
 
 
-<div class="message-input">
+<div class="chat-input-area">
 
 <input
 id="messageInput"
-maxlength="500"
-placeholder="Message..."
-onkeydown="handleMessageKey(event)">
-
-<label
-style="
-width:44px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer">
-
-<i
-class="fa-solid fa-image"
-style="color:#38bdf8">
-</i>
-
-<input
-id="imageInput"
-type="file"
-accept="image/*"
-capture="environment"
-style="display:none"
-onchange="sendImage(this)">
-
-</label>
+class="chat-input"
+type="text"
+maxlength="2000"
+placeholder="Write a message..."
+autocomplete="off"
+>
 
 <button
 class="send-btn"
@@ -1416,173 +1483,160 @@ onclick="sendMessage()">
 </section>
 
 
-<!-- ================= ADMIN ================= -->
-
-<section id="adminScreen" class="screen">
-
-<header>
-
-<div class="header-left">
-
-<div class="header-logo">
-<i class="fa-solid fa-shield"></i>
+<div id="toast"
+     class="toast">
 </div>
-
-<h2>Admin</h2>
-
-</div>
-
-</header>
-
-<main>
-
-<div id="adminUsersList"></div>
-
-</main>
-
-</section>
 
 </div>
 
 
-<!-- FIREBASE -->
-
-<script type="module">
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-
-import {
-    getAuth,
-    RecaptchaVerifier,
-    signInWithPhoneNumber,
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs,
-    onSnapshot,
-    addDoc,
-    serverTimestamp,
-    deleteDoc,
-    Timestamp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-
+<script>
 /* =========================================================
    FIREBASE CONFIG
-   ========================================================= */
+========================================================= */
 
 const firebaseConfig = {
-
-    apiKey:
-    "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
-
-    authDomain:
-    "flora-veilchat.firebaseapp.com",
-
-    projectId:
-    "flora-veilchat",
-
-    storageBucket:
-    "flora-veilchat.firebasestorage.app",
-
-    messagingSenderId:
-    "352485676905",
-
-    appId:
-    "1:352485676905:web:8beb0df80a0daea2cccff8",
-
-    measurementId:
-    "G-CQKB9Z8VP1"
-
+    apiKey: "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
+    authDomain: "flora-veilchat.firebaseapp.com",
+    projectId: "flora-veilchat",
+    storageBucket: "flora-veilchat.firebasestorage.app",
+    messagingSenderId: "352485676905",
+    appId: "1:352485676905:web:8beb0df80a0daea2cccff8",
+    measurementId: "G-CQKB9Z8VP1"
 };
 
+firebase.initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-const auth = getAuth(app);
+const googleProvider =
+    new firebase.auth.GoogleAuthProvider();
 
-const db = getFirestore(app);
-
-
-/* =========================================================
-   ADMIN UID
-   =========================================================
-
-   এখানে তোমার নিজের Firebase Auth UID বসাবে।
-
-   IMPORTANT:
-   Client-side ADMIN_UID একা নিরাপত্তা দেয় না।
-   Production admin permission Firestore Rules /
-   Firebase custom claims দিয়ে enforce করতে হবে.
-*/
-
-const ADMIN_UID = "";
+googleProvider.setCustomParameters({
+    prompt:"select_account"
+});
 
 
 /* =========================================================
-   VERIFIED IMAGE
-   =========================================================
-
-   তোমার নিজের verified.png একই HTML folder-এ রাখবে।
-
-   যেমন:
-
-   /index.html
-   /verified.png
-*/
-
-const VERIFIED_IMAGE = "verified.png";
-
-
-let confirmationResult = null;
+   GLOBAL STATE
+========================================================= */
 
 let currentUser = null;
+let currentProfile = null;
 
 let currentChatUser = null;
-
 let unsubscribeMessages = null;
+let unsubscribeChats = null;
 
 let cameraStream = null;
 
+let usersCache = [];
+
 
 /* =========================================================
-   BASIC UI
-   ========================================================= */
+   ELEMENTS
+========================================================= */
 
-window.switchScreen = function(id){
-
-    document
-      .querySelectorAll(".screen")
-      .forEach(x => x.classList.remove("active"));
-
-    const screen = document.getElementById(id);
-
-    if(screen){
-        screen.classList.add("active");
-    }
-
-};
+const $ = id => document.getElementById(id);
 
 
-window.switchTab = function(tab){
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function toast(message){
+
+    $("toast").textContent = message;
+
+    $("toast").classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(()=>{
+        $("toast").classList.remove("show");
+    },2500);
+}
+
+
+/* =========================================================
+   WATER SOUND
+========================================================= */
+
+function playWaterDrop(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if(!AudioContext) return;
+
+        const ctx = new AudioContext();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+
+        osc.frequency.setValueAtTime(
+            520,
+            ctx.currentTime
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            1100,
+            ctx.currentTime + .08
+        );
+
+        gain.gain.setValueAtTime(
+            .18,
+            ctx.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime + .08
+        );
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+
+        osc.stop(
+            ctx.currentTime + .08
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   SCREEN NAVIGATION
+========================================================= */
+
+function switchScreen(id){
+
+    document.querySelectorAll(".screen")
+        .forEach(screen=>{
+            screen.classList.remove("active");
+        });
+
+    $(id).classList.add("active");
+}
+
+
+function switchTab(tab){
+
+    playWaterDrop();
 
     if(tab === "home"){
         switchScreen("homeScreen");
-        loadChats();
     }
 
     if(tab === "contacts"){
@@ -1592,351 +1646,345 @@ window.switchTab = function(tab){
 
     if(tab === "settings"){
         switchScreen("settingsScreen");
-        updateSettingsInfo();
     }
 
-};
-
-
-window.openProfile = function(){
-
-    switchScreen("profileScreen");
-
-    loadProfile();
-
-};
+}
 
 
 /* =========================================================
-   PHONE AUTH
-   ========================================================= */
+   GOOGLE LOGIN
+========================================================= */
 
-window.requestOTP = async function(){
+$("googleLoginBtn").addEventListener(
+    "click",
+    async ()=>{
 
-    const phone =
-      document.getElementById("phoneNumber")
-      .value
-      .trim();
+        playWaterDrop();
 
-    if(!phone){
+        try{
 
-        alert("Enter your mobile number.");
+            await auth.signInWithPopup(
+                googleProvider
+            );
 
-        return;
-    }
+        }catch(error){
 
-    if(!phone.startsWith("+")){
+            console.error(error);
 
-        alert(
-          "Use international format.\nExample: +8801XXXXXXXXX"
-        );
-
-        return;
-    }
-
-    try{
-
-        if(!window.recaptchaVerifier){
-
-            window.recaptchaVerifier =
-              new RecaptchaVerifier(
-                auth,
-                "recaptcha-container",
-                {
-                    size:"invisible"
-                }
-              );
+            toast(
+                firebaseError(error)
+            );
 
         }
 
-        confirmationResult =
-          await signInWithPhoneNumber(
-            auth,
-            phone,
-            window.recaptchaVerifier
-          );
-
-        document.getElementById("otpInfo").innerText =
-          "Code sent to " + phone;
-
-        switchScreen("otpScreen");
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-          "OTP could not be sent.\n\n" +
-          error.message
-        );
-
     }
+);
 
-};
 
+/* =========================================================
+   FIREBASE ERROR TEXT
+========================================================= */
 
-window.verifyOTP = async function(){
+function firebaseError(error){
 
-    const code =
-      document.getElementById("otpInput")
-      .value
-      .trim();
+    const code = error && error.code;
 
-    if(code.length !== 6){
+    const errors = {
 
-        alert("Enter the 6-digit OTP.");
+        "auth/popup-closed-by-user":
+            "Login window was closed.",
 
-        return;
-    }
+        "auth/popup-blocked":
+            "Browser blocked the login popup.",
 
-    if(!confirmationResult){
+        "auth/network-request-failed":
+            "Internet connection failed.",
 
-        alert("Request OTP first.");
+        "auth/too-many-requests":
+            "Too many requests. Try again later.",
 
-        return;
-    }
+        "permission-denied":
+            "Firebase permission denied."
 
-    try{
+    };
 
-        await confirmationResult.confirm(code);
+    return errors[code] ||
+           error.message ||
+           "Something went wrong.";
 
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-          "OTP verification failed.\n\n" +
-          error.message
-        );
-
-    }
-
-};
+}
 
 
 /* =========================================================
    AUTH STATE
-   ========================================================= */
+========================================================= */
 
-onAuthStateChanged(auth, async user => {
+auth.onAuthStateChanged(
+    async user=>{
 
-    currentUser = user;
+        if(user){
 
-    if(!user){
+            currentUser = user;
 
-        switchScreen("loginScreen");
+            await ensureUserProfile();
 
-        return;
+            switchScreen("homeScreen");
+
+            loadProfile();
+
+            loadChats();
+
+        }else{
+
+            currentUser = null;
+            currentProfile = null;
+
+            if(unsubscribeChats){
+                unsubscribeChats();
+                unsubscribeChats = null;
+            }
+
+            if(unsubscribeMessages){
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+
+            switchScreen("loginScreen");
+
+        }
+
     }
-
-    await createOrLoadAccount(user);
-
-    await updateLastActive();
-
-    loadProfile();
-
-    loadChats();
-
-    switchScreen("homeScreen");
-
-});
+);
 
 
 /* =========================================================
-   ACCOUNT
-   ========================================================= */
+   USER PROFILE
+========================================================= */
 
-async function createOrLoadAccount(user){
+async function ensureUserProfile(){
+
+    if(!currentUser) return;
 
     const ref =
-      doc(db,"users",user.uid);
+        db.collection("users")
+          .doc(currentUser.uid);
 
-    const snap =
-      await getDoc(ref);
+    const snap = await ref.get();
 
-    if(!snap.exists()){
+    if(!snap.exists){
 
-        await setDoc(ref,{
+        await ref.set({
 
-            uid:user.uid,
+            uid:currentUser.uid,
 
-            phone:user.phoneNumber || "",
+            name:
+                currentUser.displayName ||
+                "VEIL User",
 
-            name:"",
-
-            username:"",
+            username:
+                makeUsername(
+                    currentUser.displayName ||
+                    "user"
+                ),
 
             bio:"",
 
-            profession:"",
+            email:
+                currentUser.email || "",
 
-            location:"",
+            phone:
+                currentUser.phoneNumber || "",
 
-            website:"",
-
-            selfieData:"",
+            photoData:"",
 
             verified:false,
 
-            createdAt:serverTimestamp(),
+            createdAt:
+                firebase.firestore.FieldValue.serverTimestamp(),
 
-            lastActiveAt:serverTimestamp(),
+            lastActive:
+                firebase.firestore.FieldValue.serverTimestamp()
 
-            accountExpiresAt:
-              Timestamp.fromDate(
-                new Date(
-                  Date.now() +
-                  180 * 24 * 60 * 60 * 1000
-                )
-              )
+        });
+
+    }else{
+
+        await ref.update({
+
+            lastActive:
+                firebase.firestore.FieldValue.serverTimestamp()
 
         });
 
     }
 
-}
+    const fresh =
+        await ref.get();
 
-
-/* =========================================================
-   6 MONTH ACTIVITY
-   ========================================================= */
-
-async function updateLastActive(){
-
-    if(!currentUser) return;
-
-    const nextExpiry =
-      Timestamp.fromDate(
-        new Date(
-          Date.now() +
-          180 * 24 * 60 * 60 * 1000
-        )
-      );
-
-    await updateDoc(
-      doc(db,"users",currentUser.uid),
-      {
-          lastActiveAt:serverTimestamp(),
-          accountExpiresAt:nextExpiry
-      }
-    );
+    currentProfile =
+        fresh.data();
 
 }
 
 
 /* =========================================================
-   PROFILE LOAD
-   ========================================================= */
+   USERNAME
+========================================================= */
+
+function makeUsername(name){
+
+    let value =
+        String(name)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g,"")
+        .slice(0,14);
+
+    if(!value){
+        value = "user";
+    }
+
+    return "@" + value;
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
 
 async function loadProfile(){
 
     if(!currentUser) return;
 
     const snap =
-      await getDoc(
-        doc(db,"users",currentUser.uid)
-      );
+        await db.collection("users")
+                .doc(currentUser.uid)
+                .get();
 
-    if(!snap.exists()) return;
+    if(!snap.exists) return;
 
-    const data = snap.data();
+    currentProfile =
+        snap.data();
 
-    document.getElementById("profileName").innerText =
-      data.name || "New User";
+    renderProfile();
 
-    document.getElementById("profileUsername").innerText =
-      data.username
-      ? "@" + data.username.replace(/^@/,"")
-      : "@username";
+}
 
-    document.getElementById("profileBio").innerText =
-      data.bio || "Add information about yourself.";
 
-    document.getElementById("editName").value =
-      data.name || "";
+/* =========================================================
+   RENDER PROFILE
+========================================================= */
 
-    document.getElementById("editUsername").value =
-      data.username || "";
+function renderProfile(){
 
-    document.getElementById("editBio").value =
-      data.bio || "";
+    const p = currentProfile || {};
 
-    document.getElementById("editProfession").value =
-      data.profession || "";
+    $("profileName").innerHTML =
+        escapeHTML(p.name || "VEIL User");
 
-    document.getElementById("editLocation").value =
-      data.location || "";
+    if(p.verified){
 
-    document.getElementById("editWebsite").value =
-      data.website || "";
+        $("profileName").innerHTML +=
+            verifiedBadge();
+
+        $("profileStatus").innerHTML =
+            '<span style="color:#38bdf8">' +
+            'Verified' +
+            '</span> ' +
+            verifiedBadge();
+
+    }else{
+
+        $("profileStatus").textContent =
+            "Not verified";
+
+    }
+
+    $("profileUsername").textContent =
+        p.username || "@username";
+
+    $("profileBio").textContent =
+        p.bio || "No bio";
+
+    $("profileEmail").textContent =
+        p.email || "-";
+
+    $("profilePhone").textContent =
+        p.phone || "Not provided";
+
+
+    $("editName").value =
+        p.name || "";
+
+    $("editUsername").value =
+        p.username || "";
+
+    $("editBio").value =
+        p.bio || "";
+
 
     renderProfilePhoto(
-      data.selfieData || ""
+        p.photoData || ""
     );
 
-    renderVerification(
-      data.verified === true
-    );
+}
 
-    updateHeaderPhoto(
-      data.selfieData || ""
-    );
+
+/* =========================================================
+   VERIFIED BADGE
+========================================================= */
+
+function verifiedBadge(){
+
+    /*
+       The badge is your own verified.png.
+       No generated/fake badge is used.
+    */
+
+    return `
+        <img
+            src="verified.png"
+            class="verified-badge"
+            alt="Verified"
+        >
+    `;
 
 }
 
 
 /* =========================================================
    PROFILE PHOTO
-   ========================================================= */
+========================================================= */
 
 function renderProfilePhoto(data){
 
     const box =
-      document.getElementById("profilePhoto");
-
-    box.innerHTML = "";
+        $("profilePhotoContainer");
 
     if(data){
 
-        const img =
-          document.createElement("img");
+        box.className = "";
 
-        img.src = data;
+        box.innerHTML = `
+            <img
+                class="profile-photo"
+                src="${safeImage(data)}"
+                alt="Profile"
+            >
+        `;
 
-        img.alt = "Profile";
-
-        box.appendChild(img);
-
-    }else{
-
-        box.innerHTML =
-          '<i class="fa-solid fa-user"></i>';
-
-    }
-
-}
-
-
-function updateHeaderPhoto(data){
-
-    const box =
-      document.getElementById("headerAvatar");
-
-    box.innerHTML = "";
-
-    if(data){
-
-        const img =
-          document.createElement("img");
-
-        img.src = data;
-
-        box.appendChild(img);
+        $("removePhotoBtn").style.display =
+            "block";
 
     }else{
 
+        box.className =
+            "profile-empty";
+
         box.innerHTML =
-          '<i class="fa-solid fa-user"></i>';
+            '<i class="fa-solid fa-user"></i>';
+
+        $("removePhotoBtn").style.display =
+            "none";
 
     }
 
@@ -1944,675 +1992,728 @@ function updateHeaderPhoto(data){
 
 
 /* =========================================================
-   VERIFICATION
-   ========================================================= */
+   SAFE IMAGE
+========================================================= */
 
-function renderVerification(isVerified){
+function safeImage(value){
 
-    const box =
-      document.getElementById("verificationStatus");
+    if(
+        typeof value !== "string" ||
+        !value.startsWith("data:image/")
+    ){
+        return "";
+    }
 
-    if(isVerified){
+    return value;
 
-        box.innerHTML = `
+}
 
-          <div style="
-             display:inline-flex;
-             align-items:center;
-             gap:6px;
-             color:#38bdf8;
-             font-size:12px;
-             font-weight:600">
 
-             <img
-               src="${VERIFIED_IMAGE}"
-               class="verified-badge"
-               alt="Verified">
+/* =========================================================
+   CAMERA
+========================================================= */
 
-             Verified
+async function openCamera(){
 
-          </div>
+    if(!navigator.mediaDevices ||
+       !navigator.mediaDevices.getUserMedia){
 
-        `;
+        toast(
+            "Camera is not supported by this browser."
+        );
 
-    }else{
+        return;
+    }
 
-        box.innerHTML = `
+    try{
 
-          <div style="
-             color:#94a3b8;
-             font-size:11px">
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
 
-             Take a clear selfie to activate your
-             VEIL verification badge.
+                video:{
+                    facingMode:"user",
+                    width:{
+                        ideal:640
+                    },
+                    height:{
+                        ideal:640
+                    }
+                },
 
-          </div>
+                audio:false
 
-        `;
+            });
+
+        $("cameraVideo").srcObject =
+            cameraStream;
+
+        $("cameraBox").style.display =
+            "block";
+
+        $("cameraOpenBtn").style.display =
+            "none";
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            "Camera permission is required."
+        );
 
     }
+
+}
+
+
+/* =========================================================
+   CLOSE CAMERA
+========================================================= */
+
+function closeCamera(){
+
+    if(cameraStream){
+
+        cameraStream
+            .getTracks()
+            .forEach(track=>{
+                track.stop();
+            });
+
+        cameraStream = null;
+
+    }
+
+    $("cameraVideo").srcObject = null;
+
+    $("cameraBox").style.display =
+        "none";
+
+    $("cameraOpenBtn").style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   CAPTURE SELFIE
+========================================================= */
+
+async function captureSelfie(){
+
+    if(!cameraStream){
+        toast("Camera is not active.");
+        return;
+    }
+
+    const video =
+        $("cameraVideo");
+
+    if(!video.videoWidth){
+
+        toast("Camera is not ready yet.");
+
+        return;
+
+    }
+
+
+    /*
+       Small square JPEG.
+       This keeps Firestore document size low.
+    */
+
+    const maxSize = 420;
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width = maxSize;
+    canvas.height = maxSize;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+
+    const size =
+        Math.min(vw,vh);
+
+    const sx =
+        (vw-size)/2;
+
+    const sy =
+        (vh-size)/2;
+
+
+    /*
+       Mirror the selfie like a normal
+       front-facing camera preview.
+    */
+
+    ctx.translate(maxSize,0);
+    ctx.scale(-1,1);
+
+    ctx.drawImage(
+        video,
+        sx,
+        sy,
+        size,
+        size,
+        0,
+        0,
+        maxSize,
+        maxSize
+    );
+
+
+    /*
+       JPEG compression.
+       0.62 keeps the image small while
+       retaining reasonable profile quality.
+    */
+
+    const compressed =
+        canvas.toDataURL(
+            "image/jpeg",
+            .62
+        );
+
+
+    if(compressed.length > 900000){
+
+        toast(
+            "Photo is too large. Try again."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await db.collection("users")
+            .doc(currentUser.uid)
+            .update({
+
+                photoData:compressed,
+
+                /*
+                   According to your requested
+                   profile rule, a saved selfie
+                   receives the verification badge.
+                */
+                verified:true,
+
+                lastActive:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            });
+
+
+        await loadProfile();
+
+        closeCamera();
+
+        toast(
+            "Selfie saved. Profile verified."
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            firebaseError(error)
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REMOVE PHOTO
+========================================================= */
+
+async function removeProfilePhoto(){
+
+    if(!currentUser) return;
+
+    const confirmed =
+        confirm(
+            "Remove your profile selfie?"
+        );
+
+    if(!confirmed) return;
+
+    try{
+
+        await db.collection("users")
+            .doc(currentUser.uid)
+            .update({
+
+                photoData:"",
+
+                /*
+                   No profile selfie = no verification
+                   badge.
+                */
+                verified:false,
+
+                lastActive:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            });
+
+        await loadProfile();
+
+        toast(
+            "Profile photo removed."
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            firebaseError(error)
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
+
+function toggleEditProfile(){
+
+    const box =
+        $("editBox");
+
+    box.style.display =
+        box.style.display === "block"
+        ? "none"
+        : "block";
 
 }
 
 
 /* =========================================================
    SAVE PROFILE
-   ========================================================= */
+========================================================= */
 
-window.saveProfile = async function(){
+async function saveProfile(){
 
     if(!currentUser) return;
 
     const name =
-      document.getElementById("editName")
-      .value.trim();
+        $("editName").value.trim();
 
-    const username =
-      document.getElementById("editUsername")
-      .value
-      .trim()
-      .replace(/^@/,"");
+    const usernameRaw =
+        $("editUsername").value.trim();
 
     const bio =
-      document.getElementById("editBio")
-      .value.trim();
+        $("editBio").value.trim();
 
-    const profession =
-      document.getElementById("editProfession")
-      .value.trim();
 
-    const location =
-      document.getElementById("editLocation")
-      .value.trim();
+    if(!name){
 
-    const website =
-      document.getElementById("editWebsite")
-      .value.trim();
+        toast("Enter your name.");
+
+        return;
+
+    }
+
+
+    let username =
+        usernameRaw || makeUsername(name);
+
+    if(!username.startsWith("@")){
+
+        username =
+            "@" + username;
+
+    }
+
+
+    username =
+        username
+        .toLowerCase()
+        .replace(/[^@a-z0-9_]/g,"")
+        .slice(0,25);
+
 
     try{
 
-        await updateDoc(
-          doc(db,"users",currentUser.uid),
-          {
-              name,
-              username,
-              bio,
-              profession,
-              location,
-              website,
-              lastActiveAt:serverTimestamp(),
+        await db.collection("users")
+            .doc(currentUser.uid)
+            .update({
 
-              accountExpiresAt:
-                Timestamp.fromDate(
-                  new Date(
-                    Date.now() +
-                    180 * 24 * 60 * 60 * 1000
-                  )
-                )
-          }
-        );
+                name:name,
+                username:username,
+                bio:bio,
+
+                lastActive:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            });
 
         await loadProfile();
 
-        alert("Profile updated.");
+        $("editBox").style.display =
+            "none";
+
+        toast(
+            "Profile updated."
+        );
 
     }catch(error){
 
         console.error(error);
 
-        alert(
-          "Could not update profile.\n\n" +
-          error.message
+        toast(
+            firebaseError(error)
         );
 
     }
 
-};
+}
 
 
 /* =========================================================
-   CAMERA
-   ========================================================= */
+   PROFILE OPEN
+========================================================= */
 
-window.openCamera = async function(){
+async function openProfile(){
 
-    try{
-
-        cameraStream =
-          await navigator.mediaDevices.getUserMedia({
-
-              video:{
-                  facingMode:"user",
-                  width:{ideal:720},
-                  height:{ideal:720}
-              },
-
-              audio:false
-
-          });
-
-        const video =
-          document.getElementById("cameraVideo");
-
-        video.srcObject =
-          cameraStream;
-
-        switchScreen("cameraScreen");
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-          "Camera access is required for selfie verification."
-        );
-
-    }
-
-};
-
-
-window.closeCamera = function(){
-
-    if(cameraStream){
-
-        cameraStream
-          .getTracks()
-          .forEach(track => track.stop());
-
-        cameraStream = null;
-
-    }
+    playWaterDrop();
 
     switchScreen("profileScreen");
 
-};
+    await loadProfile();
 
-
-window.captureSelfie = async function(){
-
-    if(!currentUser || !cameraStream) return;
-
-    const video =
-      document.getElementById("cameraVideo");
-
-    const canvas =
-      document.getElementById("selfieCanvas");
-
-    /*
-      Small compressed JPEG.
-      This keeps the Firestore document much smaller.
-    */
-
-    const MAX = 500;
-
-    let width = video.videoWidth;
-
-    let height = video.videoHeight;
-
-    if(!width || !height){
-
-        alert("Camera is not ready.");
-
-        return;
-    }
-
-    if(width > height){
-
-        width = MAX;
-
-        height =
-          Math.round(
-            video.videoHeight /
-            video.videoWidth *
-            MAX
-          );
-
-    }else{
-
-        height = MAX;
-
-        width =
-          Math.round(
-            video.videoWidth /
-            video.videoHeight *
-            MAX
-          );
-
-    }
-
-    canvas.width = width;
-
-    canvas.height = height;
-
-    const ctx =
-      canvas.getContext("2d");
-
-    /*
-      Mirror selfie naturally.
-    */
-
-    ctx.translate(width,0);
-
-    ctx.scale(-1,1);
-
-    ctx.drawImage(
-      video,
-      0,
-      0,
-      width,
-      height
-    );
-
-    const compressed =
-      canvas.toDataURL(
-        "image/jpeg",
-        0.55
-      );
-
-    try{
-
-        /*
-          User explicitly wants the selfie itself
-          to control the badge.
-
-          Therefore a captured selfie becomes the
-          profile selfie and activates verified=true.
-        */
-
-        await updateDoc(
-          doc(db,"users",currentUser.uid),
-          {
-              selfieData:compressed,
-              verified:true,
-              lastActiveAt:serverTimestamp(),
-
-              accountExpiresAt:
-                Timestamp.fromDate(
-                  new Date(
-                    Date.now() +
-                    180 * 24 * 60 * 60 * 1000
-                  )
-                )
-          }
-        );
-
-        closeCamera();
-
-        await loadProfile();
-
-        alert(
-          "Selfie saved. Your VEIL verified badge is now active."
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-          "Selfie could not be saved.\n\n" +
-          error.message
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   REMOVE SELFIE
-   ========================================================= */
-
-window.removeSelfie = async function(){
-
-    if(!currentUser) return;
-
-    try{
-
-        await updateDoc(
-          doc(db,"users",currentUser.uid),
-          {
-              selfieData:"",
-              verified:false
-          }
-        );
-
-        await loadProfile();
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(error.message);
-
-    }
-
-};
+}
 
 
 /* =========================================================
    CONTACTS
-   ========================================================= */
+========================================================= */
 
 async function loadContacts(){
 
     const box =
-      document.getElementById("appUsersList");
+        $("contactsList");
 
     box.innerHTML =
-      '<div class="empty">Loading contacts...</div>';
+        '<div class="loading">Loading users...</div>';
+
+    if(!currentUser) return;
+
 
     try{
 
-        const q =
-          query(
-            collection(db,"users"),
-            limit(100)
-          );
-
         const snap =
-          await getDocs(q);
+            await db.collection("users")
+                .limit(100)
+                .get();
 
-        box.innerHTML = "";
+        usersCache = [];
 
-        let count = 0;
+        snap.forEach(doc=>{
 
-        snap.forEach(item => {
+            const data = doc.data();
 
-            const data = item.data();
+            if(doc.id !== currentUser.uid){
 
-            if(
-              !currentUser ||
-              data.uid === currentUser.uid
-            ) return;
+                usersCache.push({
+                    id:doc.id,
+                    ...data
+                });
 
-            count++;
-
-            box.appendChild(
-              createUserItem(data)
-            );
+            }
 
         });
 
-        if(!count){
 
-            box.innerHTML =
-              '<div class="empty">No other users found.</div>';
-
-        }
+        renderContacts(usersCache);
 
     }catch(error){
 
         console.error(error);
 
         box.innerHTML =
-          '<div class="empty">Could not load contacts.</div>';
+            '<div class="chat-empty">' +
+            escapeHTML(firebaseError(error)) +
+            '</div>';
 
     }
+
+}
+
+
+/* =========================================================
+   RENDER CONTACTS
+========================================================= */
+
+function renderContacts(users){
+
+    const box =
+        $("contactsList");
+
+    box.innerHTML = "";
+
+    if(!users.length){
+
+        box.innerHTML =
+            '<div class="chat-empty">' +
+            'No other users found.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    users.forEach(user=>{
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "item";
+
+        item.onclick =
+            ()=>openChat(user);
+
+
+        item.innerHTML = `
+
+            ${avatarHTML(user)}
+
+            <div class="item-info">
+
+                <div class="item-name">
+
+                    ${escapeHTML(
+                        user.name || "VEIL User"
+                    )}
+
+                    ${
+                        user.verified
+                        ? verifiedBadge()
+                        : ""
+                    }
+
+                </div>
+
+                <div class="item-sub">
+
+                    ${escapeHTML(
+                        user.username || ""
+                    )}
+
+                </div>
+
+            </div>
+
+        `;
+
+        box.appendChild(item);
+
+    });
 
 }
 
 
 /* =========================================================
    SEARCH USERS
-   ========================================================= */
+========================================================= */
 
-let searchTimer = null;
+$("userSearch")
+.addEventListener(
+    "input",
+    function(){
 
-window.searchUsers = function(value){
+        const query =
+            this.value
+            .trim()
+            .toLowerCase();
 
-    clearTimeout(searchTimer);
-
-    searchTimer =
-      setTimeout(
-        () => performSearch(value.trim()),
-        350
-      );
-
-};
-
-
-async function performSearch(value){
-
-    if(!value){
-
-        loadChats();
-
-        return;
-    }
-
-    const box =
-      document.getElementById("chatListContainer");
-
-    box.innerHTML =
-      '<div class="empty">Searching...</div>';
-
-    try{
-
-        /*
-          Exact username search.
-
-          Firestore does not provide unrestricted
-          "contains" search by itself.
-        */
-
-        const username =
-          value.replace(/^@/,"").toLowerCase();
-
-        const q =
-          query(
-            collection(db,"users"),
-            where("username","==",username),
-            limit(20)
-          );
-
-        const snap =
-          await getDocs(q);
+        const box =
+            $("searchResults");
 
         box.innerHTML = "";
 
-        snap.forEach(item => {
+        if(!query) return;
 
-            const data = item.data();
 
-            if(
-              currentUser &&
-              data.uid !== currentUser.uid
-            ){
+        const matches =
+            usersCache.filter(user=>{
 
-                box.appendChild(
-                  createUserItem(data)
+                const name =
+                    String(
+                        user.name || ""
+                    ).toLowerCase();
+
+                const username =
+                    String(
+                        user.username || ""
+                    ).toLowerCase();
+
+                const email =
+                    String(
+                        user.email || ""
+                    ).toLowerCase();
+
+                return (
+                    name.includes(query) ||
+                    username.includes(query) ||
+                    email.includes(query)
                 );
 
-            }
+            });
 
-        });
 
-        if(!box.children.length){
+        matches.slice(0,20)
+            .forEach(user=>{
 
-            box.innerHTML =
-              '<div class="empty">No user found.</div>';
+                const item =
+                    document.createElement("div");
 
-        }
+                item.className =
+                    "item";
 
-    }catch(error){
+                item.onclick =
+                    ()=>openChat(user);
 
-        console.error(error);
 
-        box.innerHTML =
-          '<div class="empty">Search failed.</div>';
+                item.innerHTML = `
+
+                    ${avatarHTML(user)}
+
+                    <div class="item-info">
+
+                        <div class="item-name">
+
+                            ${escapeHTML(
+                                user.name ||
+                                "VEIL User"
+                            )}
+
+                            ${
+                                user.verified
+                                ? verifiedBadge()
+                                : ""
+                            }
+
+                        </div>
+
+                        <div class="item-sub">
+
+                            ${escapeHTML(
+                                user.username || ""
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                box.appendChild(item);
+
+            });
 
     }
+);
+
+
+/* =========================================================
+   AVATAR HTML
+========================================================= */
+
+function avatarHTML(user){
+
+    if(user.photoData){
+
+        return `
+            <div class="avatar">
+                <img
+                    src="${safeImage(user.photoData)}"
+                    alt=""
+                >
+            </div>
+        `;
+
+    }
+
+    return `
+        <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    `;
 
 }
 
 
 /* =========================================================
-   USER ITEM
-   ========================================================= */
+   CHAT ID
+========================================================= */
 
-function createUserItem(data){
+function makeChatId(uid1,uid2){
 
-    const item =
-      document.createElement("div");
-
-    item.className = "item";
-
-    const avatar =
-      document.createElement("div");
-
-    avatar.className = "avatar";
-
-    if(data.selfieData){
-
-        const img =
-          document.createElement("img");
-
-        img.src =
-          data.selfieData;
-
-        avatar.appendChild(img);
-
-    }else{
-
-        avatar.innerHTML =
-          '<i class="fa-solid fa-user"></i>';
-
-    }
-
-    const info =
-      document.createElement("div");
-
-    info.className = "info";
-
-    const nameRow =
-      document.createElement("div");
-
-    nameRow.className =
-      "name-row";
-
-    const name =
-      document.createElement("span");
-
-    name.className =
-      "name";
-
-    name.innerText =
-      data.name || "User";
-
-    nameRow.appendChild(name);
-
-    if(data.verified === true){
-
-        const badge =
-          document.createElement("img");
-
-        badge.src =
-          VERIFIED_IMAGE;
-
-        badge.className =
-          "verified-badge";
-
-        badge.alt =
-          "Verified";
-
-        nameRow.appendChild(badge);
-
-    }
-
-    const sub =
-      document.createElement("div");
-
-    sub.className =
-      "sub";
-
-    sub.innerText =
-      data.username
-      ? "@" + data.username
-      : "VEIL user";
-
-    info.appendChild(nameRow);
-
-    info.appendChild(sub);
-
-    item.appendChild(avatar);
-
-    item.appendChild(info);
-
-    item.onclick = () =>
-      openChat(data);
-
-    return item;
-
-}
-
-
-/* =========================================================
-   CHAT LIST
-   ========================================================= */
-
-function loadChats(){
-
-    if(!currentUser) return;
-
-    const box =
-      document.getElementById("chatListContainer");
-
-    /*
-      Chat list requires chat documents.
-      No fake data is inserted.
-    */
-
-    box.innerHTML =
-      '<div class="empty">Your conversations will appear here.</div>';
+    return [uid1,uid2]
+        .sort()
+        .join("_");
 
 }
 
 
 /* =========================================================
    OPEN CHAT
-   ========================================================= */
+========================================================= */
 
-window.openChat = function(user){
+async function openChat(user){
 
     if(!currentUser || !user) return;
 
+    playWaterDrop();
+
     currentChatUser = user;
-
-    document.getElementById("chatHeaderName")
-      .innerText =
-      user.name || "User";
-
-    const headerAvatar =
-      document.getElementById("chatHeaderAvatar");
-
-    headerAvatar.innerHTML = "";
-
-    if(user.selfieData){
-
-        const img =
-          document.createElement("img");
-
-        img.src =
-          user.selfieData;
-
-        headerAvatar.appendChild(img);
-
-    }else{
-
-        headerAvatar.innerHTML =
-          '<i class="fa-solid fa-user"></i>';
-
-    }
 
     switchScreen("chatScreen");
 
-    listenMessages();
 
-};
+    $("chatName").innerHTML =
+        escapeHTML(
+            user.name || "VEIL User"
+        ) +
+        (
+            user.verified
+            ? " " + verifiedBadge()
+            : ""
+        );
 
 
-window.closeChat = function(){
+    $("chatUsername").textContent =
+        user.username || "";
+
+
+    $("chatAvatar").innerHTML =
+        user.photoData
+        ? `<img src="${safeImage(user.photoData)}">`
+        : '<i class="fa-solid fa-user"></i>';
+
+
+    $("messages").innerHTML =
+        '<div class="loading">Loading messages...</div>';
+
 
     if(unsubscribeMessages){
 
@@ -2622,451 +2723,588 @@ window.closeChat = function(){
 
     }
 
-    currentChatUser = null;
 
-    switchScreen("homeScreen");
+    const chatId =
+        makeChatId(
+            currentUser.uid,
+            user.uid
+        );
 
-};
+
+    /*
+       Create chat document only when
+       a real user starts a real chat.
+    */
+
+    try{
+
+        const chatRef =
+            db.collection("chats")
+              .doc(chatId);
+
+        const snap =
+            await chatRef.get();
+
+        if(!snap.exists){
+
+            await chatRef.set({
+
+                participants:[
+                    currentUser.uid,
+                    user.uid
+                ],
+
+                createdAt:
+                    firebase.firestore.FieldValue.serverTimestamp(),
+
+                lastMessage:"",
+                lastMessageAt:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            });
+
+        }
 
 
-/* =========================================================
-   CHAT ID
-   ========================================================= */
+        unsubscribeMessages =
+            chatRef.collection("messages")
+                .orderBy("createdAt","asc")
+                .onSnapshot(
+                    snapshot=>{
 
-function makeChatId(a,b){
+                        renderMessages(
+                            snapshot
+                        );
 
-    return [a,b].sort().join("_");
+                    },
+                    error=>{
+
+                        console.error(error);
+
+                        $("messages").innerHTML =
+                            '<div class="chat-empty">' +
+                            escapeHTML(
+                                firebaseError(error)
+                            ) +
+                            '</div>';
+
+                    }
+                );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            firebaseError(error)
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-   REALTIME MESSAGES
-   ========================================================= */
+   RENDER MESSAGES
+========================================================= */
 
-function listenMessages(){
+function renderMessages(snapshot){
 
-    if(!currentUser || !currentChatUser) return;
+    const box =
+        $("messages");
 
-    if(unsubscribeMessages){
+    box.innerHTML = "";
 
-        unsubscribeMessages();
+
+    if(snapshot.empty){
+
+        box.innerHTML =
+            '<div class="chat-empty">' +
+            'No messages yet.<br>' +
+            'Start the conversation.' +
+            '</div>';
+
+        return;
 
     }
 
+
+    snapshot.forEach(doc=>{
+
+        const data =
+            doc.data();
+
+        const mine =
+            data.senderId ===
+            currentUser.uid;
+
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message" +
+            (mine ? " mine" : "");
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className =
+            "bubble";
+
+
+        /*
+           Text messages only.
+           No HTML is interpreted.
+        */
+
+        bubble.appendChild(
+            document.createTextNode(
+                data.text || ""
+            )
+        );
+
+
+        const time =
+            document.createElement("div");
+
+        time.className =
+            "message-time";
+
+        time.textContent =
+            formatTime(
+                data.createdAt
+            );
+
+
+        bubble.appendChild(time);
+
+        row.appendChild(bubble);
+
+        box.appendChild(row);
+
+    });
+
+
+    box.scrollTop =
+        box.scrollHeight;
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage(){
+
+    if(!currentUser ||
+       !currentChatUser){
+
+        return;
+
+    }
+
+
+    const input =
+        $("messageInput");
+
+    const text =
+        input.value.trim();
+
+
+    if(!text) return;
+
+
     const chatId =
-      makeChatId(
-        currentUser.uid,
-        currentChatUser.uid
-      );
+        makeChatId(
+            currentUser.uid,
+            currentChatUser.uid
+        );
 
-    const messagesRef =
-      collection(
-        db,
-        "chats",
-        chatId,
-        "messages"
-      );
 
-    const q =
-      query(
-        messagesRef,
-        orderBy("createdAt","asc"),
-        limit(100)
-      );
+    input.value = "";
 
-    unsubscribeMessages =
-      onSnapshot(
-        q,
-        snapshot => {
 
-            const area =
-              document.getElementById(
-                "messageArea"
-              );
+    try{
 
-            area.innerHTML = "";
+        const chatRef =
+            db.collection("chats")
+              .doc(chatId);
 
-            snapshot.forEach(item => {
 
-                const data =
-                  item.data();
+        await chatRef
+            .collection("messages")
+            .add({
 
-                renderMessage(
-                  data,
-                  area
-                );
+                senderId:
+                    currentUser.uid,
+
+                receiverId:
+                    currentChatUser.uid,
+
+                text:text,
+
+                createdAt:
+                    firebase.firestore.FieldValue.serverTimestamp(),
+
+                delivered:false,
+
+                read:false
 
             });
 
-            area.scrollTop =
-              area.scrollHeight;
 
-        },
+        await chatRef.update({
 
-        error => {
+            lastMessage:text,
+
+            lastMessageAt:
+                firebase.firestore.FieldValue.serverTimestamp(),
+
+            lastSenderId:
+                currentUser.uid
+
+        });
+
+
+    }catch(error){
+
+        console.error(error);
+
+        /*
+           Put text back if sending fails.
+        */
+
+        input.value = text;
+
+        toast(
+            firebaseError(error)
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ENTER TO SEND
+========================================================= */
+
+$("messageInput")
+.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOAD RECENT CHATS
+========================================================= */
+
+function loadChats(){
+
+    if(!currentUser) return;
+
+
+    if(unsubscribeChats){
+
+        unsubscribeChats();
+
+        unsubscribeChats = null;
+
+    }
+
+
+    $("chatList").innerHTML =
+        '<div class="loading">' +
+        'Loading chats...' +
+        '</div>';
+
+
+    unsubscribeChats =
+        db.collection("chats")
+          .where(
+              "participants",
+              "array-contains",
+              currentUser.uid
+          )
+          .limit(50)
+          .onSnapshot(
+              async snapshot=>{
+
+                  await renderChatList(
+                      snapshot
+                  );
+
+              },
+              error=>{
+
+                  console.error(error);
+
+                  $("chatList").innerHTML =
+                      '<div class="chat-empty">' +
+                      escapeHTML(
+                          firebaseError(error)
+                      ) +
+                      '</div>';
+
+              }
+          );
+
+}
+
+
+/* =========================================================
+   RENDER CHAT LIST
+========================================================= */
+
+async function renderChatList(snapshot){
+
+    const box =
+        $("chatList");
+
+    box.innerHTML = "";
+
+
+    if(snapshot.empty){
+
+        box.innerHTML =
+            '<div class="chat-empty">' +
+            'No chats yet.<br>' +
+            'Open Contacts and start a conversation.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    const chats = [];
+
+
+    snapshot.forEach(doc=>{
+
+        chats.push({
+            id:doc.id,
+            ...doc.data()
+        });
+
+    });
+
+
+    chats.sort((a,b)=>{
+
+        const at =
+            a.lastMessageAt &&
+            a.lastMessageAt.toMillis
+            ? a.lastMessageAt.toMillis()
+            : 0;
+
+        const bt =
+            b.lastMessageAt &&
+            b.lastMessageAt.toMillis
+            ? b.lastMessageAt.toMillis()
+            : 0;
+
+        return bt-at;
+
+    });
+
+
+    for(const chat of chats){
+
+        const otherId =
+            chat.participants.find(
+                id=>id !== currentUser.uid
+            );
+
+        if(!otherId) continue;
+
+
+        try{
+
+            const userSnap =
+                await db.collection("users")
+                    .doc(otherId)
+                    .get();
+
+            if(!userSnap.exists) continue;
+
+            const user =
+                {
+                    id:otherId,
+                    ...userSnap.data()
+                };
+
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "item";
+
+            item.onclick =
+                ()=>openChat(user);
+
+
+            item.innerHTML = `
+
+                ${avatarHTML(user)}
+
+                <div class="item-info">
+
+                    <div class="item-name">
+
+                        ${escapeHTML(
+                            user.name ||
+                            "VEIL User"
+                        )}
+
+                        ${
+                            user.verified
+                            ? verifiedBadge()
+                            : ""
+                        }
+
+                    </div>
+
+                    <div class="item-sub">
+
+                        ${escapeHTML(
+                            chat.lastMessage ||
+                            "No message"
+                        )}
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            box.appendChild(item);
+
+        }catch(error){
 
             console.error(error);
 
         }
 
-      );
+    }
 
 }
 
 
 /* =========================================================
-   SEND TEXT
-   ========================================================= */
+   TIME
+========================================================= */
 
-window.sendMessage = async function(){
+function formatTime(timestamp){
 
-    if(!currentUser || !currentChatUser) return;
-
-    const input =
-      document.getElementById("messageInput");
-
-    const text =
-      input.value.trim();
-
-    if(!text) return;
-
-    const chatId =
-      makeChatId(
-        currentUser.uid,
-        currentChatUser.uid
-      );
+    if(!timestamp) return "";
 
     try{
 
-        await addDoc(
-          collection(
-            db,
-            "chats",
-            chatId,
-            "messages"
-          ),
-          {
-              senderId:currentUser.uid,
+        const date =
+            timestamp.toDate();
 
-              receiverId:
-                currentChatUser.uid,
-
-              type:"text",
-
-              text:text,
-
-              createdAt:serverTimestamp(),
-
-              /*
-                Maximum server-side lifetime target:
-                24 hours.
-              */
-
-              expiresAt:
-                Timestamp.fromDate(
-                  new Date(
-                    Date.now() +
-                    24 * 60 * 60 * 1000
-                  )
-                )
-          }
+        return date.toLocaleTimeString(
+            [],
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
         );
 
-        input.value = "";
+    }catch(e){
+
+        return "";
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+async function enableNotifications(){
+
+    if(!("Notification" in window)){
+
+        toast(
+            "Browser notifications are not supported."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const permission =
+            await Notification.requestPermission();
+
+        if(permission === "granted"){
+
+            toast(
+                "Browser notifications enabled."
+            );
+
+        }else{
+
+            toast(
+                "Notification permission was not granted."
+            );
+
+        }
 
     }catch(error){
 
         console.error(error);
 
-        alert(
-          "Message could not be sent.\n\n" +
-          error.message
+        toast(
+            "Unable to enable notifications."
         );
 
     }
 
-};
-
-
-window.handleMessageKey = function(event){
-
-    if(event.key === "Enter"){
-
-        event.preventDefault();
-
-        sendMessage();
-
-    }
-
-};
+}
 
 
 /* =========================================================
-   SEND IMAGE
-   ========================================================= */
+   LOGOUT
+========================================================= */
 
-window.sendImage = async function(input){
-
-    const file =
-      input.files[0];
-
-    if(!file ||
-       !currentUser ||
-       !currentChatUser){
-
-        return;
-    }
-
-    if(!file.type.startsWith("image/")){
-
-        alert("Only images are allowed.");
-
-        return;
-    }
-
-    /*
-      Image is compressed locally.
-      No Firebase Storage is used.
-    */
+async function logout(){
 
     try{
 
-        const compressed =
-          await compressImage(file);
-
-        const chatId =
-          makeChatId(
-            currentUser.uid,
-            currentChatUser.uid
-          );
-
-        await addDoc(
-          collection(
-            db,
-            "chats",
-            chatId,
-            "messages"
-          ),
-          {
-              senderId:currentUser.uid,
-
-              receiverId:
-                currentChatUser.uid,
-
-              type:"image",
-
-              imageData:compressed,
-
-              createdAt:serverTimestamp(),
-
-              expiresAt:
-                Timestamp.fromDate(
-                  new Date(
-                    Date.now() +
-                    24 * 60 * 60 * 1000
-                  )
-                )
-          }
-        );
+        await auth.signOut();
 
     }catch(error){
 
-        console.error(error);
-
-        alert(
-          "Image could not be sent.\n\n" +
-          error.message
+        toast(
+            firebaseError(error)
         );
-
-    }
-
-    input.value = "";
-
-};
-
-
-/* =========================================================
-   IMAGE COMPRESSION
-   ========================================================= */
-
-function compressImage(file){
-
-    return new Promise(
-      (resolve,reject) => {
-
-        const reader =
-          new FileReader();
-
-        reader.onload = event => {
-
-            const img =
-              new Image();
-
-            img.onload = () => {
-
-                const MAX = 900;
-
-                let width =
-                  img.width;
-
-                let height =
-                  img.height;
-
-                if(width > height){
-
-                    if(width > MAX){
-
-                        height =
-                          Math.round(
-                            height /
-                            width *
-                            MAX
-                          );
-
-                        width = MAX;
-
-                    }
-
-                }else{
-
-                    if(height > MAX){
-
-                        width =
-                          Math.round(
-                            width /
-                            height *
-                            MAX
-                          );
-
-                        height = MAX;
-
-                    }
-
-                }
-
-                const canvas =
-                  document.createElement(
-                    "canvas"
-                  );
-
-                canvas.width =
-                  width;
-
-                canvas.height =
-                  height;
-
-                const ctx =
-                  canvas.getContext(
-                    "2d"
-                  );
-
-                ctx.drawImage(
-                  img,
-                  0,
-                  0,
-                  width,
-                  height
-                );
-
-                resolve(
-                  canvas.toDataURL(
-                    "image/jpeg",
-                    .55
-                  )
-                );
-
-            };
-
-            img.onerror =
-              reject;
-
-            img.src =
-              event.target.result;
-
-        };
-
-        reader.onerror =
-          reject;
-
-        reader.readAsDataURL(file);
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER MESSAGE
-   ========================================================= */
-
-function renderMessage(data,area){
-
-    const div =
-      document.createElement("div");
-
-    div.className =
-      "message " +
-      (
-        data.senderId === currentUser.uid
-        ? "mine"
-        : "theirs"
-      );
-
-    if(data.type === "image"){
-
-        const img =
-          document.createElement("img");
-
-        img.src =
-          data.imageData || "";
-
-        img.alt =
-          "Image";
-
-        div.appendChild(img);
-
-    }else{
-
-        div.innerText =
-          data.text || "";
-
-    }
-
-    area.appendChild(div);
-
-}
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-async function updateSettingsInfo(){
-
-    if(!currentUser) return;
-
-    document.getElementById("accountPhone")
-      .innerText =
-      currentUser.phoneNumber || "";
-
-    const snap =
-      await getDoc(
-        doc(db,"users",currentUser.uid)
-      );
-
-    if(snap.exists()){
-
-        const data =
-          snap.data();
-
-        document.getElementById(
-          "lastActiveText"
-        ).innerText =
-          data.lastActiveAt
-          ? "Active account"
-          : "Active";
 
     }
 
@@ -3075,207 +3313,155 @@ async function updateSettingsInfo(){
 
 /* =========================================================
    LANGUAGE
-   ========================================================= */
+========================================================= */
 
-const languages = {
+$("language")
+.addEventListener(
+    "change",
+    function(){
 
-    en:{
-        home:"Home",
-        contacts:"Contacts",
-        settings:"Settings"
-    },
+        const lang =
+            this.value;
 
-    bn:{
-        home:"হোম",
-        contacts:"কন্টাক্টস",
-        settings:"সেটিংস"
-    },
+        if(lang === "bn"){
 
-    hi:{
-        home:"होम",
-        contacts:"संपर्क",
-        settings:"सेटिंग्स"
-    }
+            document.querySelector(
+                "#homeScreen .section-title"
+            ).textContent =
+                "সাম্প্রতিক চ্যাট";
 
-};
-
-
-window.changeLanguage = function(lang){
-
-    const t =
-      languages[lang];
-
-    if(!t) return;
-
-    const nav =
-      document.querySelectorAll("nav");
-
-    nav.forEach(n => {
-
-        const spans =
-          n.querySelectorAll("span");
-
-        if(spans[0])
-          spans[0].innerText = t.home;
-
-        if(spans[1])
-          spans[1].innerText = t.contacts;
-
-        if(spans[2])
-          spans[2].innerText = t.settings;
-
-    });
-
-};
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-
-window.logout = async function(){
-
-    try{
-
-        await signOut(auth);
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(error.message);
-
-    }
-
-};
-
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-
-window.openAdmin = function(){
-
-    if(
-      !currentUser ||
-      !ADMIN_UID ||
-      currentUser.uid !== ADMIN_UID
-    ){
-
-        alert("Admin access denied.");
-
-        return;
-    }
-
-    switchScreen("adminScreen");
-
-    loadAdminUsers();
-
-};
-
-
-async function loadAdminUsers(){
-
-    const box =
-      document.getElementById(
-        "adminUsersList"
-      );
-
-    box.innerHTML =
-      '<div class="empty">Loading users...</div>';
-
-    const snap =
-      await getDocs(
-        query(
-          collection(db,"users"),
-          limit(200)
-        )
-      );
-
-    box.innerHTML = "";
-
-    snap.forEach(item => {
-
-        const data =
-          item.data();
-
-        const row =
-          createUserItem(data);
-
-        /*
-          Admin verification control.
-        */
-
-        const button =
-          document.createElement("button");
-
-        button.className =
-          "btn-secondary";
-
-        button.style.width =
-          "auto";
-
-        button.style.padding =
-          "7px 10px";
-
-        button.innerText =
-          data.verified
-          ? "Remove Verified"
-          : "Verify";
-
-        button.onclick =
-          async event => {
-
-            event.stopPropagation();
-
-            await updateDoc(
-              doc(
-                db,
-                "users",
-                data.uid
-              ),
-              {
-                  verified:
-                    !data.verified
-              }
+            toast(
+                "বাংলা ভাষা নির্বাচন করা হয়েছে।"
             );
 
-            loadAdminUsers();
+        }
 
-          };
+        if(lang === "hi"){
 
-        row.appendChild(button);
+            document.querySelector(
+                "#homeScreen .section-title"
+            ).textContent =
+                "हाल की चैट";
 
-        box.appendChild(row);
+            toast(
+                "हिन्दी भाषा चुनी गई।"
+            );
 
-    });
+        }
+
+        if(lang === "en"){
+
+            document.querySelector(
+                "#homeScreen .section-title"
+            ).textContent =
+                "RECENT CHATS";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESCAPE TEXT
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
 
 /* =========================================================
-   AUTO ACCOUNT EXPIRATION NOTE
-   =========================================================
+   PAGE VISIBILITY
+========================================================= */
 
-   The browser cannot reliably delete an inactive
-   account after 180 days.
+document.addEventListener(
+    "visibilitychange",
+    async ()=>{
 
-   accountExpiresAt is written to Firestore.
+        if(
+            document.visibilityState ===
+            "visible" &&
+            currentUser
+        ){
 
-   For real automatic deletion, configure a trusted
-   server-side Firebase process / scheduled Cloud Function
-   or another server-side cleanup mechanism.
+            try{
 
-   Firestore TTL can also be configured for message
-   expiresAt and accountExpiresAt where appropriate.
-*/
+                await db.collection("users")
+                    .doc(currentUser.uid)
+                    .update({
+
+                        lastActive:
+                            firebase.firestore.FieldValue.serverTimestamp()
+
+                    });
+
+            }catch(e){}
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL SEARCH CACHE
+========================================================= */
+
+async function refreshUserCache(){
+
+    if(!currentUser) return;
+
+    try{
+
+        const snap =
+            await db.collection("users")
+                .limit(100)
+                .get();
+
+        usersCache = [];
+
+        snap.forEach(doc=>{
+
+            if(doc.id !== currentUser.uid){
+
+                usersCache.push({
+                    id:doc.id,
+                    ...doc.data()
+                });
+
+            }
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
 
 
 /* =========================================================
    START
-   ========================================================= */
+========================================================= */
 
-console.log("VEIL CHAT initialized.");
+window.addEventListener(
+    "load",
+    ()=>{
+
+        refreshUserCache();
+
+    }
+);
 
 </script>
 
