@@ -1,11 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>VEIL CHAT</title>
 
 <link rel="icon" href="verified.png">
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -15,2638 +17,2540 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <style>
 *{
- box-sizing:border-box;
- margin:0;
- padding:0;
- font-family:Segoe UI,Tahoma,sans-serif;
- -webkit-tap-highlight-color:transparent
-}
-html,body{
- width:100%;
- height:100%;
- overflow:hidden
-}
-body{
- color:#fff;
- background:
- radial-gradient(circle at 15% 10%,rgba(56,189,248,.28),transparent 30%),
- radial-gradient(circle at 90% 85%,rgba(37,99,235,.25),transparent 35%),
- linear-gradient(135deg,#020617,#0f172a,#172554,#020617);
- background-size:400% 400%;
- animation:bg 18s ease infinite
-}
-@keyframes bg{
- 0%,100%{background-position:0 50%}
- 50%{background-position:100% 50%}
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{
- width:100%;
- max-width:430px;
- height:100dvh;
- margin:auto;
- position:relative;
- overflow:hidden;
- background:rgba(15,23,42,.27);
- backdrop-filter:blur(30px);
- -webkit-backdrop-filter:blur(30px);
- border:1px solid rgba(255,255,255,.12);
- box-shadow:0 25px 80px rgba(0,0,0,.45)
-}
-.screen{
- position:absolute;
- inset:0;
- display:none;
- flex-direction:column
-}
-.screen.active{display:flex}
-header{
- height:64px;
- min-height:64px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 17px;
- background:rgba(15,23,42,.2);
- backdrop-filter:blur(25px);
- border-bottom:1px solid rgba(255,255,255,.09)
-}
-.header-left,.chat-user{
- display:flex;
- align-items:center;
- gap:10px
-}
-.header-left h2{font-size:16px}
-.header-logo{
- width:34px;
- height:34px;
- border-radius:11px;
- display:flex;
- align-items:center;
- justify-content:center;
- background:linear-gradient(135deg,#38bdf8,#2563eb);
- box-shadow:0 7px 20px rgba(37,99,235,.35)
-}
-.profile-mini,.avatar{
- overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
- color:#38bdf8;
- background:rgba(56,189,248,.12);
- border:1px solid rgba(56,189,248,.35);
- border-radius:50%
-}
-.profile-mini{
- width:38px;
- height:38px
-}
-.avatar{
- width:47px;
- height:47px;
- min-width:47px
-}
-.profile-mini img,.avatar img,.profile-photo{
- width:100%;
- height:100%;
- object-fit:cover;
- display:block
-}
-main{
- flex:1;
- overflow:auto;
- padding:16px;
- scrollbar-width:none
-}
-main::-webkit-scrollbar,
-.messages::-webkit-scrollbar{display:none}
-footer{
- height:65px;
- min-height:65px;
- background:rgba(15,23,42,.32);
- backdrop-filter:blur(25px);
- border-top:1px solid rgba(255,255,255,.09)
-}
-nav{
- height:100%;
- display:flex
-}
-nav a{
- flex:1;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- gap:4px;
- color:#94a3b8;
- text-decoration:none;
- font-size:11px
-}
-nav a i{font-size:18px}
-nav a.active{color:#38bdf8}
-.glass,.item,.search,.setting,.edit-box{
- background:rgba(255,255,255,.045);
- border:1px solid rgba(255,255,255,.09);
- box-shadow:inset 0 1px rgba(255,255,255,.035),0 8px 30px rgba(0,0,0,.08);
- backdrop-filter:blur(20px)
-}
-.form-container{
- height:100%;
- padding:25px;
- display:flex;
- flex-direction:column;
- justify-content:center
-}
-.logo-container{
- text-align:center;
- margin-bottom:30px
-}
-.logo-icon{
- width:76px;
- height:76px;
- margin:0 auto 15px;
- border-radius:24px;
- display:flex;
- align-items:center;
- justify-content:center;
- background:linear-gradient(135deg,#38bdf8,#2563eb);
- font-size:32px;
- box-shadow:0 15px 35px rgba(37,99,235,.4)
-}
-.logo-container h1{
- font-size:25px;
- letter-spacing:1px
-}
-.logo-container p,.small{
- color:#94a3b8;
- font-size:13px;
- margin-top:7px
-}
-.google-btn,.btn{
- width:100%;
- padding:14px;
- border-radius:14px;
- font-weight:650
-}
-.google-btn{
- color:#fff;
- background:rgba(255,255,255,.06);
- border:1px solid rgba(255,255,255,.12);
- display:flex;
- align-items:center;
- justify-content:center;
- gap:10px
-}
-.btn{
- border:0;
- color:#fff;
- background:linear-gradient(135deg,#38bdf8,#2563eb);
- box-shadow:0 8px 22px rgba(37,99,235,.28)
-}
-.btn.secondary{
- background:rgba(255,255,255,.06);
- border:1px solid rgba(255,255,255,.1);
- box-shadow:none
-}
-.btn.danger{
- background:rgba(239,68,68,.14);
- border:1px solid rgba(239,68,68,.28);
- color:#fca5a5;
- box-shadow:none
-}
-.search{
- display:flex;
- align-items:center;
- gap:10px;
- padding:12px 14px;
- margin-bottom:15px;
- border-radius:14px
-}
-.search i{color:#94a3b8}
-.search input{
- width:100%;
- border:0;
- outline:0;
- background:transparent;
- color:#fff
-}
-.item{
- display:flex;
- align-items:center;
- gap:12px;
- padding:12px;
- margin-bottom:9px;
- border-radius:16px;
- cursor:pointer
-}
-.item-info{
- flex:1;
- min-width:0
-}
-.item-name{
- font-size:14px;
- font-weight:650;
- display:flex;
- align-items:center;
- gap:5px
-}
-.item-sub{
- color:#94a3b8;
- font-size:12px;
- margin-top:3px;
- white-space:nowrap;
- overflow:hidden;
- text-overflow:ellipsis
-}
-.section-title{
- font-size:12px;
- color:#38bdf8;
- margin:15px 3px 9px;
- font-weight:600
-}
-.verified-badge{
- width:17px;
- height:17px;
- object-fit:contain
-}
-.loading,.chat-empty{
- text-align:center;
- padding:35px;
- color:#94a3b8
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Segoe UI,Tahoma,sans-serif;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* PROFILE */
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(56,189,248,.28),transparent 30%),
+    radial-gradient(circle at 90% 85%,rgba(37,99,235,.25),transparent 35%),
+    linear-gradient(135deg,#020617,#0f172a,#172554,#020617);
+}
+
+button,input,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:430px;
+  height:100dvh;
+  margin:auto;
+  position:relative;
+  overflow:hidden;
+  background:rgba(15,23,42,.28);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+}
+
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+}
+
+.screen.active{
+  display:flex;
+}
+
+header{
+  height:64px;
+  min-height:64px;
+  padding:0 17px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(15,23,42,.22);
+  border-bottom:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(25px);
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-logo{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+}
+
+main{
+  flex:1;
+  overflow:auto;
+  padding:16px;
+  scrollbar-width:none;
+}
+
+main::-webkit-scrollbar{
+  display:none;
+}
+
+.form{
+  height:100%;
+  padding:25px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.logo-icon{
+  width:78px;
+  height:78px;
+  margin:auto auto 15px;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  font-size:32px;
+  box-shadow:0 15px 35px rgba(37,99,235,.4);
+}
+
+.logo h1{
+  font-size:25px;
+  letter-spacing:1px;
+}
+
+.small{
+  color:#94a3b8;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.btn{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:14px;
+  color:#fff;
+  font-weight:650;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  box-shadow:0 8px 22px rgba(37,99,235,.25);
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:none;
+}
+
+.btn.danger{
+  background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.25);
+  color:#fca5a5;
+  box-shadow:none;
+}
+
+.google{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.profile-mini{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(56,189,248,.12);
+  border:1px solid rgba(56,189,248,.3);
+  color:#38bdf8;
+}
+
+.profile-mini img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  margin-bottom:15px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.search input{
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+}
+
+.item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  margin-bottom:9px;
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.avatar{
+  width:47px;
+  height:47px;
+  min-width:47px;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#38bdf8;
+  background:rgba(56,189,248,.12);
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.item-info{
+  flex:1;
+  min-width:0;
+}
+
+.item-name{
+  font-size:14px;
+  font-weight:650;
+}
+
+.item-sub{
+  color:#94a3b8;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.section{
+  color:#38bdf8;
+  font-size:11px;
+  font-weight:650;
+  margin:17px 3px 9px;
+}
 
 .profile-card{
- padding:18px 15px 25px;
- border-radius:22px;
- text-align:center;
- background:rgba(255,255,255,.045);
- border:1px solid rgba(255,255,255,.09);
- box-shadow:inset 0 1px rgba(255,255,255,.035),0 8px 30px rgba(0,0,0,.08);
- backdrop-filter:blur(20px)
+  padding:16px;
+  border-radius:22px;
+  text-align:center;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
 }
-.cover-photo{
- width:100%;
- height:125px;
- border-radius:18px;
- margin-bottom:-55px;
- background:
- linear-gradient(135deg,rgba(56,189,248,.25),rgba(37,99,235,.3)),
- linear-gradient(135deg,#0f172a,#172554);
- border:1px solid rgba(255,255,255,.1);
- position:relative;
- overflow:hidden
+
+.cover{
+  width:100%;
+  height:125px;
+  border-radius:18px;
+  margin-bottom:-55px;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(56,189,248,.25),rgba(37,99,235,.3)),
+    linear-gradient(135deg,#0f172a,#172554);
 }
-.cover-photo::after{
- content:"VEIL CHAT";
- position:absolute;
- right:14px;
- bottom:10px;
- color:rgba(255,255,255,.35);
- font-size:10px;
- letter-spacing:2px
+
+.cover::after{
+  content:"VEIL CHAT";
+  position:absolute;
+  right:14px;
+  bottom:10px;
+  color:rgba(255,255,255,.35);
+  font-size:10px;
+  letter-spacing:2px;
 }
-.profile-photo-wrap{
- width:110px;
- height:110px;
- margin:0 auto 15px;
- position:relative;
- cursor:pointer;
- z-index:2
+
+.photo-wrap{
+  width:110px;
+  height:110px;
+  margin:auto auto 15px;
+  position:relative;
+  z-index:2;
 }
-.profile-photo,.profile-empty{
- width:110px;
- height:110px;
- border-radius:50%
+
+.photo{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid rgba(56,189,248,.55);
 }
-.profile-photo{
- border:3px solid rgba(56,189,248,.55);
- background:#0f172a
+
+.photo-empty{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(56,189,248,.12);
+  border:3px solid rgba(56,189,248,.35);
+  color:#38bdf8;
+  font-size:38px;
 }
-.profile-empty{
- display:flex;
- align-items:center;
- justify-content:center;
- background:rgba(56,189,248,.12);
- border:3px solid rgba(56,189,248,.35);
- color:#38bdf8;
- font-size:40px
-}
+
 .profile-name{
- font-size:20px;
- font-weight:700;
- display:flex;
- justify-content:center;
- align-items:center;
- gap:6px
+  font-size:20px;
+  font-weight:700;
 }
+
 .username{
- color:#38bdf8;
- font-size:13px;
- margin-top:4px
+  color:#38bdf8;
+  font-size:13px;
+  margin-top:4px;
 }
+
 .bio{
- color:#94a3b8;
- font-size:13px;
- margin-top:10px;
- line-height:1.5
+  color:#94a3b8;
+  font-size:13px;
+  line-height:1.5;
+  margin:9px 0 12px;
 }
+
 .detail{
- text-align:left;
- padding:12px 0;
- border-bottom:1px solid rgba(255,255,255,.07)
+  text-align:left;
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.07);
 }
-.detail-label{
- color:#64748b;
- font-size:11px
+
+.label{
+  color:#64748b;
+  font-size:10px;
 }
-.detail-value{
- color:#e2e8f0;
- font-size:13px;
- margin-top:3px;
- word-break:break-word
+
+.value{
+  color:#e2e8f0;
+  font-size:13px;
+  margin-top:3px;
+  word-break:break-word;
 }
-.action-row{
- display:flex;
- gap:9px;
- margin-top:18px
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:16px;
 }
-.action-row button{flex:1}
+
+.actions .btn{
+  flex:1;
+}
+
 .edit-box{
- display:none;
- margin-top:15px;
- padding:15px;
- border-radius:18px;
- text-align:left
+  display:none;
+  margin-top:15px;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  text-align:left;
 }
-.input-box{margin-bottom:12px}
-.input-box label{
- display:block;
- color:#94a3b8;
- font-size:11px;
- margin-bottom:5px
+
+.field{
+  margin-bottom:11px;
 }
-.input-box input,.input-box textarea{
- width:100%;
- padding:13px;
- border-radius:13px;
- color:#fff;
- background:rgba(255,255,255,.045);
- border:1px solid rgba(255,255,255,.09);
- outline:0
+
+.field label{
+  display:block;
+  color:#94a3b8;
+  font-size:11px;
+  margin-bottom:5px;
 }
-.input-box textarea{
- min-height:90px;
- resize:none
+
+.field input,
+.field textarea{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  outline:0;
+  color:#fff;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.1);
 }
-.verification-note{
- margin-top:12px;
- padding:11px;
- border-radius:13px;
- background:rgba(56,189,248,.06);
- border:1px solid rgba(56,189,248,.12);
- color:#94a3b8;
- font-size:11px;
- line-height:1.5;
- text-align:left
+
+.field textarea{
+  min-height:85px;
+  resize:none;
 }
-.camera-box{
- display:none;
- margin-top:14px;
- padding:12px;
- border-radius:18px;
- background:rgba(0,0,0,.18);
- border:1px solid rgba(255,255,255,.1)
+
+.verify-box{
+  margin-top:12px;
+  padding:11px;
+  border-radius:13px;
+  text-align:left;
+  color:#94a3b8;
+  font-size:11px;
+  line-height:1.5;
+  background:rgba(56,189,248,.05);
+  border:1px solid rgba(56,189,248,.12);
 }
-.camera-box video{
- width:100%;
- border-radius:15px;
- background:#000;
- transform:scaleX(-1)
+
+.camera{
+  display:none;
+  margin-top:15px;
+  padding:12px;
+  border-radius:17px;
+  background:rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.1);
 }
+
+.camera video{
+  width:100%;
+  border-radius:14px;
+  background:#000;
+}
+
 .camera-actions{
- display:flex;
- gap:8px;
- margin-top:10px
-}
-.camera-actions button{flex:1}
-
-/* CHAT */
-
-.messages{
- flex:1;
- overflow:auto;
- padding:15px
-}
-.message{
- display:flex;
- margin-bottom:8px
-}
-.message.mine{justify-content:flex-end}
-.bubble{
- max-width:78%;
- padding:9px 12px;
- border-radius:16px;
- background:rgba(255,255,255,.065);
- border:1px solid rgba(255,255,255,.07);
- font-size:14px;
- line-height:1.4;
- word-break:break-word
-}
-.mine .bubble{background:rgba(37,99,235,.42)}
-.message-time{
- font-size:9px;
- color:#94a3b8;
- margin-top:4px;
- text-align:right
-}
-.message-actions{
- display:flex;
- justify-content:flex-end;
- margin-top:3px
-}
-.delete-msg{
- border:0;
- background:none;
- color:#94a3b8;
- font-size:10px;
- padding:2px
-}
-.chat-input-area{
- padding:10px;
- display:flex;
- gap:8px;
- background:rgba(15,23,42,.35);
- border-top:1px solid rgba(255,255,255,.08)
-}
-.chat-input{
- flex:1;
- padding:12px 13px;
- border-radius:14px;
- color:#fff;
- background:rgba(255,255,255,.05);
- border:1px solid rgba(255,255,255,.08);
- outline:0
-}
-.send-btn{
- width:46px;
- border:0;
- border-radius:14px;
- color:#fff;
- background:linear-gradient(135deg,#38bdf8,#2563eb)
+  display:flex;
+  gap:8px;
+  margin-top:9px;
 }
 
-/* SETTINGS */
-
-.setting{
- padding:15px;
- border-radius:17px;
- margin-bottom:10px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px
-}
-.setting-info{flex:1}
-.setting-info strong{
- display:block;
- font-size:14px
-}
-.setting-info span{
- display:block;
- margin-top:3px;
- font-size:12px;
- color:#94a3b8
-}
-select{
- color:#fff;
- background:#0f172a;
- border:1px solid rgba(255,255,255,.12);
- padding:8px;
- border-radius:9px
+.camera-actions button{
+  flex:1;
 }
 
-/* TOAST */
+footer{
+  height:65px;
+  min-height:65px;
+  border-top:1px solid rgba(255,255,255,.09);
+  background:rgba(15,23,42,.3);
+}
+
+nav{
+  height:100%;
+  display:flex;
+}
+
+nav button{
+  flex:1;
+  border:0;
+  background:none;
+  color:#94a3b8;
+  font-size:11px;
+}
+
+nav button i{
+  display:block;
+  font-size:18px;
+  margin-bottom:4px;
+}
+
+nav button.active{
+  color:#38bdf8;
+}
 
 .toast{
- position:absolute;
- left:50%;
- bottom:80px;
- transform:translate(-50%,20px);
- opacity:0;
- z-index:100;
- min-width:220px;
- max-width:90%;
- padding:11px 14px;
- text-align:center;
- border-radius:13px;
- background:rgba(15,23,42,.95);
- border:1px solid rgba(255,255,255,.12);
- transition:.25s;
- pointer-events:none;
- font-size:12px
+  position:absolute;
+  left:50%;
+  bottom:80px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  z-index:100;
+  min-width:220px;
+  max-width:90%;
+  padding:11px 14px;
+  text-align:center;
+  border-radius:13px;
+  background:rgba(15,23,42,.96);
+  border:1px solid rgba(255,255,255,.12);
+  transition:.25s;
+  pointer-events:none;
+  font-size:12px;
 }
-.toast.show{
- opacity:1;
- transform:translate(-50%,0)
-}
-.hidden{display:none!important}
 
-@media(max-width:480px){
- .app{border:0}
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+.hidden{
+  display:none!important;
+}
+
+.loading,
+.empty{
+  text-align:center;
+  color:#94a3b8;
+  padding:30px 10px;
+  font-size:13px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <!-- LOGIN -->
 <section id="loginScreen" class="screen active">
-<div class="form-container">
-<div class="logo-container">
-<div class="logo-icon">
-<i class="fa-solid fa-comments"></i>
-</div>
-<h1>VEIL CHAT</h1>
-<p>Private realtime messaging</p>
-</div>
 
-<button class="google-btn" id="googleLoginBtn">
-<i class="fa-brands fa-google"></i>
-Continue with Google
-</button>
+  <div class="form">
 
-<p class="small" style="text-align:center">
-Google account login is used instead of paid SMS OTP.
-</p>
-</div>
+    <div class="logo">
+
+      <div class="logo-icon">
+        <i class="fa-solid fa-comments"></i>
+      </div>
+
+      <h1>VEIL CHAT</h1>
+
+      <p class="small">
+        Private realtime messaging
+      </p>
+
+    </div>
+
+    <button id="googleLogin" class="btn google">
+      <i class="fa-brands fa-google"></i>
+      Continue with Google
+    </button>
+
+    <p class="small" style="text-align:center;margin-top:12px">
+      Secure Google account login
+    </p>
+
+  </div>
+
 </section>
+
 
 <!-- HOME -->
 <section id="homeScreen" class="screen">
-<header>
-<div class="header-left">
-<div class="header-logo">
-<i class="fa-solid fa-comments"></i>
-</div>
-<h2>VEIL CHAT</h2>
-</div>
 
-<div class="profile-mini" onclick="openOwnProfile()">
-<i class="fa-solid fa-user"></i>
-</div>
-</header>
+  <header>
 
-<main>
-<div class="search">
-<i class="fa-solid fa-magnifying-glass"></i>
-<input id="userSearch" placeholder="Search users..." autocomplete="off">
-</div>
+    <div class="header-left">
 
-<div id="searchResults"></div>
+      <div class="header-logo">
+        <i class="fa-solid fa-comments"></i>
+      </div>
 
-<div class="section-title">RECENT CHATS</div>
-<div id="chatList">
-<div class="loading">Loading chats...</div>
-</div>
-</main>
+      <strong>VEIL CHAT</strong>
 
-<footer>
-<nav>
-<a id="homeTab" class="active" onclick="switchTab('home')">
-<i class="fa-solid fa-house"></i>
-<span>Home</span>
-</a>
+    </div>
 
-<a id="contactsTab" onclick="switchTab('contacts')">
-<i class="fa-solid fa-address-book"></i>
-<span>Contacts</span>
-</a>
+    <div
+      id="homeAvatar"
+      class="profile-mini"
+      onclick="openOwnProfile()">
 
-<a id="settingsTab" onclick="switchTab('settings')">
-<i class="fa-solid fa-gear"></i>
-<span>Settings</span>
-</a>
-</nav>
-</footer>
+      <i class="fa-solid fa-user"></i>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <div class="search">
+
+      <i class="fa-solid fa-magnifying-glass"></i>
+
+      <input
+        id="searchInput"
+        placeholder="Search users..."
+        autocomplete="off">
+
+    </div>
+
+    <div id="searchResults"></div>
+
+    <div class="section">
+      RECENT CHATS
+    </div>
+
+    <div class="empty">
+      Messaging will be added separately.
+    </div>
+
+  </main>
+
+  <footer>
+
+    <nav>
+
+      <button
+        class="active"
+        onclick="switchTab('home')">
+
+        <i class="fa-solid fa-house"></i>
+        Home
+
+      </button>
+
+      <button
+        onclick="switchTab('contacts')">
+
+        <i class="fa-solid fa-address-book"></i>
+        Contacts
+
+      </button>
+
+      <button
+        onclick="switchTab('settings')">
+
+        <i class="fa-solid fa-gear"></i>
+        Settings
+
+      </button>
+
+    </nav>
+
+  </footer>
+
 </section>
+
 
 <!-- CONTACTS -->
 <section id="contactsScreen" class="screen">
-<header>
-<div class="header-left">
-<div class="header-logo">
-<i class="fa-solid fa-address-book"></i>
-</div>
-<h2>Contacts</h2>
-</div>
 
-<div class="profile-mini" onclick="openOwnProfile()">
-<i class="fa-solid fa-user"></i>
-</div>
-</header>
+  <header>
 
-<main>
-<div class="section-title">VEIL CHAT USERS</div>
+    <div class="header-left">
 
-<div id="contactsList">
-<div class="loading">Loading users...</div>
-</div>
-</main>
+      <div class="header-logo">
+        <i class="fa-solid fa-address-book"></i>
+      </div>
 
-<footer>
-<nav>
-<a onclick="switchTab('home')">
-<i class="fa-solid fa-house"></i>
-<span>Home</span>
-</a>
+      <strong>Contacts</strong>
 
-<a class="active" onclick="switchTab('contacts')">
-<i class="fa-solid fa-address-book"></i>
-<span>Contacts</span>
-</a>
+    </div>
 
-<a onclick="switchTab('settings')">
-<i class="fa-solid fa-gear"></i>
-<span>Settings</span>
-</a>
-</nav>
-</footer>
+    <div
+      class="profile-mini"
+      onclick="openOwnProfile()">
+
+      <i class="fa-solid fa-user"></i>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <div class="section">
+      VEIL CHAT USERS
+    </div>
+
+    <div id="contactsList">
+      <div class="loading">Loading users...</div>
+    </div>
+
+  </main>
+
+  <footer>
+
+    <nav>
+
+      <button onclick="switchTab('home')">
+        <i class="fa-solid fa-house"></i>
+        Home
+      </button>
+
+      <button
+        class="active"
+        onclick="switchTab('contacts')">
+
+        <i class="fa-solid fa-address-book"></i>
+        Contacts
+
+      </button>
+
+      <button onclick="switchTab('settings')">
+        <i class="fa-solid fa-gear"></i>
+        Settings
+      </button>
+
+    </nav>
+
+  </footer>
+
 </section>
+
 
 <!-- SETTINGS -->
 <section id="settingsScreen" class="screen">
-<header>
-<div class="header-left">
-<div class="header-logo">
-<i class="fa-solid fa-gear"></i>
-</div>
-<h2>Settings</h2>
-</div>
 
-<div class="profile-mini" onclick="openOwnProfile()">
-<i class="fa-solid fa-user"></i>
-</div>
-</header>
+  <header>
 
-<main>
+    <div class="header-left">
 
-<div class="setting">
-<div class="setting-info">
-<strong>Language</strong>
-<span>Choose application language</span>
-</div>
+      <div class="header-logo">
+        <i class="fa-solid fa-gear"></i>
+      </div>
 
-<select id="language">
-<option value="en">English</option>
-<option value="bn">বাংলা</option>
-<option value="hi">हिन्दी</option>
-</select>
-</div>
+      <strong>Settings</strong>
 
-<div class="setting">
-<div class="setting-info">
-<strong>Notifications</strong>
-<span>Allow browser notifications</span>
-</div>
+    </div>
 
-<button class="btn secondary"
-style="width:auto;padding:8px 12px"
-onclick="enableNotifications()">
-Enable
-</button>
-</div>
+    <div
+      class="profile-mini"
+      onclick="openOwnProfile()">
 
-<div class="setting">
-<div class="setting-info">
-<strong>Account</strong>
-<span>Signed in</span>
-</div>
+      <i class="fa-solid fa-user"></i>
 
-<button class="btn danger"
-style="width:auto;padding:8px 12px"
-onclick="logout()">
-Logout
-</button>
-</div>
+    </div>
 
-<div class="setting">
-<div class="setting-info">
-<strong>Account deletion</strong>
-<span>Permanently remove your VEIL profile</span>
-</div>
+  </header>
 
-<button class="btn danger"
-style="width:auto;padding:8px 12px"
-onclick="deleteAccount()">
-Delete
-</button>
-</div>
+  <main>
 
-<div class="setting">
-<div class="setting-info">
-<strong>Messages</strong>
-<span>Realtime Internet messaging</span>
-</div>
-<i class="fa-solid fa-lock" style="color:#38bdf8"></i>
-</div>
+    <div class="item">
 
-</main>
+      <div class="item-info">
 
-<footer>
-<nav>
-<a onclick="switchTab('home')">
-<i class="fa-solid fa-house"></i>
-<span>Home</span>
-</a>
+        <div class="item-name">
+          Account
+        </div>
 
-<a onclick="switchTab('contacts')">
-<i class="fa-solid fa-address-book"></i>
-<span>Contacts</span>
-</a>
+        <div
+          id="accountEmail"
+          class="item-sub">
+          Loading...
+        </div>
 
-<a class="active" onclick="switchTab('settings')">
-<i class="fa-solid fa-gear"></i>
-<span>Settings</span>
-</a>
-</nav>
-</footer>
+      </div>
+
+    </div>
+
+    <button
+      class="btn danger"
+      onclick="logout()">
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+
+    </button>
+
+  </main>
+
+  <footer>
+
+    <nav>
+
+      <button onclick="switchTab('home')">
+        <i class="fa-solid fa-house"></i>
+        Home
+      </button>
+
+      <button onclick="switchTab('contacts')">
+        <i class="fa-solid fa-address-book"></i>
+        Contacts
+      </button>
+
+      <button
+        class="active"
+        onclick="switchTab('settings')">
+
+        <i class="fa-solid fa-gear"></i>
+        Settings
+
+      </button>
+
+    </nav>
+
+  </footer>
+
 </section>
+
 
 <!-- PROFILE -->
 <section id="profileScreen" class="screen">
-<header>
-<div class="header-left">
 
-<i class="fa-solid fa-arrow-left"
-style="color:#94a3b8;cursor:pointer"
-onclick="goBackFromProfile()"></i>
+  <header>
 
-<h2 id="profileTitle">Profile</h2>
-</div>
-<div></div>
-</header>
+    <div class="header-left">
 
-<main>
-<div class="profile-card">
+      <i
+        class="fa-solid fa-arrow-left"
+        style="color:#94a3b8;cursor:pointer"
+        onclick="closeProfile()">
+      </i>
 
-<div class="cover-photo"></div>
+      <strong id="profileTitle">
+        My Profile
+      </strong>
 
-<div class="profile-photo-wrap"
-id="profilePhotoWrap"
-onclick="handleProfilePhotoClick()">
+    </div>
 
-<div id="profilePhotoContainer" class="profile-empty">
-<i class="fa-solid fa-user"></i>
-</div>
+  </header>
 
-</div>
+  <main>
 
-<div id="profileName" class="profile-name">Loading...</div>
+    <div class="profile-card">
 
-<div id="profileUsername" class="username">@username</div>
+      <!-- DEFAULT COVER -->
+      <div class="cover"></div>
 
-<div id="profileBio" class="bio">No bio</div>
 
-<div class="detail">
-<div class="detail-label">EMAIL</div>
-<div id="profileEmail" class="detail-value">-</div>
-</div>
+      <!-- PHOTO -->
+      <div class="photo-wrap">
 
-<div class="detail">
-<div class="detail-label">PHONE</div>
-<div id="profilePhone" class="detail-value">Not provided</div>
-</div>
+        <div
+          id="photoContainer"
+          class="photo-empty">
 
-<div class="detail">
-<div class="detail-label">PROFILE STATUS</div>
-<div id="profileStatus" class="detail-value">Not verified</div>
-</div>
+          <i class="fa-solid fa-user"></i>
 
-<!-- OWN ACTION -->
-<div id="ownActions" class="action-row">
-<button class="btn" onclick="toggleEditProfile()">
-<i class="fa-solid fa-pen"></i>
-Edit Profile
-</button>
-</div>
+        </div>
 
-<!-- OTHER USER -->
-<div id="otherActions" class="action-row hidden">
-<button class="btn" onclick="messageViewedUser()">
-<i class="fa-solid fa-message"></i>
-Message
-</button>
-</div>
+      </div>
 
-<!-- EDIT -->
-<div id="editBox" class="edit-box">
 
-<div class="input-box">
-<label>Full Name</label>
-<input id="editName" placeholder="Your name">
-</div>
+      <div id="profileName" class="profile-name">
+        Loading...
+      </div>
 
-<div class="input-box">
-<label>Username</label>
-<input id="editUsername" placeholder="@username">
-</div>
+      <div id="profileUsername" class="username">
+        @username
+      </div>
 
-<div class="input-box">
-<label>Email</label>
-<input id="editEmail" type="email" placeholder="your@email.com">
-</div>
+      <div id="profileBio" class="bio">
+        No bio
+      </div>
 
-<div class="input-box">
-<label>Phone</label>
-<input id="editPhone" type="tel" placeholder="Your phone number">
-</div>
 
-<div class="input-box">
-<label>Bio</label>
-<textarea id="editBio" placeholder="Write your bio..."></textarea>
-</div>
+      <div class="detail">
 
-<button class="btn" onclick="saveProfile()">
-Save Profile
-</button>
+        <div class="label">
+          EMAIL
+        </div>
 
-<div class="verification-note">
-<strong style="color:#38bdf8">Verification requirement</strong>
-<br><br>
-Name, Username, Email, Phone and Bio must all be completed.
-After that, a clear selfie must be captured.
-Only then will the profile become Selfie Verified.
-</div>
-</div>
+        <div
+          id="profileEmail"
+          class="value">
+          -
+        </div>
 
-<!-- SELFIE -->
-<div id="selfieArea">
+      </div>
 
-<div class="section-title" style="text-align:left">
-SELFIE VERIFICATION
-</div>
 
-<p class="small">
-Complete all profile information first.
-Then take a clear selfie to become verified.
-</p>
+      <div class="detail">
 
-<button id="cameraOpenBtn"
-class="btn"
-style="margin-top:10px"
-onclick="openCamera()">
-<i class="fa-solid fa-camera"></i>
-Take Selfie
-</button>
+        <div class="label">
+          PHONE
+        </div>
 
-<button id="removePhotoBtn"
-class="btn danger"
-style="margin-top:8px;display:none"
-onclick="removeProfilePhoto()">
-Remove Selfie
-</button>
+        <div
+          id="profilePhone"
+          class="value">
+          Not provided
+        </div>
 
-<div id="cameraBox" class="camera-box">
+      </div>
 
-<video id="cameraVideo" autoplay playsinline></video>
 
-<div class="camera-actions">
-<button class="btn" onclick="captureSelfie()">
-Capture
-</button>
+      <div class="detail">
 
-<button class="btn secondary" onclick="closeCamera()">
-Cancel
-</button>
-</div>
+        <div class="label">
+          PROFILE STATUS
+        </div>
 
-</div>
-</div>
+        <div
+          id="profileStatus"
+          class="value">
+          Not verified
+        </div>
 
-</div>
-</main>
+      </div>
+
+
+      <!-- EDIT -->
+      <div
+        id="ownActions"
+        class="actions">
+
+        <button
+          class="btn"
+          onclick="toggleEdit()">
+
+          <i class="fa-solid fa-pen"></i>
+          Edit Profile
+
+        </button>
+
+      </div>
+
+
+      <div
+        id="editBox"
+        class="edit-box">
+
+
+        <div class="field">
+
+          <label>Full Name</label>
+
+          <input
+            id="editName"
+            type="text"
+            autocomplete="name">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Username</label>
+
+          <input
+            id="editUsername"
+            type="text"
+            placeholder="@username"
+            autocomplete="off">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Email</label>
+
+          <input
+            id="editEmail"
+            type="email"
+            autocomplete="email">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Phone</label>
+
+          <input
+            id="editPhone"
+            type="tel"
+            autocomplete="tel">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Bio</label>
+
+          <textarea
+            id="editBio"
+            maxlength="500"
+            placeholder="Write your bio..."></textarea>
+
+        </div>
+
+
+        <button
+          class="btn"
+          onclick="saveProfile()">
+
+          Save Profile
+
+        </button>
+
+
+        <div class="verify-box">
+
+          <strong style="color:#38bdf8">
+            Selfie Verification
+          </strong>
+
+          <br>
+
+          Name, Username, Email, Phone and Bio
+          must all be completed before a selfie
+          can verify the profile.
+
+        </div>
+
+      </div>
+
+
+      <!-- SELFIE -->
+      <div id="selfieSection">
+
+        <div class="section">
+          SELFIE VERIFICATION
+        </div>
+
+        <p class="small">
+          Complete all profile information first,
+          then take a clear selfie.
+        </p>
+
+
+        <button
+          id="takeSelfieBtn"
+          class="btn"
+          style="margin-top:10px"
+          onclick="openCamera()">
+
+          <i class="fa-solid fa-camera"></i>
+          Take Selfie
+
+        </button>
+
+
+        <button
+          id="removeSelfieBtn"
+          class="btn danger"
+          style="margin-top:8px;display:none"
+          onclick="removeSelfie()">
+
+          Remove Selfie
+
+        </button>
+
+
+        <div
+          id="cameraBox"
+          class="camera">
+
+          <video
+            id="cameraVideo"
+            autoplay
+            playsinline>
+          </video>
+
+          <div class="camera-actions">
+
+            <button
+              class="btn"
+              onclick="captureSelfie()">
+
+              Capture
+
+            </button>
+
+            <button
+              class="btn secondary"
+              onclick="closeCamera()">
+
+              Cancel
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
 </section>
 
-<!-- CHAT -->
-<section id="chatScreen" class="screen">
-
-<header>
-<div class="chat-user">
-
-<div onclick="closeChat()"
-style="cursor:pointer;color:#94a3b8">
-<i class="fa-solid fa-arrow-left"></i>
-</div>
-
-<div id="chatAvatar"
-class="avatar"
-style="width:38px;height:38px;min-width:38px">
-</div>
-
-<div>
-<div id="chatName" class="item-name">Chat</div>
-<div id="chatUsername" class="item-sub"></div>
-</div>
-
-</div>
-</header>
-
-<div id="messages" class="messages"></div>
-
-<div class="chat-input-area">
-
-<input id="messageInput"
-class="chat-input"
-maxlength="2000"
-placeholder="Write a message..."
-autocomplete="off">
-
-<button id="sendMessageBtn"
-class="send-btn"
-onclick="sendMessage()">
-<i class="fa-solid fa-paper-plane"></i>
-</button>
-
-</div>
-</section>
 
 <div id="toast" class="toast"></div>
 
 </div>
 
+
 <script>
+
 /* =========================================================
- FIREBASE CONFIG
- DO NOT CHANGE THIS CONFIG
+   FIREBASE CONFIG
+   DO NOT CHANGE
 ========================================================= */
 
-const firebaseConfig={
- apiKey:"AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
- authDomain:"flora-veilchat.firebaseapp.com",
- projectId:"flora-veilchat",
- storageBucket:"flora-veilchat.firebasestorage.app",
- messagingSenderId:"352485676905",
- appId:"1:352485676905:web:8beb0df80a0daea2cccff8",
- measurementId:"G-CQKB9Z8VP1"
+const firebaseConfig = {
+  apiKey: "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
+  authDomain: "flora-veilchat.firebaseapp.com",
+  projectId: "flora-veilchat",
+  storageBucket: "flora-veilchat.firebasestorage.app",
+  messagingSenderId: "352485676905",
+  appId: "1:352485676905:web:8beb0df80a0daea2cccff8",
+  measurementId: "G-CQKB9Z8VP1"
 };
+
+
+/* =========================================================
+   FIREBASE INITIALIZATION
+========================================================= */
 
 firebase.initializeApp(firebaseConfig);
 
-const auth=firebase.auth();
-const db=firebase.firestore();
+const auth = firebase.auth();
 
-const googleProvider=
- new firebase.auth.GoogleAuthProvider();
+const db = firebase.firestore();
+
+const googleProvider =
+  new firebase.auth.GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
- prompt:"select_account"
+  prompt:"select_account"
 });
 
-/* =========================================================
- GLOBAL
-========================================================= */
-
-let currentUser=null;
-let currentProfile=null;
-let viewedUser=null;
-let currentChatUser=null;
-
-let unsubscribeMessages=null;
-let unsubscribeChats=null;
-
-let cameraStream=null;
-let usersCache=[];
 
 /* =========================================================
- HELPERS
+   STATE
 ========================================================= */
 
-const $=id=>document.getElementById(id);
+let currentUser = null;
+
+let currentProfile = null;
+
+let viewedUser = null;
+
+let cameraStream = null;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
 
 function toast(message){
- const box=$("toast");
- box.textContent=message;
- box.classList.add("show");
 
- clearTimeout(window._toastTimer);
+  const box = $("toast");
 
- window._toastTimer=setTimeout(()=>{
-  box.classList.remove("show");
- },3200);
+  box.textContent = message;
+
+  box.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(()=>{
+    box.classList.remove("show");
+  },3000);
+
 }
 
-function firebaseError(error){
- console.error("Firebase:",error);
 
- const code=error?.code||"";
+function showScreen(id){
 
- const map={
-  "auth/popup-closed-by-user":
-   "Login window was closed.",
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen=>{
+      screen.classList.remove("active");
+    });
 
-  "auth/popup-blocked":
-   "Browser blocked the Google login popup.",
+  $(id).classList.add("active");
 
-  "auth/network-request-failed":
-   "Network connection failed.",
-
-  "auth/api-key-not-valid":
-   "Firebase API key is not valid.",
-
-  "auth/invalid-api-key":
-   "Firebase API key is not valid.",
-
-  "permission-denied":
-   "Firestore permission denied. Check Firestore Rules.",
-
-  "failed-precondition":
-   "Firestore requires an index or required condition.",
-
-  "unavailable":
-   "Firebase is temporarily unavailable.",
-
-  "auth/requires-recent-login":
-   "Please logout and login again."
- };
-
- return map[code]||error?.message||
- "Firebase operation failed.";
 }
 
-function switchScreen(id){
- document.querySelectorAll(".screen")
- .forEach(x=>x.classList.remove("active"));
-
- $(id).classList.add("active");
-}
-
-function switchTab(tab){
-
- if(tab==="home"){
-  switchScreen("homeScreen");
- }
-
- if(tab==="contacts"){
-  switchScreen("contactsScreen");
-  loadContacts();
- }
-
- if(tab==="settings"){
-  switchScreen("settingsScreen");
- }
-}
-
-function verifiedBadge(){
- return `
- <img src="verified.png"
- class="verified-badge"
- alt="Verified">
- `;
-}
 
 function escapeHTML(value){
- return String(value??"")
- .replace(/[&<>"']/g,m=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#039;"
- }[m]));
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g,char=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char]));
+
 }
 
+
 function safeImage(value){
- if(
-  typeof value==="string" &&
-  value.startsWith("data:image/")
- ){
+
+  if(
+    typeof value !== "string"
+  ){
+    return "";
+  }
+
+  if(
+    !value.startsWith("data:image/")
+  ){
+    return "";
+  }
+
   return value;
- }
- return "";
+
 }
+
 
 function makeUsername(name){
 
- let value=String(name||"user")
- .toLowerCase()
- .replace(/[^a-z0-9]/g,"")
- .slice(0,14);
+  const clean =
+    String(name || "user")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g,"")
+      .slice(0,18);
 
- return "@"+(value||"user");
+  return "@" + (clean || "user");
+
 }
 
-function makeChatId(a,b){
- return [a,b].sort().join("_");
+
+function isComplete(profile){
+
+  if(!profile){
+    return false;
+  }
+
+  return Boolean(
+    String(profile.name || "").trim() &&
+    String(profile.username || "").trim() &&
+    String(profile.email || "").trim() &&
+    String(profile.phone || "").trim() &&
+    String(profile.bio || "").trim()
+  );
+
 }
 
-function isProfileComplete(profile){
 
- if(!profile)return false;
+function firebaseMessage(error){
 
- return Boolean(
-  String(profile.name||"").trim() &&
-  String(profile.username||"").trim() &&
-  String(profile.email||"").trim() &&
-  String(profile.phone||"").trim() &&
-  String(profile.bio||"").trim()
- );
+  console.error(error);
+
+  const code = error?.code || "";
+
+  const messages = {
+
+    "auth/popup-closed-by-user":
+      "Google login window was closed.",
+
+    "auth/popup-blocked":
+      "Google login popup was blocked.",
+
+    "auth/network-request-failed":
+      "Network connection failed.",
+
+    "auth/api-key-not-valid":
+      "Firebase API key was rejected by Firebase.",
+
+    "permission-denied":
+      "Firestore permission denied. Check Firestore Rules.",
+
+    "failed-precondition":
+      "Firebase operation requires another condition.",
+
+    "unavailable":
+      "Firebase is temporarily unavailable.",
+
+    "auth/requires-recent-login":
+      "Please login again and try again."
+
+  };
+
+  return messages[code]
+    || error?.message
+    || "Firebase operation failed.";
+
 }
+
 
 /* =========================================================
- GOOGLE LOGIN
+   GOOGLE LOGIN
 ========================================================= */
 
-$("googleLoginBtn").onclick=async()=>{
+$("googleLogin").onclick = async ()=>{
 
- try{
-  await auth.signInWithPopup(googleProvider);
- }catch(error){
-  toast(firebaseError(error));
- }
+  try{
+
+    await auth.signInWithPopup(
+      googleProvider
+    );
+
+  }catch(error){
+
+    toast(firebaseMessage(error));
+
+  }
+
 };
 
+
 /* =========================================================
- AUTH
+   AUTH STATE
 ========================================================= */
 
 auth.onAuthStateChanged(async user=>{
 
- if(!user){
+  if(!user){
 
-  currentUser=null;
-  currentProfile=null;
+    currentUser = null;
 
-  if(unsubscribeChats){
-   unsubscribeChats();
-   unsubscribeChats=null;
+    currentProfile = null;
+
+    showScreen("loginScreen");
+
+    return;
+
   }
 
-  if(unsubscribeMessages){
-   unsubscribeMessages();
-   unsubscribeMessages=null;
+
+  currentUser = user;
+
+  $("accountEmail").textContent =
+    user.email || "Google account";
+
+
+  try{
+
+    await ensureProfile();
+
+    await loadOwnProfile();
+
+    showScreen("homeScreen");
+
+  }catch(error){
+
+    toast(firebaseMessage(error));
+
   }
 
-  switchScreen("loginScreen");
-  return;
- }
-
- currentUser=user;
-
- try{
-
-  await ensureUserProfile();
-
-  switchScreen("homeScreen");
-
-  await loadProfile();
-
-  loadChats();
-
-  refreshUserCache();
-
- }catch(error){
-
-  console.error(error);
-
-  toast(firebaseError(error));
- }
 });
 
-/* =========================================================
- USER PROFILE
-========================================================= */
-
-async function ensureUserProfile(){
-
- const ref=db.collection("users")
- .doc(currentUser.uid);
-
- const snap=await ref.get();
-
- if(!snap.exists){
-
-  const profile={
-   uid:currentUser.uid,
-   name:currentUser.displayName||"VEIL User",
-   username:makeUsername(
-    currentUser.displayName||"user"
-   ),
-   bio:"",
-   email:currentUser.email||"",
-   phone:"",
-   photoData:"",
-   verified:false,
-   createdAt:
-    firebase.firestore.FieldValue.serverTimestamp(),
-   lastActive:
-    firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  await ref.set(profile);
-
-  currentProfile=profile;
-
- }else{
-
-  await ref.update({
-   lastActive:
-    firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  currentProfile=(await ref.get()).data();
- }
-}
-
-async function loadProfile(){
-
- if(!currentUser)return;
-
- const snap=await db
- .collection("users")
- .doc(currentUser.uid)
- .get();
-
- if(!snap.exists)return;
-
- currentProfile=snap.data();
-
- renderProfile(currentProfile,true);
-}
 
 /* =========================================================
- RENDER PROFILE
+   ENSURE USER PROFILE
 ========================================================= */
 
-function renderProfile(profile,isOwn=false){
+async function ensureProfile(){
 
- $("profileName").innerHTML=
-  escapeHTML(profile.name||"VEIL User")+
-  (
-   profile.verified
-   ?" "+verifiedBadge()
-   :""
+  const ref =
+    db.collection("users")
+      .doc(currentUser.uid);
+
+  const snap =
+    await ref.get();
+
+
+  if(!snap.exists){
+
+    const profile = {
+
+      uid:currentUser.uid,
+
+      name:
+        currentUser.displayName
+        || "VEIL User",
+
+      username:
+        makeUsername(
+          currentUser.displayName
+          || "user"
+        ),
+
+      email:
+        currentUser.email
+        || "",
+
+      phone:"",
+
+      bio:"",
+
+      photoData:"",
+
+      verified:false,
+
+      createdAt:
+        firebase.firestore.FieldValue
+          .serverTimestamp(),
+
+      lastActive:
+        firebase.firestore.FieldValue
+          .serverTimestamp()
+
+    };
+
+
+    await ref.set(profile);
+
+    currentProfile = profile;
+
+  }else{
+
+    await ref.update({
+
+      lastActive:
+        firebase.firestore.FieldValue
+          .serverTimestamp()
+
+    });
+
+    currentProfile =
+      snap.data();
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD OWN PROFILE
+========================================================= */
+
+async function loadOwnProfile(){
+
+  const snap =
+    await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .get();
+
+
+  if(!snap.exists){
+    return;
+  }
+
+
+  currentProfile =
+    snap.data();
+
+  renderProfile(
+    currentProfile,
+    true
   );
 
- $("profileUsername").textContent=
-  profile.username||"@username";
+  renderMiniAvatar(
+    currentProfile.photoData
+  );
 
- $("profileBio").textContent=
-  profile.bio||"No bio";
-
- $("profileEmail").textContent=
-  profile.email||"Not provided";
-
- $("profilePhone").textContent=
-  profile.phone||"Not provided";
-
- if(profile.verified){
-
-  $("profileStatus").innerHTML=
-  `<span style="color:#38bdf8">
-   Selfie Verified
-   </span> ${verifiedBadge()}`;
-
- }else{
-
-  $("profileStatus").textContent=
-   "Not verified";
- }
-
- $("profileTitle").textContent=
-  isOwn?"My Profile":"Profile";
-
- $("ownActions")
- .classList
- .toggle("hidden",!isOwn);
-
- $("otherActions")
- .classList
- .toggle("hidden",isOwn);
-
- $("selfieArea")
- .classList
- .toggle("hidden",!isOwn);
-
- $("editName").value=profile.name||"";
- $("editUsername").value=profile.username||"";
- $("editEmail").value=profile.email||"";
- $("editPhone").value=profile.phone||"";
- $("editBio").value=profile.bio||"";
-
- $("editBox").style.display="none";
-
- renderProfilePhoto(
-  profile.photoData||"",
-  isOwn
- );
 }
+
 
 /* =========================================================
- PROFILE PHOTO
+   MINI AVATAR
 ========================================================= */
 
-function renderProfilePhoto(data,isOwn){
+function renderMiniAvatar(data){
 
- const container=$("profilePhotoContainer");
+  const image =
+    safeImage(data);
 
- const image=safeImage(data);
 
- if(image){
+  if(image){
 
-  container.innerHTML=
-  `<img class="profile-photo"
-   src="${image}"
-   alt="Profile">`;
+    $("homeAvatar").innerHTML = `
+      <img src="${image}" alt="Profile">
+    `;
 
- }else{
+  }else{
 
-  container.innerHTML=
-  `<i class="fa-solid fa-user"></i>`;
+    $("homeAvatar").innerHTML =
+      `<i class="fa-solid fa-user"></i>`;
 
-  container.className="profile-empty";
- }
+  }
 
- $("removePhotoBtn").style.display=
-  isOwn&&image?"block":"none";
 }
+
+
+/* =========================================================
+   RENDER PROFILE
+========================================================= */
+
+function renderProfile(profile,isOwn){
+
+  $("profileTitle").textContent =
+    isOwn
+      ? "My Profile"
+      : "Profile";
+
+
+  $("profileName").textContent =
+    profile.name || "VEIL User";
+
+
+  $("profileUsername").textContent =
+    profile.username || "@username";
+
+
+  $("profileBio").textContent =
+    profile.bio || "No bio";
+
+
+  $("profileEmail").textContent =
+    profile.email || "Not provided";
+
+
+  $("profilePhone").textContent =
+    profile.phone || "Not provided";
+
+
+  if(profile.verified){
+
+    $("profileStatus").innerHTML =
+      `<span style="color:#38bdf8">
+        Selfie Verified ✓
+      </span>`;
+
+  }else{
+
+    $("profileStatus").textContent =
+      "Not verified";
+
+  }
+
+
+  $("editName").value =
+    profile.name || "";
+
+
+  $("editUsername").value =
+    profile.username || "";
+
+
+  $("editEmail").value =
+    profile.email || "";
+
+
+  $("editPhone").value =
+    profile.phone || "";
+
+
+  $("editBio").value =
+    profile.bio || "";
+
+
+  renderProfilePhoto(
+    profile.photoData
+  );
+
+
+  $("editBox").style.display =
+    "none";
+
+
+  $("removeSelfieBtn").style.display =
+    safeImage(profile.photoData)
+      ? "block"
+      : "none";
+
+}
+
+
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
+
+function renderProfilePhoto(data){
+
+  const image =
+    safeImage(data);
+
+
+  const box =
+    $("photoContainer");
+
+
+  if(image){
+
+    box.className = "";
+
+    box.innerHTML = `
+      <img
+        class="photo"
+        src="${image}"
+        alt="Profile">
+    `;
+
+  }else{
+
+    box.className =
+      "photo-empty";
+
+    box.innerHTML =
+      `<i class="fa-solid fa-user"></i>`;
+
+  }
+
+}
+
+
+/* =========================================================
+   PROFILE NAVIGATION
+========================================================= */
 
 function openOwnProfile(){
 
- viewedUser=null;
+  viewedUser = null;
 
- switchScreen("profileScreen");
+  showScreen("profileScreen");
 
- loadProfile();
+  loadOwnProfile();
+
 }
 
-function openUserProfile(user){
 
- if(!user?.uid)return;
+function closeProfile(){
 
- viewedUser=user;
+  viewedUser = null;
 
- switchScreen("profileScreen");
+  showScreen("homeScreen");
 
- renderProfile(user,false);
 }
 
-function handleProfilePhotoClick(){
-
- if(currentUser&&viewedUser===null){
-  openCamera();
- }
-}
-
-function goBackFromProfile(){
-
- if(viewedUser){
-
-  viewedUser=null;
-
-  switchScreen("contactsScreen");
-
- }else{
-
-  switchScreen("homeScreen");
- }
-}
 
 /* =========================================================
- EDIT PROFILE
+   EDIT PROFILE
 ========================================================= */
 
-function toggleEditProfile(){
+function toggleEdit(){
 
- const box=$("editBox");
+  const box =
+    $("editBox");
 
- box.style.display=
-  box.style.display==="block"
-  ?"none"
-  :"block";
+
+  box.style.display =
+    box.style.display === "block"
+      ? "none"
+      : "block";
+
 }
 
+
 /* =========================================================
- SAVE PROFILE
+   SAVE PROFILE
 ========================================================= */
 
 async function saveProfile(){
 
- if(!currentUser)return;
+  if(!currentUser){
+    return;
+  }
 
- const name=$("editName").value.trim();
 
- let username=$("editUsername").value.trim();
+  const name =
+    $("editName")
+      .value
+      .trim();
 
- const email=$("editEmail").value.trim();
 
- const phone=$("editPhone").value.trim();
+  let username =
+    $("editUsername")
+      .value
+      .trim()
+      .toLowerCase();
 
- const bio=$("editBio").value.trim();
 
- if(!name){
-  toast("Name is required.");
-  return;
- }
+  const email =
+    $("editEmail")
+      .value
+      .trim();
 
- if(!username){
-  username=makeUsername(name);
- }
 
- username=username.toLowerCase();
+  const phone =
+    $("editPhone")
+      .value
+      .trim();
 
- if(!username.startsWith("@")){
-  username="@"+username;
- }
 
- username=username
- .replace(/[^@a-z0-9_]/g,"")
- .slice(0,25);
+  const bio =
+    $("editBio")
+      .value
+      .trim();
 
- if(!email){
-  toast("Email is required.");
-  return;
- }
 
- if(!phone){
-  toast("Phone number is required.");
-  return;
- }
+  if(!name){
 
- if(!bio){
-  toast("Bio is required.");
-  return;
- }
+    toast("Name is required.");
 
- try{
+    return;
 
-  const complete=
-   Boolean(
-    name&&
-    username&&
-    email&&
-    phone&&
-    bio
-   );
+  }
 
-  /*
-   * IMPORTANT:
-   * Existing verification is preserved only when
-   * the selfie is still present.
-   *
-   * If user edits required information,
-   * verification is removed and selfie must
-   * be captured again.
-   */
 
-  const updates={
-   name,
-   username,
-   email,
-   phone,
-   bio,
-   verified:
-    complete&&
-    Boolean(currentProfile?.photoData),
-   lastActive:
-    firebase.firestore.FieldValue.serverTimestamp()
-  };
+  if(!username){
 
-  await db
-  .collection("users")
-  .doc(currentUser.uid)
-  .update(updates);
+    toast("Username is required.");
 
-  await loadProfile();
+    return;
 
-  toast(
-   currentProfile.verified
-   ?"Profile updated and verified."
-   :"Profile updated. Take a new selfie to verify."
-  );
+  }
 
- }catch(error){
 
-  toast(firebaseError(error));
- }
+  if(!username.startsWith("@")){
+
+    username = "@" + username;
+
+  }
+
+
+  username =
+    username
+      .replace(/[^@a-z0-9_]/g,"")
+      .slice(0,25);
+
+
+  if(username === "@"){
+
+    toast("Enter a valid username.");
+
+    return;
+
+  }
+
+
+  if(!email){
+
+    toast("Email is required.");
+
+    return;
+
+  }
+
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+
+    toast("Enter a valid email.");
+
+    return;
+
+  }
+
+
+  if(!phone){
+
+    toast("Phone number is required.");
+
+    return;
+
+  }
+
+
+  if(!bio){
+
+    toast("Bio is required.");
+
+    return;
+
+  }
+
+
+  try{
+
+    /*
+      If required information changes,
+      previous verification is removed.
+    */
+
+    const verified =
+      Boolean(
+        currentProfile?.photoData
+      ) &&
+      Boolean(
+        currentProfile?.verified
+      );
+
+
+    await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .update({
+
+        name:name,
+
+        username:username,
+
+        email:email,
+
+        phone:phone,
+
+        bio:bio,
+
+        verified:
+          verified,
+
+        lastActive:
+          firebase.firestore.FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    await loadOwnProfile();
+
+
+    toast(
+      verified
+        ? "Profile updated."
+        : "Profile saved. Take a selfie to verify."
+    );
+
+  }catch(error){
+
+    toast(
+      firebaseMessage(error)
+    );
+
+  }
+
 }
 
+
 /* =========================================================
- CAMERA
+   CAMERA
 ========================================================= */
 
 async function openCamera(){
 
- /*
-  * ALL five fields are mandatory.
-  */
+  if(!isComplete(currentProfile)){
 
- if(!isProfileComplete(currentProfile)){
+    toast(
+      "Complete Name, Username, Email, Phone and Bio first."
+    );
 
-  toast(
-   "Complete Name, Username, Email, Phone and Bio first."
-  );
+    $("editBox").style.display =
+      "block";
 
-  $("editBox").style.display="block";
+    return;
 
-  return;
- }
+  }
 
- if(!navigator.mediaDevices||
-    !navigator.mediaDevices.getUserMedia){
 
-  toast("Camera is not supported by this browser.");
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
 
-  return;
- }
+    toast(
+      "Camera is not supported."
+    );
 
- try{
+    return;
 
-  cameraStream=
-   await navigator.mediaDevices.getUserMedia({
-    video:{
-     facingMode:"user",
-     width:{ideal:1280},
-     height:{ideal:1280}
-    },
-    audio:false
-   });
+  }
 
-  $("cameraVideo").srcObject=cameraStream;
 
-  $("cameraBox").style.display="block";
+  try{
 
-  $("cameraOpenBtn").style.display="none";
+    cameraStream =
+      await navigator.mediaDevices
+        .getUserMedia({
 
- }catch(error){
+          video:{
+            facingMode:"user",
+            width:{ideal:1280},
+            height:{ideal:1280}
+          },
 
-  console.error(error);
+          audio:false
 
-  toast(
-   "Camera permission denied. Allow camera access."
-  );
- }
+        });
+
+
+    $("cameraVideo").srcObject =
+      cameraStream;
+
+
+    $("cameraBox").style.display =
+      "block";
+
+
+    $("takeSelfieBtn").style.display =
+      "none";
+
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "Camera permission was denied."
+    );
+
+  }
+
 }
+
+
+/* =========================================================
+   CLOSE CAMERA
+========================================================= */
 
 function closeCamera(){
 
- if(cameraStream){
+  if(cameraStream){
 
-  cameraStream
-  .getTracks()
-  .forEach(track=>track.stop());
- }
+    cameraStream
+      .getTracks()
+      .forEach(track=>{
+        track.stop();
+      });
 
- cameraStream=null;
+  }
 
- $("cameraVideo").srcObject=null;
 
- $("cameraBox").style.display="none";
+  cameraStream = null;
 
- $("cameraOpenBtn").style.display="block";
+  $("cameraVideo").srcObject =
+    null;
+
+  $("cameraBox").style.display =
+    "none";
+
+  $("takeSelfieBtn").style.display =
+    "block";
+
 }
 
+
 /* =========================================================
- CAPTURE SELFIE
+   CAPTURE SELFIE
 ========================================================= */
 
 async function captureSelfie(){
 
- if(!cameraStream){
+  if(!cameraStream){
 
-  toast("Camera is not active.");
+    toast("Camera is not active.");
 
-  return;
- }
+    return;
 
- if(!isProfileComplete(currentProfile)){
-
-  toast(
-   "Complete all profile information first."
-  );
-
-  return;
- }
-
- const video=$("cameraVideo");
-
- if(!video.videoWidth){
-
-  toast("Camera is not ready yet.");
-
-  return;
- }
-
- const size=Math.min(
-  video.videoWidth,
-  video.videoHeight
- );
-
- const canvas=document.createElement("canvas");
-
- canvas.width=640;
- canvas.height=640;
-
- const context=canvas.getContext("2d");
-
- /*
-  * Mirror selfie back to normal orientation.
-  */
-
- context.translate(640,0);
- context.scale(-1,1);
-
- context.drawImage(
-  video,
-  (video.videoWidth-size)/2,
-  (video.videoHeight-size)/2,
-  size,
-  size,
-  0,
-  0,
-  640,
-  640
- );
-
- const data=
-  canvas.toDataURL("image/jpeg",.72);
-
- /*
-  * Firestore document has a size limit.
-  * Keep image reasonably small.
-  */
-
- if(data.length>900000){
-
-  toast(
-   "Photo is too large. Try again."
-  );
-
-  return;
- }
-
- try{
-
-  const latestSnap=
-   await db
-   .collection("users")
-   .doc(currentUser.uid)
-   .get();
-
-  const latest=latestSnap.data();
-
-  if(!isProfileComplete(latest)){
-
-   toast(
-    "Complete Name, Username, Email, Phone and Bio first."
-   );
-
-   return;
   }
 
-  await db
-  .collection("users")
-  .doc(currentUser.uid)
-  .update({
 
-   photoData:data,
+  const video =
+    $("cameraVideo");
 
-   verified:true,
 
-   lastActive:
-    firebase.firestore.FieldValue.serverTimestamp()
-  });
+  if(!video.videoWidth){
 
-  currentProfile={
-   ...latest,
-   photoData:data,
-   verified:true
-  };
+    toast("Camera is not ready.");
 
-  await loadProfile();
+    return;
 
-  closeCamera();
+  }
 
-  toast(
-   "Selfie saved. Profile is now verified."
+
+  /*
+    Square selfie.
+    Image stays inside Firestore
+    as data:image/jpeg.
+  */
+
+  const size =
+    Math.min(
+      video.videoWidth,
+      video.videoHeight
+    );
+
+
+  const canvas =
+    document.createElement("canvas");
+
+
+  canvas.width = 640;
+
+  canvas.height = 640;
+
+
+  const ctx =
+    canvas.getContext("2d");
+
+
+  /*
+    Mirror selfie so it looks
+    natural like a front camera.
+  */
+
+  ctx.translate(640,0);
+
+  ctx.scale(-1,1);
+
+
+  ctx.drawImage(
+
+    video,
+
+    (video.videoWidth-size)/2,
+
+    (video.videoHeight-size)/2,
+
+    size,
+
+    size,
+
+    0,
+    0,
+    640,
+    640
+
   );
 
- }catch(error){
 
-  console.error(error);
+  const image =
+    canvas.toDataURL(
+      "image/jpeg",
+      .70
+    );
 
-  toast(firebaseError(error));
- }
+
+  /*
+    Prevent extremely large
+    Firestore document.
+  */
+
+  if(image.length > 900000){
+
+    toast(
+      "Selfie is too large. Please try again."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    /*
+      Re-read profile before verification.
+    */
+
+    const snap =
+      await db
+        .collection("users")
+        .doc(currentUser.uid)
+        .get();
+
+
+    if(!snap.exists){
+
+      toast("Profile not found.");
+
+      return;
+
+    }
+
+
+    const latest =
+      snap.data();
+
+
+    if(!isComplete(latest)){
+
+      toast(
+        "Complete all profile information first."
+      );
+
+      return;
+
+    }
+
+
+    /*
+      SELFIE + COMPLETE PROFILE
+      = VERIFIED
+    */
+
+    await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .update({
+
+        photoData:image,
+
+        verified:true,
+
+        lastActive:
+          firebase.firestore.FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    await loadOwnProfile();
+
+    closeCamera();
+
+
+    toast(
+      "Selfie saved. Profile is verified."
+    );
+
+  }catch(error){
+
+    toast(
+      firebaseMessage(error)
+    );
+
+  }
+
 }
 
+
 /* =========================================================
- REMOVE SELFIE
+   REMOVE SELFIE
 ========================================================= */
 
-async function removeProfilePhoto(){
+async function removeSelfie(){
 
- if(!confirm("Remove your profile selfie?"))return;
+  if(
+    !confirm(
+      "Remove your selfie and verification?"
+    )
+  ){
 
- try{
+    return;
 
-  await db
-  .collection("users")
-  .doc(currentUser.uid)
-  .update({
+  }
 
-   photoData:"",
-   verified:false,
 
-   lastActive:
-    firebase.firestore.FieldValue.serverTimestamp()
-  });
+  try{
 
-  await loadProfile();
+    await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .update({
 
-  toast(
-   "Selfie removed. Verification removed."
-  );
+        photoData:"",
 
- }catch(error){
+        verified:false,
 
-  toast(firebaseError(error));
- }
+        lastActive:
+          firebase.firestore.FieldValue
+            .serverTimestamp()
+
+      });
+
+
+    await loadOwnProfile();
+
+
+    toast(
+      "Selfie removed. Verification removed."
+    );
+
+  }catch(error){
+
+    toast(
+      firebaseMessage(error)
+    );
+
+  }
+
 }
 
+
 /* =========================================================
- CONTACTS
+   CONTACTS
 ========================================================= */
 
 async function loadContacts(){
 
- const box=$("contactsList");
+  const box =
+    $("contactsList");
 
- box.innerHTML=
-  '<div class="loading">Loading users...</div>';
 
- try{
+  box.innerHTML =
+    `<div class="loading">
+      Loading users...
+    </div>`;
 
-  const snap=
-   await db
-   .collection("users")
-   .limit(100)
-   .get();
-
-  usersCache=[];
-
-  snap.forEach(doc=>{
-
-   if(doc.id!==currentUser.uid){
-
-    usersCache.push({
-     uid:doc.id,
-     ...doc.data()
-    });
-   }
-  });
-
-  renderUserList(box,usersCache);
-
- }catch(error){
-
-  box.innerHTML=
-  `<div class="chat-empty">
-   ${escapeHTML(firebaseError(error))}
-   </div>`;
- }
-}
-
-function avatarHTML(user){
-
- const image=safeImage(user?.photoData);
-
- if(image){
-
-  return `
-  <div class="avatar">
-   <img src="${image}" alt="">
-  </div>`;
- }
-
- return `
- <div class="avatar">
-  <i class="fa-solid fa-user"></i>
- </div>`;
-}
-
-function renderUserList(box,list){
-
- box.innerHTML="";
-
- if(!list.length){
-
-  box.innerHTML=
-  `<div class="chat-empty">
-   No other users found.
-   </div>`;
-
-  return;
- }
-
- list.forEach(user=>{
-
-  const element=
-   document.createElement("div");
-
-  element.className="item";
-
-  element.innerHTML=
-   avatarHTML(user)+
-   `
-   <div class="item-info">
-    <div class="item-name">
-     ${escapeHTML(user.name||"VEIL User")}
-     ${user.verified?verifiedBadge():""}
-    </div>
-
-    <div class="item-sub">
-     ${escapeHTML(user.username||"")}
-    </div>
-   </div>
-   `;
-
-  element.onclick=
-   ()=>openUserProfile(user);
-
-  box.appendChild(element);
- });
-}
-
-/* =========================================================
- SEARCH
-========================================================= */
-
-$("userSearch").oninput=function(){
-
- const query=
-  this.value.trim().toLowerCase();
-
- const box=$("searchResults");
-
- box.innerHTML="";
-
- if(!query)return;
-
- const matches=
-  usersCache
-  .filter(user=>
-   [
-    user.name,
-    user.username,
-    user.email
-   ].some(value=>
-    String(value||"")
-    .toLowerCase()
-    .includes(query)
-   )
-  )
-  .slice(0,20);
-
- renderUserList(box,matches);
-};
-
-async function refreshUserCache(){
-
- try{
-
-  const snap=
-   await db
-   .collection("users")
-   .limit(100)
-   .get();
-
-  usersCache=[];
-
-  snap.forEach(doc=>{
-
-   if(doc.id!==currentUser.uid){
-
-    usersCache.push({
-     uid:doc.id,
-     ...doc.data()
-    });
-   }
-  });
-
- }catch(error){
-
-  console.error(error);
- }
-}
-
-/* =========================================================
- CHAT
-========================================================= */
-
-async function messageViewedUser(){
-
- if(viewedUser){
-
-  await openChat(viewedUser);
- }
-}
-
-async function openChat(user){
-
- if(!currentUser||!user?.uid){
-
-  toast("Unable to open chat.");
-
-  return;
- }
-
- if(user.uid===currentUser.uid){
-
-  toast("You cannot message yourself.");
-
-  return;
- }
-
- currentChatUser=user;
- viewedUser=null;
-
- switchScreen("chatScreen");
-
- $("chatName").innerHTML=
-  escapeHTML(user.name||"VEIL User")+
-  (
-   user.verified
-   ?" "+verifiedBadge()
-   :""
-  );
-
- $("chatUsername").textContent=
-  user.username||"";
-
- const image=safeImage(user.photoData);
-
- $("chatAvatar").innerHTML=
-  image
-  ?`<img src="${image}" alt="">`
-  :`<i class="fa-solid fa-user"></i>`;
-
- $("messages").innerHTML=
-  '<div class="loading">Loading messages...</div>';
-
- if(unsubscribeMessages){
-
-  unsubscribeMessages();
-  unsubscribeMessages=null;
- }
-
- const chatId=
-  makeChatId(
-   currentUser.uid,
-   user.uid
-  );
-
- const chatRef=
-  db.collection("chats").doc(chatId);
-
- try{
-
-  /*
-   * Create chat only if it doesn't exist.
-   */
-
-  const chatSnap=await chatRef.get();
-
-  if(!chatSnap.exists){
-
-   await chatRef.set({
-
-    participants:[
-     currentUser.uid,
-     user.uid
-    ],
-
-    createdAt:
-     firebase.firestore.FieldValue.serverTimestamp(),
-
-    lastMessage:"",
-    lastMessageAt:null,
-    lastSenderId:""
-   });
-  }
-
-  /*
-   * REALTIME MESSAGE LISTENER
-   */
-
-  unsubscribeMessages=
-   chatRef
-   .collection("messages")
-   .orderBy("createdAt","asc")
-   .onSnapshot(
-    snapshot=>{
-     renderMessages(snapshot);
-    },
-    error=>{
-     console.error(error);
-
-     $("messages").innerHTML=
-     `<div class="chat-empty">
-      ${escapeHTML(firebaseError(error))}
-      </div>`;
-    }
-   );
-
- }catch(error){
-
-  console.error(error);
-
-  $("messages").innerHTML=
-  `<div class="chat-empty">
-   ${escapeHTML(firebaseError(error))}
-   </div>`;
-
-  toast(firebaseError(error));
- }
-}
-
-function closeChat(){
-
- if(unsubscribeMessages){
-
-  unsubscribeMessages();
-  unsubscribeMessages=null;
- }
-
- currentChatUser=null;
-
- switchScreen("homeScreen");
-}
-
-/* =========================================================
- RENDER MESSAGES
-========================================================= */
-
-function renderMessages(snapshot){
-
- const box=$("messages");
-
- box.innerHTML="";
-
- if(snapshot.empty){
-
-  box.innerHTML=
-  `<div class="chat-empty">
-   No messages yet.<br>
-   Start the conversation.
-   </div>`;
-
-  return;
- }
-
- snapshot.forEach(doc=>{
-
-  const message=doc.data();
-
-  const row=
-   document.createElement("div");
-
-  row.className=
-   "message"+
-   (
-    message.senderId===currentUser.uid
-    ?" mine"
-    :""
-   );
-
-  const wrap=
-   document.createElement("div");
-
-  const bubble=
-   document.createElement("div");
-
-  bubble.className="bubble";
-
-  bubble.appendChild(
-   document.createTextNode(
-    message.text||""
-   )
-  );
-
-  const time=
-   document.createElement("div");
-
-  time.className="message-time";
-
-  time.textContent=
-   formatTime(message.createdAt);
-
-  bubble.appendChild(time);
-
-  wrap.appendChild(bubble);
-
-  if(message.senderId===currentUser.uid){
-
-   const actions=
-    document.createElement("div");
-
-   actions.className="message-actions";
-
-   const deleteButton=
-    document.createElement("button");
-
-   deleteButton.className="delete-msg";
-
-   deleteButton.textContent="Delete";
-
-   deleteButton.onclick=
-    ()=>deleteMessage(doc.id);
-
-   actions.appendChild(deleteButton);
-
-   wrap.appendChild(actions);
-  }
-
-  row.appendChild(wrap);
-
-  box.appendChild(row);
- });
-
- box.scrollTop=box.scrollHeight;
-}
-
-/* =========================================================
- TIME
-========================================================= */
-
-function formatTime(timestamp){
-
- try{
-
-  if(!timestamp)return"";
-
-  return timestamp
-   .toDate()
-   .toLocaleTimeString([],{
-    hour:"2-digit",
-    minute:"2-digit"
-   });
-
- }catch(error){
-
-  return"";
- }
-}
-
-/* =========================================================
- SEND MESSAGE
-========================================================= */
-
-async function sendMessage(){
-
- const input=$("messageInput");
-
- const text=
-  input.value.trim();
-
- if(!text)return;
-
- if(!currentUser){
-
-  toast("You are not logged in.");
-
-  return;
- }
-
- if(!currentChatUser?.uid){
-
-  toast("No chat user selected.");
-
-  return;
- }
-
- if(currentChatUser.uid===currentUser.uid){
-
-  toast("You cannot message yourself.");
-
-  return;
- }
-
- const sendButton=
-  $("sendMessageBtn");
-
- sendButton.disabled=true;
-
- const chatId=
-  makeChatId(
-   currentUser.uid,
-   currentChatUser.uid
-  );
-
- const chatRef=
-  db.collection("chats").doc(chatId);
-
- try{
-
-  const chatSnap=
-   await chatRef.get();
-
-  if(!chatSnap.exists){
-
-   await chatRef.set({
-
-    participants:[
-     currentUser.uid,
-     currentChatUser.uid
-    ],
-
-    createdAt:
-     firebase.firestore.FieldValue.serverTimestamp(),
-
-    lastMessage:"",
-    lastMessageAt:null,
-    lastSenderId:""
-   });
-  }
-
-  /*
-   * REAL FIRESTORE MESSAGE WRITE
-   */
-
-  await chatRef
-  .collection("messages")
-  .add({
-
-   senderId:currentUser.uid,
-
-   receiverId:currentChatUser.uid,
-
-   text:text,
-
-   createdAt:
-    firebase.firestore.FieldValue.serverTimestamp(),
-
-   delivered:false,
-
-   read:false
-  });
-
-  /*
-   * Update recent chat.
-   */
-
-  await chatRef.update({
-
-   lastMessage:text,
-
-   lastMessageAt:
-    firebase.firestore.FieldValue.serverTimestamp(),
-
-   lastSenderId:
-    currentUser.uid
-  });
-
-  input.value="";
-
- }catch(error){
-
-  console.error(
-   "SEND MESSAGE ERROR:",
-   error
-  );
-
-  input.value=text;
-
-  toast(
-   "Message failed: "+
-   firebaseError(error)
-  );
-
- }finally{
-
-  sendButton.disabled=false;
-
-  input.focus();
- }
-}
-
-/* =========================================================
- DELETE MESSAGE
-========================================================= */
-
-async function deleteMessage(messageId){
-
- if(
-  !currentChatUser||
-  !confirm("Delete this message?")
- )return;
-
- try{
-
-  await db
-  .collection("chats")
-  .doc(
-   makeChatId(
-    currentUser.uid,
-    currentChatUser.uid
-   )
-  )
-  .collection("messages")
-  .doc(messageId)
-  .delete();
-
-  toast("Message deleted.");
-
- }catch(error){
-
-  toast(firebaseError(error));
- }
-}
-
-/* =========================================================
- ENTER SEND
-========================================================= */
-
-$("messageInput").onkeydown=
-function(event){
-
- if(
-  event.key==="Enter"&&
-  !event.shiftKey
- ){
-
-  event.preventDefault();
-
-  sendMessage();
- }
-};
-
-/* =========================================================
- RECENT CHATS
-========================================================= */
-
-function loadChats(){
-
- if(unsubscribeChats){
-
-  unsubscribeChats();
-  unsubscribeChats=null;
- }
-
- $("chatList").innerHTML=
-  '<div class="loading">Loading chats...</div>';
-
- unsubscribeChats=
-  db
-  .collection("chats")
-  .where(
-   "participants",
-   "array-contains",
-   currentUser.uid
-  )
-  .limit(50)
-  .onSnapshot(
-   snapshot=>{
-    renderChatList(snapshot);
-   },
-   error=>{
-    console.error(error);
-
-    $("chatList").innerHTML=
-    `<div class="chat-empty">
-     ${escapeHTML(firebaseError(error))}
-     </div>`;
-   }
-  );
-}
-
-async function renderChatList(snapshot){
-
- const box=$("chatList");
-
- box.innerHTML="";
-
- if(snapshot.empty){
-
-  box.innerHTML=
-  `<div class="chat-empty">
-   No chats yet.<br>
-   Open Contacts and start a conversation.
-   </div>`;
-
-  return;
- }
-
- const chats=[];
-
- snapshot.forEach(doc=>{
-
-  chats.push({
-   id:doc.id,
-   ...doc.data()
-  });
- });
-
- chats.sort((a,b)=>
-  (
-   b.lastMessageAt?.toMillis?.()||0
-  )-
-  (
-   a.lastMessageAt?.toMillis?.()||0
-  )
- );
-
- for(const chat of chats){
-
-  const otherUid=
-   chat.participants?.find(
-    uid=>uid!==currentUser.uid
-   );
-
-  if(!otherUid)continue;
 
   try{
 
-   const userSnap=
-    await db
-    .collection("users")
-    .doc(otherUid)
-    .get();
+    const snapshot =
+      await db
+        .collection("users")
+        .limit(100)
+        .get();
 
-   if(!userSnap.exists)continue;
 
-   const user={
-    uid:otherUid,
-    ...userSnap.data()
-   };
+    box.innerHTML = "";
 
-   const element=
-    document.createElement("div");
 
-   element.className="item";
+    let count = 0;
 
-   element.innerHTML=
-    avatarHTML(user)+
-    `
-    <div class="item-info">
 
-     <div class="item-name">
-      ${escapeHTML(user.name||"VEIL User")}
-      ${user.verified?verifiedBadge():""}
-     </div>
+    snapshot.forEach(doc=>{
 
-     <div class="item-sub">
-      ${escapeHTML(chat.lastMessage||"No message")}
-     </div>
+      if(
+        doc.id === currentUser.uid
+      ){
+        return;
+      }
 
-    </div>
-    `;
 
-   element.onclick=
-    ()=>openChat(user);
+      const user =
+        doc.data();
 
-   box.appendChild(element);
+
+      count++;
+
+
+      const element =
+        document.createElement("div");
+
+
+      element.className =
+        "item";
+
+
+      const image =
+        safeImage(
+          user.photoData
+        );
+
+
+      element.innerHTML = `
+
+        <div class="avatar">
+
+          ${
+            image
+              ? `<img src="${image}" alt="">`
+              : `<i class="fa-solid fa-user"></i>`
+          }
+
+        </div>
+
+        <div class="item-info">
+
+          <div class="item-name">
+            ${escapeHTML(
+              user.name || "VEIL User"
+            )}
+            ${
+              user.verified
+                ? `<span style="color:#38bdf8">✓</span>`
+                : ""
+            }
+          </div>
+
+          <div class="item-sub">
+            ${escapeHTML(
+              user.username || ""
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+
+      /*
+        Profile viewing is kept separate.
+        Messaging will be added later.
+      */
+
+      element.onclick = ()=>{
+
+        viewedUser = user;
+
+        showScreen(
+          "profileScreen"
+        );
+
+        renderProfile(
+          user,
+          false
+        );
+
+        $("selfieSection")
+          .classList
+          .add("hidden");
+
+        $("ownActions")
+          .classList
+          .add("hidden");
+
+      };
+
+
+      box.appendChild(element);
+
+    });
+
+
+    if(count === 0){
+
+      box.innerHTML =
+        `<div class="empty">
+          No other users found.
+        </div>`;
+
+    }
 
   }catch(error){
 
-   console.error(error);
+    box.innerHTML =
+      `<div class="empty">
+        ${escapeHTML(
+          firebaseMessage(error)
+        )}
+      </div>`;
+
   }
- }
+
 }
 
+
 /* =========================================================
- NOTIFICATIONS
+   SEARCH
 ========================================================= */
 
-async function enableNotifications(){
+$("searchInput").oninput =
+async function(){
 
- if(!("Notification"in window)){
+  const query =
+    this.value
+      .trim()
+      .toLowerCase();
 
-  toast(
-   "Browser notifications are not supported."
-  );
 
-  return;
- }
+  const box =
+    $("searchResults");
 
- try{
 
-  const permission=
-   await Notification.requestPermission();
+  box.innerHTML = "";
 
-  toast(
-   permission==="granted"
-   ?"Browser notifications enabled."
-   :"Notification permission was not granted."
-  );
 
- }catch(error){
+  if(!query){
+    return;
+  }
 
-  toast(
-   "Unable to enable notifications."
-  );
- }
-}
+
+  try{
+
+    const snapshot =
+      await db
+        .collection("users")
+        .limit(100)
+        .get();
+
+
+    snapshot.forEach(doc=>{
+
+      if(
+        doc.id === currentUser.uid
+      ){
+        return;
+      }
+
+
+      const user =
+        doc.data();
+
+
+      const text =
+        [
+          user.name,
+          user.username,
+          user.email
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+      if(
+        !text.includes(query)
+      ){
+        return;
+      }
+
+
+      const element =
+        document.createElement("div");
+
+
+      element.className =
+        "item";
+
+
+      const image =
+        safeImage(
+          user.photoData
+        );
+
+
+      element.innerHTML = `
+
+        <div class="avatar">
+
+          ${
+            image
+              ? `<img src="${image}" alt="">`
+              : `<i class="fa-solid fa-user"></i>`
+          }
+
+        </div>
+
+        <div class="item-info">
+
+          <div class="item-name">
+            ${escapeHTML(
+              user.name || "VEIL User"
+            )}
+          </div>
+
+          <div class="item-sub">
+            ${escapeHTML(
+              user.username || ""
+            )}
+          </div>
+
+        </div>
+
+      `;
+
+
+      element.onclick = ()=>{
+
+        viewedUser = user;
+
+        showScreen(
+          "profileScreen"
+        );
+
+        renderProfile(
+          user,
+          false
+        );
+
+        $("selfieSection")
+          .classList
+          .add("hidden");
+
+        $("ownActions")
+          .classList
+          .add("hidden");
+
+      };
+
+
+      box.appendChild(element);
+
+    });
+
+  }catch(error){
+
+    toast(
+      firebaseMessage(error)
+    );
+
+  }
+
+};
+
 
 /* =========================================================
- LOGOUT
+   TABS
+========================================================= */
+
+function switchTab(tab){
+
+  /*
+    Restore own-profile controls
+    when leaving another user's profile.
+  */
+
+  $("selfieSection")
+    .classList
+    .remove("hidden");
+
+  $("ownActions")
+    .classList
+    .remove("hidden");
+
+
+  if(tab === "home"){
+
+    showScreen("homeScreen");
+
+  }
+
+
+  if(tab === "contacts"){
+
+    showScreen("contactsScreen");
+
+    loadContacts();
+
+  }
+
+
+  if(tab === "settings"){
+
+    showScreen("settingsScreen");
+
+  }
+
+}
+
+
+/* =========================================================
+   LOGOUT
 ========================================================= */
 
 async function logout(){
 
- try{
+  try{
 
-  await auth.signOut();
+    await auth.signOut();
 
- }catch(error){
+  }catch(error){
 
-  toast(firebaseError(error));
- }
-}
+    toast(
+      firebaseMessage(error)
+    );
 
-/* =========================================================
- DELETE ACCOUNT
-========================================================= */
-
-async function deleteAccount(){
-
- if(!currentUser)return;
-
- if(!confirm(
-  "Delete your VEIL account permanently? This cannot be undone."
- ))return;
-
- try{
-
-  const uid=currentUser.uid;
-
-  await db
-  .collection("users")
-  .doc(uid)
-  .delete();
-
-  await currentUser.delete();
-
-  toast("Account deleted.");
-
- }catch(error){
-
-  if(
-   error.code==="auth/requires-recent-login"
-  ){
-
-   toast(
-    "Logout and login again, then delete the account."
-   );
-
-  }else{
-
-   toast(firebaseError(error));
   }
- }
+
 }
 
-/* =========================================================
- LANGUAGE
-========================================================= */
-
-$("language").onchange=function(){
-
- toast(
-  this.value==="bn"
-  ?"বাংলা নির্বাচন করা হয়েছে।"
-  :
-  this.value==="hi"
-  ?"हिन्दी चुनी गई।"
-  :"English selected."
- );
-};
 
 /* =========================================================
- CLEANUP
+   CLEANUP
 ========================================================= */
 
 window.addEventListener(
-"beforeunload",
-()=>{
+  "beforeunload",
+  ()=>{
 
- if(cameraStream){
+    if(cameraStream){
 
-  cameraStream
-  .getTracks()
-  .forEach(track=>track.stop());
- }
+      cameraStream
+        .getTracks()
+        .forEach(track=>{
+          track.stop();
+        });
 
- if(unsubscribeMessages){
-  unsubscribeMessages();
- }
+    }
 
- if(unsubscribeChats){
-  unsubscribeChats();
- }
-});
+  }
+);
+
 </script>
 
 </body>
