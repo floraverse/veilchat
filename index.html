@@ -1,3 +1,5 @@
+প্রোফাইল স্ক্রিনের লেআউট এবং এডিট ফর্মের ব্যাপারটি ঠিক করে দেওয়া হয়েছে। এখন টপবারে একটি এডিট আইকন বা বাটন থাকবে, আর সেখানে ক্লিক করলেই সমস্ত ফিল্ডসহ (নাম, ইউজারনেম, বায়ো, জেলা, থানা, পোস্টাল কোড এবং সেলফি অপশন) সম্পূর্ণ এডিট বক্সটি একসাথে ওপেন হবে।
+নিচের সম্পূর্ণ কোডটি কপি করে আপনার গিটহাবের index.html-এ পেস্ট করে দিন:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,6 +87,12 @@ header{
   display:flex;
   align-items:center;
   gap:10px;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .header-logo{
@@ -254,6 +262,8 @@ main::-webkit-scrollbar{
 .item-name{
   font-size:14px;
   font-weight:650;
+  display:flex;
+  align-items:center;
 }
 
 .item-sub{
@@ -331,6 +341,10 @@ main::-webkit-scrollbar{
 .profile-name{
   font-size:20px;
   font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
 }
 
 .username{
@@ -430,16 +444,16 @@ main::-webkit-scrollbar{
 
 .camera{
   display:none;
-  margin-top:15px;
-  padding:12px;
-  border-radius:17px;
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
   background:rgba(0,0,0,.2);
   border:1px solid rgba(255,255,255,.1);
 }
 
 .camera video{
   width:100%;
-  border-radius:14px;
+  border-radius:12px;
   background:#000;
   transform:scaleX(-1);
 }
@@ -447,7 +461,7 @@ main::-webkit-scrollbar{
 .camera-actions{
   display:flex;
   gap:8px;
-  margin-top:9px;
+  margin-top:8px;
 }
 
 .camera-actions button{
@@ -528,492 +542,187 @@ nav button.active{
 
 <!-- LOGIN -->
 <section id="loginScreen" class="screen active">
-
   <div class="form">
-
     <div class="logo">
-
       <div class="logo-icon">
         <i class="fa-solid fa-comments"></i>
       </div>
-
       <h1>VEIL CHAT</h1>
-
-      <p class="small">
-        Private realtime messaging
-      </p>
-
+      <p class="small">Private realtime messaging</p>
     </div>
-
     <button id="googleLogin" class="btn google">
       <i class="fa-brands fa-google"></i>
       Continue with Google
     </button>
-
-    <p class="small" style="text-align:center;margin-top:12px">
-      Secure Google account login
-    </p>
-
   </div>
-
 </section>
-
 
 <!-- HOME -->
 <section id="homeScreen" class="screen">
-
   <header>
-
     <div class="header-left">
-
-      <div class="header-logo">
-        <i class="fa-solid fa-comments"></i>
-      </div>
-
+      <div class="header-logo"><i class="fa-solid fa-comments"></i></div>
       <strong>VEIL CHAT</strong>
-
     </div>
-
-    <div
-      id="homeAvatar"
-      class="profile-mini"
-      onclick="openOwnProfile()">
-
+    <div id="homeAvatar" class="profile-mini" onclick="openOwnProfile()">
       <i class="fa-solid fa-user"></i>
-
     </div>
-
   </header>
-
   <main>
-
     <div class="search">
-
       <i class="fa-solid fa-magnifying-glass"></i>
-
-      <input
-        id="searchInput"
-        placeholder="Search users..."
-        autocomplete="off">
-
+      <input id="searchInput" placeholder="Search users..." autocomplete="off">
     </div>
-
     <div id="searchResults"></div>
-
-    <div class="section">
-      RECENT CHATS
-    </div>
-
-    <div class="empty">
-      Messaging will be added separately.
-    </div>
-
+    <div class="section">RECENT CHATS</div>
+    <div class="empty">Messaging will be added separately.</div>
   </main>
-
   <footer>
-
     <nav>
-
-      <button
-        class="active"
-        onclick="switchTab('home')">
-
-        <i class="fa-solid fa-house"></i>
-        Home
-
-      </button>
-
-      <button
-        onclick="switchTab('contacts')">
-
-        <i class="fa-solid fa-address-book"></i>
-        Contacts
-
-      </button>
-
-      <button
-        onclick="switchTab('settings')">
-
-        <i class="fa-solid fa-gear"></i>
-        Settings
-
-      </button>
-
+      <button class="active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i>Home</button>
+      <button onclick="switchTab('contacts')"><i class="fa-solid fa-address-book"></i>Contacts</button>
+      <button onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i>Settings</button>
     </nav>
-
   </footer>
-
 </section>
-
 
 <!-- CONTACTS -->
 <section id="contactsScreen" class="screen">
-
   <header>
-
     <div class="header-left">
-
-      <div class="header-logo">
-        <i class="fa-solid fa-address-book"></i>
-      </div>
-
+      <div class="header-logo"><i class="fa-solid fa-address-book"></i></div>
       <strong>Contacts</strong>
-
     </div>
-
-    <div
-      class="profile-mini"
-      onclick="openOwnProfile()">
-
+    <div class="profile-mini" onclick="openOwnProfile()">
       <i class="fa-solid fa-user"></i>
-
     </div>
-
   </header>
-
   <main>
-
-    <div class="section">
-      VEIL CHAT USERS
-    </div>
-
-    <div id="contactsList">
-      <div class="loading">Loading users...</div>
-    </div>
-
+    <div class="section">VEIL CHAT USERS</div>
+    <div id="contactsList"><div class="loading">Loading users...</div></div>
   </main>
-
   <footer>
-
     <nav>
-
-      <button onclick="switchTab('home')">
-        <i class="fa-solid fa-house"></i>
-        Home
-      </button>
-
-      <button
-        class="active"
-        onclick="switchTab('contacts')">
-
-        <i class="fa-solid fa-address-book"></i>
-        Contacts
-
-      </button>
-
-      <button onclick="switchTab('settings')">
-        <i class="fa-solid fa-gear"></i>
-        Settings
-      </button>
-
+      <button onclick="switchTab('home')"><i class="fa-solid fa-house"></i>Home</button>
+      <button class="active" onclick="switchTab('contacts')"><i class="fa-solid fa-address-book"></i>Contacts</button>
+      <button onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i>Settings</button>
     </nav>
-
   </footer>
-
 </section>
-
 
 <!-- SETTINGS -->
 <section id="settingsScreen" class="screen">
-
   <header>
-
     <div class="header-left">
-
-      <div class="header-logo">
-        <i class="fa-solid fa-gear"></i>
-      </div>
-
+      <div class="header-logo"><i class="fa-solid fa-gear"></i></div>
       <strong>Settings</strong>
-
     </div>
-
-    <div
-      class="profile-mini"
-      onclick="openOwnProfile()">
-
+    <div class="profile-mini" onclick="openOwnProfile()">
       <i class="fa-solid fa-user"></i>
-
     </div>
-
   </header>
-
   <main>
-
     <div class="item">
-
       <div class="item-info">
-
-        <div class="item-name">
-          Account
-        </div>
-
-        <div
-          id="accountEmail"
-          class="item-sub">
-          Loading...
-        </div>
-
+        <div class="item-name">Account</div>
+        <div id="accountEmail" class="item-sub">Loading...</div>
       </div>
-
     </div>
-
-    <button
-      class="btn danger"
-      onclick="logout()">
-
-      <i class="fa-solid fa-right-from-bracket"></i>
-      Logout
-
+    <button class="btn danger" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
     </button>
-
   </main>
-
   <footer>
-
     <nav>
-
-      <button onclick="switchTab('home')">
-        <i class="fa-solid fa-house"></i>
-        Home
-      </button>
-
-      <button onclick="switchTab('contacts')">
-        <i class="fa-solid fa-address-book"></i>
-        Contacts
-      </button>
-
-      <button
-        class="active"
-        onclick="switchTab('settings')">
-
-        <i class="fa-solid fa-gear"></i>
-        Settings
-
-      </button>
-
+      <button onclick="switchTab('home')"><i class="fa-solid fa-house"></i>Home</button>
+      <button onclick="switchTab('contacts')"><i class="fa-solid fa-address-book"></i>Contacts</button>
+      <button class="active" onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i>Settings</button>
     </nav>
-
   </footer>
-
 </section>
-
 
 <!-- PROFILE -->
 <section id="profileScreen" class="screen">
-
   <header>
-
     <div class="header-left">
-
-      <i
-        class="fa-solid fa-arrow-left"
-        style="color:#94a3b8;cursor:pointer"
-        onclick="closeProfile()">
-      </i>
-
-      <strong id="profileTitle">
-        My Profile
-      </strong>
-
+      <i class="fa-solid fa-arrow-left" style="color:#94a3b8;cursor:pointer" onclick="closeProfile()"></i>
+      <strong id="profileTitle">My Profile</strong>
     </div>
-
+    <div class="header-right">
+      <i id="headerEditBtn" class="fa-solid fa-pen-to-square hidden" style="color:#38bdf8;font-size:18px;cursor:pointer;" onclick="toggleEdit()" title="Edit Profile"></i>
+    </div>
   </header>
-
   <main>
-
     <div class="profile-card">
-
-      <!-- DEFAULT COVER -->
       <div class="cover"></div>
-
-
-      <!-- PHOTO -->
       <div class="photo-wrap">
-
-        <div
-          id="photoContainer"
-          class="photo-empty">
-
+        <div id="photoContainer" class="photo-empty">
           <i class="fa-solid fa-user"></i>
-
         </div>
-
       </div>
 
-
-      <div id="profileName" class="profile-name">
-        Loading...
-      </div>
-
-      <div id="profileUsername" class="username">
-        @username
-      </div>
-
-      <div id="profileBio" class="bio">
-        No bio
-      </div>
-
+      <div id="profileName" class="profile-name">Loading...</div>
+      <div id="profileUsername" class="username">@username</div>
+      <div id="profileBio" class="bio">No bio</div>
 
       <div class="detail">
-
-        <div class="label">
-          EMAIL
-        </div>
-
-        <div
-          id="profileEmail"
-          class="value">
-          -
-        </div>
-
+        <div class="label">EMAIL</div>
+        <div id="profileEmail" class="value">-</div>
       </div>
-
-
       <div class="detail">
-
-        <div class="label">
-          PHONE
-        </div>
-
-        <div
-          id="profilePhone"
-          class="value">
-          Not provided
-        </div>
-
+        <div class="label">PHONE</div>
+        <div id="profilePhone" class="value">Not provided</div>
       </div>
-
       <div class="detail">
-
-        <div class="label">
-          LOCATION (BANGLADESH)
-        </div>
-
-        <div
-          id="profileLocation"
-          class="value">
-          Not provided
-        </div>
-
+        <div class="label">LOCATION (BANGLADESH)</div>
+        <div id="profileLocation" class="value">Not provided</div>
       </div>
-
-
       <div class="detail">
-
-        <div class="label">
-          PROFILE STATUS
-        </div>
-
-        <div
-          id="profileStatus"
-          class="value">
-          Not verified
-        </div>
-
+        <div class="label">PROFILE STATUS</div>
+        <div id="profileStatus" class="value">Not verified</div>
       </div>
 
-
-      <!-- EDIT -->
-      <div
-        id="ownActions"
-        class="actions">
-
-        <button
-          class="btn"
-          onclick="toggleEdit()">
-
-          <i class="fa-solid fa-pen"></i>
-          Edit Profile
-
+      <!-- OTHER USER ACTIONS (MESSAGE) -->
+      <div id="otherActions" class="actions hidden">
+        <button class="btn" onclick="startChat()">
+          <i class="fa-solid fa-comment-dots"></i> Send Message
         </button>
-
       </div>
 
-
-      <div
-        id="editBox"
-        class="edit-box">
-
-
+      <!-- EDIT & SELFIE BOX COMBINED -->
+      <div id="editBox" class="edit-box">
         <div class="field">
-
           <label>Full Name *</label>
-
-          <input
-            id="editName"
-            type="text"
-            maxlength="80"
-            autocomplete="name">
-
+          <input id="editName" type="text" maxlength="80" autocomplete="name">
         </div>
-
-
         <div class="field">
-
           <label>Username *</label>
-
-          <input
-            id="editUsername"
-            type="text"
-            maxlength="25"
-            placeholder="@username"
-            autocomplete="off">
-
+          <input id="editUsername" type="text" maxlength="25" placeholder="@username" autocomplete="off">
         </div>
-
-
         <div class="field">
-
           <label>Email *</label>
-
-          <input
-            id="editEmail"
-            type="email"
-            maxlength="120"
-            autocomplete="email">
-
+          <input id="editEmail" type="email" maxlength="120" autocomplete="email">
         </div>
-
-
         <div class="field">
-
           <label>Phone *</label>
-
-          <input
-            id="editPhone"
-            type="tel"
-            maxlength="20"
-            autocomplete="tel">
-
+          <input id="editPhone" type="tel" maxlength="20" autocomplete="tel">
         </div>
-
-
         <div class="field">
-
           <label>Bio *</label>
-
-          <textarea
-            id="editBio"
-            maxlength="500"
-            placeholder="Write your bio..."></textarea>
-
+          <textarea id="editBio" maxlength="500" placeholder="Write your bio..."></textarea>
         </div>
-
         <div class="field">
           <label>District *</label>
           <select id="district">
             <option value="">Select District</option>
           </select>
         </div>
-
         <div class="field">
           <label>Thana / Upazila *</label>
           <select id="upazila" disabled>
             <option value="">Select Thana / Upazila</option>
           </select>
         </div>
-
         <div class="field">
           <label>Postal Code *</label>
           <select id="postalCode" disabled>
@@ -1021,120 +730,42 @@ nav button.active{
           </select>
         </div>
 
-
-        <button
-          class="btn"
-          style="margin-top:10px;"
-          onclick="saveProfile()">
-
-          Save Profile
-
-        </button>
-
-
+        <!-- CAMERA INSIDE EDIT BOX -->
         <div class="verify-box">
-
-          <strong style="color:#38bdf8">
-            Selfie Verification
-          </strong>
-
-          <br>
-
-          Name, Username, Email, Phone, Bio এবং সঠিক লোকেশন ফিল্ডগুলো পূরণ করার পর নিচে থেকে সেলফি তুলুন।
-
+          <strong style="color:#38bdf8">Selfie Verification</strong><br>
+          সব তথ্য পূরণ করার পর নিচে থেকে সেলফি তুলে ভেরিফাই করুন।
         </div>
 
-      </div>
-
-
-      <!-- SELFIE -->
-      <div id="selfieSection">
-
-        <div class="section">
-          SELFIE VERIFICATION
-        </div>
-
-        <p class="small">
-          Complete all profile information first,
-          then take a clear selfie.
-        </p>
-
-
-        <button
-          id="takeSelfieBtn"
-          class="btn"
-          style="margin-top:10px"
-          onclick="openCamera()">
-
-          <i class="fa-solid fa-camera"></i>
-          Take Selfie
-
+        <button id="takeSelfieBtn" class="btn secondary" style="margin-top:10px;" onclick="openCamera()">
+          <i class="fa-solid fa-camera"></i> Take Verification Selfie
         </button>
 
-
-        <button
-          id="removeSelfieBtn"
-          class="btn danger"
-          style="margin-top:8px;display:none"
-          onclick="removeSelfie()">
-
+        <button id="removeSelfieBtn" class="btn danger" style="margin-top:8px;display:none;" onclick="removeSelfie()">
           Remove Selfie
-
         </button>
 
-
-        <div
-          id="cameraBox"
-          class="camera">
-
-          <video
-            id="cameraVideo"
-            autoplay
-            playsinline>
-          </video>
-
+        <div id="cameraBox" class="camera">
+          <video id="cameraVideo" autoplay playsinline></video>
           <div class="camera-actions">
-
-            <button
-              class="btn"
-              onclick="captureSelfie()">
-
-              Capture
-
-            </button>
-
-            <button
-              class="btn secondary"
-              onclick="closeCamera()">
-
-              Cancel
-
-            </button>
-
+            <button class="btn" onclick="captureSelfie()">Capture</button>
+            <button class="btn secondary" onclick="closeCamera()">Cancel</button>
           </div>
-
         </div>
 
+        <button class="btn" style="margin-top:15px;" onclick="saveProfile()">
+          Save & Verify Profile
+        </button>
       </div>
 
     </div>
-
   </main>
-
 </section>
-
 
 <div id="toast" class="toast"></div>
 
 </div>
 
-
 <script>
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
-
 const firebaseConfig = {
   apiKey: "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
   authDomain: "flora-veilchat.firebaseapp.com",
@@ -1145,21 +776,11 @@ const firebaseConfig = {
   measurementId: "G-CQKB9Z8VP1"
 };
 
-
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
-
 const googleProvider = new firebase.auth.GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  prompt:"select_account"
-});
-
-
-/* =========================================================
-   BANGLADESH DATASET
-========================================================= */
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 const BD = {
   "Dhaka":{
@@ -1198,220 +819,139 @@ const BD = {
   }
 };
 
-
-/* =========================================================
-   STATE
-========================================================= */
-
 let currentUser = null;
 let currentProfile = null;
 let viewedUser = null;
 let cameraStream = null;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function $(id){
-  return document.getElementById(id);
-}
-
+function $(id){ return document.getElementById(id); }
 
 function toast(message){
   const box = $("toast");
   box.textContent = message;
   box.classList.add("show");
   clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(()=>{
-    box.classList.remove("show");
-  },3000);
+  window.toastTimer = setTimeout(()=>{ box.classList.remove("show"); }, 3000);
 }
 
-
 function showScreen(id){
-  document.querySelectorAll(".screen").forEach(screen=>{
-    screen.classList.remove("active");
-  });
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   $(id).classList.add("active");
 }
 
-
 function escapeHTML(value){
-  return String(value ?? "")
-    .replace(/[&<>"']/g,char=>({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[char]));
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+  }[c]));
 }
 
-
 function safeImage(value){
-  if(typeof value !== "string"){
-    return "";
-  }
-  if(!value.startsWith("data:image/")){
-    return "";
-  }
+  if(typeof value !== "string" || !value.startsWith("data:image/")) return "";
   return value;
 }
 
-
 function makeUsername(name){
-  const clean = String(name || "user")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g,"")
-    .slice(0,18);
+  const clean = String(name || "user").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,18);
   return "@" + (clean || "user");
 }
-
 
 function loadDistricts(){
   const select = $("district");
   select.innerHTML = '<option value="">Select District</option>';
-  Object.keys(BD).sort().forEach(district=>{
-    const option = document.createElement("option");
-    option.value = district;
-    option.textContent = district;
-    select.appendChild(option);
+  Object.keys(BD).sort().forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d; opt.textContent = d;
+    select.appendChild(opt);
   });
 }
-
 
 $("district").onchange = function(){
   const district = this.value;
   const upazila = $("upazila");
   const postal = $("postalCode");
-
   upazila.innerHTML = '<option value="">Select Thana / Upazila</option>';
   postal.innerHTML = '<option value="">Select Postal Code</option>';
   postal.disabled = true;
-
-  if(!district){
-    upazila.disabled = true;
-    return;
-  }
-
-  const areas = BD[district] || {};
-  Object.keys(areas).sort().forEach(area=>{
-    const option = document.createElement("option");
-    option.value = area;
-    option.textContent = area;
-    upazila.appendChild(option);
+  if(!district){ upazila.disabled = true; return; }
+  Object.keys(BD[district] || {}).sort().forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a; opt.textContent = a;
+    upazila.appendChild(opt);
   });
   upazila.disabled = false;
 };
-
 
 $("upazila").onchange = function(){
   const district = $("district").value;
   const area = this.value;
   const postal = $("postalCode");
-
   postal.innerHTML = '<option value="">Select Postal Code</option>';
-  if(!district || !area){
-    postal.disabled = true;
-    return;
-  }
-
+  if(!district || !area){ postal.disabled = true; return; }
   const codes = BD[district]?.[area] || [];
-  codes.forEach(code=>{
-    const option = document.createElement("option");
-    option.value = code;
-    option.textContent = code;
-    postal.appendChild(option);
+  codes.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c; opt.textContent = c;
+    postal.appendChild(opt);
   });
   postal.disabled = codes.length === 0;
 };
 
-
-function isComplete(profile){
-  if(!profile){
-    return false;
-  }
+function isComplete(p){
+  if(!p) return false;
   return Boolean(
-    String(profile.name || "").trim() &&
-    String(profile.username || "").trim() &&
-    String(profile.email || "").trim() &&
-    String(profile.phone || "").trim() &&
-    String(profile.bio || "").trim() &&
-    String(profile.district || "").trim() &&
-    String(profile.upazila || "").trim() &&
-    String(profile.postalCode || "").trim() &&
-    String(profile.photoData || "").trim()
+    String(p.name || "").trim() &&
+    String(p.username || "").trim() &&
+    String(p.email || "").trim() &&
+    String(p.phone || "").trim() &&
+    String(p.bio || "").trim() &&
+    String(p.district || "").trim() &&
+    String(p.upazila || "").trim() &&
+    String(p.postalCode || "").trim() &&
+    String(p.photoData || "").trim()
   );
 }
 
-
 function firebaseMessage(error){
   console.error(error);
-  const code = error?.code || "";
-  const messages = {
-    "auth/popup-closed-by-user":"Google login window was closed.",
-    "auth/popup-blocked":"Google login popup was blocked.",
-    "permission-denied":"Firestore permission denied. Check Firestore Rules."
-  };
-  return messages[code] || error?.message || "Firebase operation failed.";
+  return error?.message || "Firebase operation failed.";
 }
 
-
-/* =========================================================
-   GOOGLE LOGIN
-========================================================= */
-
-$("googleLogin").onclick = async ()=>{
-  try{
+$("googleLogin").onclick = async () => {
+  try {
     await auth.signInWithPopup(googleProvider);
-  }catch(error){
-    toast(firebaseMessage(error));
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 };
 
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-auth.onAuthStateChanged(async user=>{
+auth.onAuthStateChanged(async user => {
   if(!user){
     currentUser = null;
     currentProfile = null;
     showScreen("loginScreen");
     return;
   }
-
   currentUser = user;
   $("accountEmail").textContent = user.email || "Google account";
-
-  try{
+  try {
     await ensureProfile();
     await loadOwnProfile();
     showScreen("homeScreen");
-  }catch(error){
-    toast(firebaseMessage(error));
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 });
-
 
 async function ensureProfile(){
   const ref = db.collection("users").doc(currentUser.uid);
   const snap = await ref.get();
-
   if(!snap.exists){
     const profile = {
       uid: currentUser.uid,
       name: currentUser.displayName || "VEIL User",
       username: makeUsername(currentUser.displayName || "user"),
       email: currentUser.email || "",
-      phone: "",
-      bio: "",
-      district: "",
-      upazila: "",
-      postalCode: "",
-      photoData: "",
+      phone: "", bio: "", district: "", upazila: "", postalCode: "", photoData: "",
       verified: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       lastActive: firebase.firestore.FieldValue.serverTimestamp()
@@ -1419,38 +959,30 @@ async function ensureProfile(){
     await ref.set(profile);
     currentProfile = profile;
   } else {
-    await ref.update({
-      lastActive: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await ref.update({ lastActive: firebase.firestore.FieldValue.serverTimestamp() });
     currentProfile = snap.data();
   }
 }
 
-
 async function loadOwnProfile(){
   const snap = await db.collection("users").doc(currentUser.uid).get();
-  if(!snap.exists){
-    return;
-  }
+  if(!snap.exists) return;
   currentProfile = snap.data();
   renderProfile(currentProfile, true);
   renderMiniAvatar(currentProfile.photoData);
 }
 
-
 function renderMiniAvatar(data){
-  const image = safeImage(data);
-  if(image){
-    $("homeAvatar").innerHTML = `<img src="${image}" alt="Profile">`;
-  } else {
-    $("homeAvatar").innerHTML = `<i class="fa-solid fa-user"></i>`;
-  }
+  const img = safeImage(data);
+  $("homeAvatar").innerHTML = img ? `<img src="${img}" alt="Profile">` : `<i class="fa-solid fa-user"></i>`;
 }
-
 
 function renderProfile(profile, isOwn){
   $("profileTitle").textContent = isOwn ? "My Profile" : "Profile";
-  $("profileName").textContent = profile.name || "VEIL User";
+  
+  const badge = profile.verified ? `<img src="verified.png" alt="Verified" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;">` : "";
+  $("profileName").innerHTML = `${escapeHTML(profile.name || "VEIL User")} ${badge}`;
+
   $("profileUsername").textContent = profile.username || "@username";
   $("profileBio").textContent = profile.bio || "No bio";
   $("profileEmail").textContent = profile.email || "Not provided";
@@ -1462,11 +994,7 @@ function renderProfile(profile, isOwn){
     $("profileLocation").textContent = "Not provided";
   }
 
-  if(profile.verified){
-    $("profileStatus").innerHTML = `<span style="color:#38bdf8">Selfie Verified ✓</span>`;
-  } else {
-    $("profileStatus").textContent = "Not verified";
-  }
+  $("profileStatus").innerHTML = profile.verified ? `<span style="color:#38bdf8">Verified Profile ✓</span>` : "Not verified";
 
   $("editName").value = profile.name || "";
   $("editUsername").value = profile.username || "";
@@ -1488,22 +1016,27 @@ function renderProfile(profile, isOwn){
 
   renderProfilePhoto(profile.photoData);
   $("editBox").style.display = "none";
-  $("removeSelfieBtn").style.display = safeImage(profile.photoData) ? "block" : "none";
+
+  if(isOwn){
+    $("headerEditBtn").classList.remove("hidden");
+    $("otherActions").classList.add("hidden");
+  } else {
+    $("headerEditBtn").classList.add("hidden");
+    $("otherActions").classList.remove("hidden");
+  }
 }
 
-
 function renderProfilePhoto(data){
-  const image = safeImage(data);
+  const img = safeImage(data);
   const box = $("photoContainer");
-  if(image){
+  if(img){
     box.className = "";
-    box.innerHTML = `<img class="photo" src="${image}" alt="Profile">`;
+    box.innerHTML = `<img class="photo" src="${img}" alt="Profile">`;
   } else {
     box.className = "photo-empty";
     box.innerHTML = `<i class="fa-solid fa-user"></i>`;
   }
 }
-
 
 function openOwnProfile(){
   viewedUser = null;
@@ -1511,24 +1044,18 @@ function openOwnProfile(){
   loadOwnProfile();
 }
 
-
 function closeProfile(){
   viewedUser = null;
   showScreen("homeScreen");
 }
-
 
 function toggleEdit(){
   const box = $("editBox");
   box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
-
 async function saveProfile(){
-  if(!currentUser){
-    return;
-  }
-
+  if(!currentUser) return;
   const name = $("editName").value.trim();
   let username = $("editUsername").value.trim().toLowerCase();
   const email = $("editEmail").value.trim();
@@ -1544,58 +1071,47 @@ async function saveProfile(){
   if(!email){ toast("Email is required."); return; }
   if(!phone){ toast("Phone number is required."); return; }
   if(!bio){ toast("Bio is required."); return; }
-  if(!district || !upazila || !postalCode){ toast("Complete all location fields."); return; }
+  if(!district || !upazila || !postalCode){ toast("Complete location details."); return; }
 
-  try{
+  try {
     const verified = isComplete({
       ...currentProfile,
       name, username, email, phone, bio, district, upazila, postalCode
     });
 
     await db.collection("users").doc(currentUser.uid).update({
-      name,
-      username,
-      email,
-      phone,
-      bio,
-      district,
-      upazila,
-      postalCode,
-      verified,
+      name, username, email, phone, bio, district, upazila, postalCode, verified,
       lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     await loadOwnProfile();
-    toast(verified ? "Profile updated & verified." : "Profile saved.");
-  }catch(error){
-    toast(firebaseMessage(error));
+    toast(verified ? "Profile updated & verified successfully!" : "Profile updated.");
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 }
 
-
 async function openCamera(){
   if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    toast("Camera is not supported.");
+    toast("Camera not supported.");
     return;
   }
-
-  try{
+  try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode:"user", width:{ideal:1280}, height:{ideal:1280} },
-      audio:false
+      video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 1280 } },
+      audio: false
     });
     $("cameraVideo").srcObject = cameraStream;
     $("cameraBox").style.display = "block";
     $("takeSelfieBtn").style.display = "none";
-  }catch(error){
-    toast("Camera permission was denied.");
+  } catch(e) {
+    toast("Camera access denied.");
   }
 }
 
-
 function closeCamera(){
   if(cameraStream){
-    cameraStream.getTracks().forEach(track=>track.stop());
+    cameraStream.getTracks().forEach(t => t.stop());
   }
   cameraStream = null;
   $("cameraVideo").srcObject = null;
@@ -1603,45 +1119,27 @@ function closeCamera(){
   $("takeSelfieBtn").style.display = "block";
 }
 
-
 async function captureSelfie(){
-  if(!cameraStream){
-    toast("Camera is not active.");
-    return;
-  }
-
+  if(!cameraStream) return;
   const video = $("cameraVideo");
-  if(!video.videoWidth){
-    toast("Camera is not ready.");
-    return;
-  }
+  if(!video.videoWidth) return;
 
   const size = Math.min(video.videoWidth, video.videoHeight);
   const canvas = document.createElement("canvas");
-  canvas.width = 640;
-  canvas.height = 640;
+  canvas.width = 640; canvas.height = 640;
   const ctx = canvas.getContext("2d");
-
   ctx.translate(640,0);
   ctx.scale(-1,1);
   ctx.drawImage(video, (video.videoWidth-size)/2, (video.videoHeight-size)/2, size, size, 0, 0, 640, 640);
 
   const image = canvas.toDataURL("image/jpeg", .70);
+  if(image.length > 900000){ toast("Image too large. Try again."); return; }
 
-  if(image.length > 900000){
-    toast("Selfie is too large. Please try again.");
-    return;
-  }
-
-  try{
+  try {
     const snap = await db.collection("users").doc(currentUser.uid).get();
     if(!snap.exists) return;
     const latest = snap.data();
-
-    const verified = isComplete({
-      ...latest,
-      photoData: image
-    });
+    const verified = isComplete({ ...latest, photoData: image });
 
     await db.collection("users").doc(currentUser.uid).update({
       photoData: image,
@@ -1651,130 +1149,113 @@ async function captureSelfie(){
 
     await loadOwnProfile();
     closeCamera();
-    toast("Selfie saved successfully.");
-  }catch(error){
-    toast(firebaseMessage(error));
+    $("removeSelfieBtn").style.display = "block";
+    toast("Selfie captured successfully!");
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 }
 
-
 async function removeSelfie(){
-  if(!confirm("Remove your selfie and verification?")) return;
-
-  try{
+  if(!confirm("Remove your selfie?")) return;
+  try {
     await db.collection("users").doc(currentUser.uid).update({
       photoData: "",
       verified: false,
       lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
     await loadOwnProfile();
+    $("removeSelfieBtn").style.display = "none";
     toast("Selfie removed.");
-  }catch(error){
-    toast(firebaseMessage(error));
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 }
 
+function startChat(){
+  if(!viewedUser) return;
+  toast(`Opening chat with ${viewedUser.name}...`);
+}
 
 async function loadContacts(){
   const box = $("contactsList");
   box.innerHTML = `<div class="loading">Loading users...</div>`;
-
-  try{
+  try {
     const snapshot = await db.collection("users").limit(100).get();
     box.innerHTML = "";
     let count = 0;
-
-    snapshot.forEach(doc=>{
+    snapshot.forEach(doc => {
       if(doc.id === currentUser.uid) return;
       const user = doc.data();
       count++;
+      const el = document.createElement("div");
+      el.className = "item";
+      const img = safeImage(user.photoData);
+      const badge = user.verified ? `<img src="verified.png" alt="Verified" style="width:14px;height:14px;vertical-align:middle;margin-left:4px;">` : "";
 
-      const element = document.createElement("div");
-      element.className = "item";
-      const image = safeImage(user.photoData);
-
-      element.innerHTML = `
+      el.innerHTML = `
         <div class="avatar">
-          ${image ? `<img src="${image}" alt="">` : `<i class="fa-solid fa-user"></i>`}
+          ${img ? `<img src="${img}" alt="">` : `<i class="fa-solid fa-user"></i>`}
         </div>
         <div class="item-info">
-          <div class="item-name">
-            ${escapeHTML(user.name || "VEIL User")}
-            ${user.verified ? `<span style="color:#38bdf8">✓</span>` : ""}
-          </div>
+          <div class="item-name">${escapeHTML(user.name || "VEIL User")} ${badge}</div>
           <div class="item-sub">${escapeHTML(user.username || "")}</div>
         </div>
       `;
 
-      element.onclick = ()=>{
+      el.onclick = () => {
         viewedUser = user;
         showScreen("profileScreen");
         renderProfile(user, false);
-        $("selfieSection").classList.add("hidden");
-        $("ownActions").classList.add("hidden");
       };
-
-      box.appendChild(element);
+      box.appendChild(el);
     });
-
-    if(count === 0){
-      box.innerHTML = `<div class="empty">No other users found.</div>`;
-    }
-  }catch(error){
-    box.innerHTML = `<div class="empty">${escapeHTML(firebaseMessage(error))}</div>`;
+    if(count === 0) box.innerHTML = `<div class="empty">No other users found.</div>`;
+  } catch(e) {
+    box.innerHTML = `<div class="empty">${escapeHTML(firebaseMessage(e))}</div>`;
   }
 }
-
 
 $("searchInput").oninput = async function(){
   const query = this.value.trim().toLowerCase();
   const box = $("searchResults");
   box.innerHTML = "";
   if(!query) return;
-
-  try{
+  try {
     const snapshot = await db.collection("users").limit(100).get();
-    snapshot.forEach(doc=>{
+    snapshot.forEach(doc => {
       if(doc.id === currentUser.uid) return;
       const user = doc.data();
       const text = [user.name, user.username, user.email].join(" ").toLowerCase();
-
       if(!text.includes(query)) return;
 
-      const element = document.createElement("div");
-      element.className = "item";
-      const image = safeImage(user.photoData);
+      const el = document.createElement("div");
+      el.className = "item";
+      const img = safeImage(user.photoData);
+      const badge = user.verified ? `<img src="verified.png" alt="Verified" style="width:14px;height:14px;vertical-align:middle;margin-left:4px;">` : "";
 
-      element.innerHTML = `
+      el.innerHTML = `
         <div class="avatar">
-          ${image ? `<img src="${image}" alt="">` : `<i class="fa-solid fa-user"></i>`}
+          ${img ? `<img src="${img}" alt="">` : `<i class="fa-solid fa-user"></i>`}
         </div>
         <div class="item-info">
-          <div class="item-name">${escapeHTML(user.name || "VEIL User")}</div>
+          <div class="item-name">${escapeHTML(user.name || "VEIL User")} ${badge}</div>
           <div class="item-sub">${escapeHTML(user.username || "")}</div>
         </div>
       `;
-
-      element.onclick = ()=>{
+      el.onclick = () => {
         viewedUser = user;
         showScreen("profileScreen");
         renderProfile(user, false);
-        $("selfieSection").classList.add("hidden");
-        $("ownActions").classList.add("hidden");
       };
-
-      box.appendChild(element);
+      box.appendChild(el);
     });
-  }catch(error){
-    toast(firebaseMessage(error));
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 };
 
-
 function switchTab(tab){
-  $("selfieSection").classList.remove("hidden");
-  $("ownActions").classList.remove("hidden");
-
   if(tab === "home") showScreen("homeScreen");
   if(tab === "contacts"){
     showScreen("contactsScreen");
@@ -1783,26 +1264,21 @@ function switchTab(tab){
   if(tab === "settings") showScreen("settingsScreen");
 }
 
-
 async function logout(){
-  try{
+  try {
     await auth.signOut();
-  }catch(error){
-    toast(firebaseMessage(error));
+  } catch(e) {
+    toast(firebaseMessage(e));
   }
 }
 
-
-window.addEventListener("beforeunload", ()=>{
-  if(cameraStream){
-    cameraStream.getTracks().forEach(track=>track.stop());
-  }
+window.addEventListener("beforeunload", () => {
+  if(cameraStream) cameraStream.getTracks().forEach(t => t.stop());
 });
 
-
 loadDistricts();
-
 </script>
 
 </body>
 </html>
+
