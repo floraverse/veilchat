@@ -38,7 +38,7 @@ body{
     linear-gradient(135deg,#020617,#0f172a,#172554,#020617);
 }
 
-button,input,textarea{
+button,input,textarea,select{
   font:inherit;
 }
 
@@ -396,7 +396,8 @@ main::-webkit-scrollbar{
 }
 
 .field input,
-.field textarea{
+.field textarea,
+.field select{
   width:100%;
   padding:12px;
   border-radius:12px;
@@ -404,6 +405,10 @@ main::-webkit-scrollbar{
   color:#fff;
   background:rgba(255,255,255,.045);
   border:1px solid rgba(255,255,255,.1);
+}
+
+.field select{
+  background:#0f172a;
 }
 
 .field textarea{
@@ -436,6 +441,7 @@ main::-webkit-scrollbar{
   width:100%;
   border-radius:14px;
   background:#000;
+  transform:scaleX(-1);
 }
 
 .camera-actions{
@@ -878,6 +884,20 @@ nav button.active{
 
       </div>
 
+      <div class="detail">
+
+        <div class="label">
+          LOCATION (BANGLADESH)
+        </div>
+
+        <div
+          id="profileLocation"
+          class="value">
+          Not provided
+        </div>
+
+      </div>
+
 
       <div class="detail">
 
@@ -918,11 +938,12 @@ nav button.active{
 
         <div class="field">
 
-          <label>Full Name</label>
+          <label>Full Name *</label>
 
           <input
             id="editName"
             type="text"
+            maxlength="80"
             autocomplete="name">
 
         </div>
@@ -930,11 +951,12 @@ nav button.active{
 
         <div class="field">
 
-          <label>Username</label>
+          <label>Username *</label>
 
           <input
             id="editUsername"
             type="text"
+            maxlength="25"
             placeholder="@username"
             autocomplete="off">
 
@@ -943,11 +965,12 @@ nav button.active{
 
         <div class="field">
 
-          <label>Email</label>
+          <label>Email *</label>
 
           <input
             id="editEmail"
             type="email"
+            maxlength="120"
             autocomplete="email">
 
         </div>
@@ -955,11 +978,12 @@ nav button.active{
 
         <div class="field">
 
-          <label>Phone</label>
+          <label>Phone *</label>
 
           <input
             id="editPhone"
             type="tel"
+            maxlength="20"
             autocomplete="tel">
 
         </div>
@@ -967,7 +991,7 @@ nav button.active{
 
         <div class="field">
 
-          <label>Bio</label>
+          <label>Bio *</label>
 
           <textarea
             id="editBio"
@@ -976,9 +1000,31 @@ nav button.active{
 
         </div>
 
+        <div class="field">
+          <label>District *</label>
+          <select id="district">
+            <option value="">Select District</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Thana / Upazila *</label>
+          <select id="upazila" disabled>
+            <option value="">Select Thana / Upazila</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Postal Code *</label>
+          <select id="postalCode" disabled>
+            <option value="">Select Postal Code</option>
+          </select>
+        </div>
+
 
         <button
           class="btn"
+          style="margin-top:10px;"
           onclick="saveProfile()">
 
           Save Profile
@@ -994,9 +1040,7 @@ nav button.active{
 
           <br>
 
-          Name, Username, Email, Phone and Bio
-          must all be completed before a selfie
-          can verify the profile.
+          Name, Username, Email, Phone, Bio এবং সঠিক লোকেশন ফিল্ডগুলো পূরণ করার পর নিচে থেকে সেলফি তুলুন।
 
         </div>
 
@@ -1089,7 +1133,6 @@ nav button.active{
 
 /* =========================================================
    FIREBASE CONFIG
-   DO NOT CHANGE
 ========================================================= */
 
 const firebaseConfig = {
@@ -1103,22 +1146,57 @@ const firebaseConfig = {
 };
 
 
-/* =========================================================
-   FIREBASE INITIALIZATION
-========================================================= */
-
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
-
 const db = firebase.firestore();
 
-const googleProvider =
-  new firebase.auth.GoogleAuthProvider();
-
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt:"select_account"
 });
+
+
+/* =========================================================
+   BANGLADESH DATASET
+========================================================= */
+
+const BD = {
+  "Dhaka":{
+    "Dhanmondi":["1205","1209"],
+    "Gulshan":["1212"],
+    "Uttara":["1230"],
+    "Mirpur":["1216"],
+    "Tejgaon":["1208"],
+    "Savar":["1340"],
+    "Keraniganj":["1310"]
+  },
+  "Chattogram":{
+    "Kotwali":["4000"],
+    "Panchlaish":["4203"],
+    "Hathazari":["4330"],
+    "Sitakunda":["4310"]
+  },
+  "Rajshahi":{
+    "Boalia":["6000"],
+    "Rajpara":["6201"],
+    "Paba":["6211"]
+  },
+  "Khulna":{
+    "Kotwali":["9100"],
+    "Sonadanga":["9000"],
+    "Khalishpur":["9000"]
+  },
+  "Sylhet":{
+    "Kotwali":["3100"],
+    "South Surma":["3102"],
+    "Beanibazar":["3170"]
+  },
+  "Comilla":{
+    "Adarsha Sadar":["3500"],
+    "Daudkandi":["3516"]
+  }
+};
 
 
 /* =========================================================
@@ -1126,11 +1204,8 @@ googleProvider.setCustomParameters({
 ========================================================= */
 
 let currentUser = null;
-
 let currentProfile = null;
-
 let viewedUser = null;
-
 let cameraStream = null;
 
 
@@ -1144,37 +1219,25 @@ function $(id){
 
 
 function toast(message){
-
   const box = $("toast");
-
   box.textContent = message;
-
   box.classList.add("show");
-
   clearTimeout(window.toastTimer);
-
   window.toastTimer = setTimeout(()=>{
     box.classList.remove("show");
   },3000);
-
 }
 
 
 function showScreen(id){
-
-  document
-    .querySelectorAll(".screen")
-    .forEach(screen=>{
-      screen.classList.remove("active");
-    });
-
+  document.querySelectorAll(".screen").forEach(screen=>{
+    screen.classList.remove("active");
+  });
   $(id).classList.add("active");
-
 }
 
 
 function escapeHTML(value){
-
   return String(value ?? "")
     .replace(/[&<>"']/g,char=>({
       "&":"&amp;",
@@ -1183,97 +1246,115 @@ function escapeHTML(value){
       '"':"&quot;",
       "'":"&#039;"
     }[char]));
-
 }
 
 
 function safeImage(value){
-
-  if(
-    typeof value !== "string"
-  ){
+  if(typeof value !== "string"){
     return "";
   }
-
-  if(
-    !value.startsWith("data:image/")
-  ){
+  if(!value.startsWith("data:image/")){
     return "";
   }
-
   return value;
-
 }
 
 
 function makeUsername(name){
-
-  const clean =
-    String(name || "user")
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g,"")
-      .slice(0,18);
-
+  const clean = String(name || "user")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g,"")
+    .slice(0,18);
   return "@" + (clean || "user");
-
 }
 
 
-function isComplete(profile){
+function loadDistricts(){
+  const select = $("district");
+  select.innerHTML = '<option value="">Select District</option>';
+  Object.keys(BD).sort().forEach(district=>{
+    const option = document.createElement("option");
+    option.value = district;
+    option.textContent = district;
+    select.appendChild(option);
+  });
+}
 
+
+$("district").onchange = function(){
+  const district = this.value;
+  const upazila = $("upazila");
+  const postal = $("postalCode");
+
+  upazila.innerHTML = '<option value="">Select Thana / Upazila</option>';
+  postal.innerHTML = '<option value="">Select Postal Code</option>';
+  postal.disabled = true;
+
+  if(!district){
+    upazila.disabled = true;
+    return;
+  }
+
+  const areas = BD[district] || {};
+  Object.keys(areas).sort().forEach(area=>{
+    const option = document.createElement("option");
+    option.value = area;
+    option.textContent = area;
+    upazila.appendChild(option);
+  });
+  upazila.disabled = false;
+};
+
+
+$("upazila").onchange = function(){
+  const district = $("district").value;
+  const area = this.value;
+  const postal = $("postalCode");
+
+  postal.innerHTML = '<option value="">Select Postal Code</option>';
+  if(!district || !area){
+    postal.disabled = true;
+    return;
+  }
+
+  const codes = BD[district]?.[area] || [];
+  codes.forEach(code=>{
+    const option = document.createElement("option");
+    option.value = code;
+    option.textContent = code;
+    postal.appendChild(option);
+  });
+  postal.disabled = codes.length === 0;
+};
+
+
+function isComplete(profile){
   if(!profile){
     return false;
   }
-
   return Boolean(
     String(profile.name || "").trim() &&
     String(profile.username || "").trim() &&
     String(profile.email || "").trim() &&
     String(profile.phone || "").trim() &&
-    String(profile.bio || "").trim()
+    String(profile.bio || "").trim() &&
+    String(profile.district || "").trim() &&
+    String(profile.upazila || "").trim() &&
+    String(profile.postalCode || "").trim() &&
+    String(profile.photoData || "").trim()
   );
-
 }
 
 
 function firebaseMessage(error){
-
   console.error(error);
-
   const code = error?.code || "";
-
   const messages = {
-
-    "auth/popup-closed-by-user":
-      "Google login window was closed.",
-
-    "auth/popup-blocked":
-      "Google login popup was blocked.",
-
-    "auth/network-request-failed":
-      "Network connection failed.",
-
-    "auth/api-key-not-valid":
-      "Firebase API key was rejected by Firebase.",
-
-    "permission-denied":
-      "Firestore permission denied. Check Firestore Rules.",
-
-    "failed-precondition":
-      "Firebase operation requires another condition.",
-
-    "unavailable":
-      "Firebase is temporarily unavailable.",
-
-    "auth/requires-recent-login":
-      "Please login again and try again."
-
+    "auth/popup-closed-by-user":"Google login window was closed.",
+    "auth/popup-blocked":"Google login popup was blocked.",
+    "permission-denied":"Firestore permission denied. Check Firestore Rules."
   };
-
-  return messages[code]
-    || error?.message
-    || "Firebase operation failed.";
-
+  return messages[code] || error?.message || "Firebase operation failed.";
 }
 
 
@@ -1282,19 +1363,11 @@ function firebaseMessage(error){
 ========================================================= */
 
 $("googleLogin").onclick = async ()=>{
-
   try{
-
-    await auth.signInWithPopup(
-      googleProvider
-    );
-
+    await auth.signInWithPopup(googleProvider);
   }catch(error){
-
     toast(firebaseMessage(error));
-
   }
-
 };
 
 
@@ -1303,1253 +1376,431 @@ $("googleLogin").onclick = async ()=>{
 ========================================================= */
 
 auth.onAuthStateChanged(async user=>{
-
   if(!user){
-
     currentUser = null;
-
     currentProfile = null;
-
     showScreen("loginScreen");
-
     return;
-
   }
-
 
   currentUser = user;
-
-  $("accountEmail").textContent =
-    user.email || "Google account";
-
+  $("accountEmail").textContent = user.email || "Google account";
 
   try{
-
     await ensureProfile();
-
     await loadOwnProfile();
-
     showScreen("homeScreen");
-
   }catch(error){
-
     toast(firebaseMessage(error));
-
   }
-
 });
 
 
-/* =========================================================
-   ENSURE USER PROFILE
-========================================================= */
-
 async function ensureProfile(){
-
-  const ref =
-    db.collection("users")
-      .doc(currentUser.uid);
-
-  const snap =
-    await ref.get();
-
+  const ref = db.collection("users").doc(currentUser.uid);
+  const snap = await ref.get();
 
   if(!snap.exists){
-
     const profile = {
-
-      uid:currentUser.uid,
-
-      name:
-        currentUser.displayName
-        || "VEIL User",
-
-      username:
-        makeUsername(
-          currentUser.displayName
-          || "user"
-        ),
-
-      email:
-        currentUser.email
-        || "",
-
-      phone:"",
-
-      bio:"",
-
-      photoData:"",
-
-      verified:false,
-
-      createdAt:
-        firebase.firestore.FieldValue
-          .serverTimestamp(),
-
-      lastActive:
-        firebase.firestore.FieldValue
-          .serverTimestamp()
-
+      uid: currentUser.uid,
+      name: currentUser.displayName || "VEIL User",
+      username: makeUsername(currentUser.displayName || "user"),
+      email: currentUser.email || "",
+      phone: "",
+      bio: "",
+      district: "",
+      upazila: "",
+      postalCode: "",
+      photoData: "",
+      verified: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastActive: firebase.firestore.FieldValue.serverTimestamp()
     };
-
-
     await ref.set(profile);
-
     currentProfile = profile;
-
-  }else{
-
+  } else {
     await ref.update({
-
-      lastActive:
-        firebase.firestore.FieldValue
-          .serverTimestamp()
-
+      lastActive: firebase.firestore.FieldValue.serverTimestamp()
     });
-
-    currentProfile =
-      snap.data();
-
+    currentProfile = snap.data();
   }
-
 }
 
 
-/* =========================================================
-   LOAD OWN PROFILE
-========================================================= */
-
 async function loadOwnProfile(){
-
-  const snap =
-    await db
-      .collection("users")
-      .doc(currentUser.uid)
-      .get();
-
-
+  const snap = await db.collection("users").doc(currentUser.uid).get();
   if(!snap.exists){
     return;
   }
-
-
-  currentProfile =
-    snap.data();
-
-  renderProfile(
-    currentProfile,
-    true
-  );
-
-  renderMiniAvatar(
-    currentProfile.photoData
-  );
-
+  currentProfile = snap.data();
+  renderProfile(currentProfile, true);
+  renderMiniAvatar(currentProfile.photoData);
 }
 
-
-/* =========================================================
-   MINI AVATAR
-========================================================= */
 
 function renderMiniAvatar(data){
-
-  const image =
-    safeImage(data);
-
-
+  const image = safeImage(data);
   if(image){
-
-    $("homeAvatar").innerHTML = `
-      <img src="${image}" alt="Profile">
-    `;
-
-  }else{
-
-    $("homeAvatar").innerHTML =
-      `<i class="fa-solid fa-user"></i>`;
-
+    $("homeAvatar").innerHTML = `<img src="${image}" alt="Profile">`;
+  } else {
+    $("homeAvatar").innerHTML = `<i class="fa-solid fa-user"></i>`;
   }
-
 }
 
 
-/* =========================================================
-   RENDER PROFILE
-========================================================= */
+function renderProfile(profile, isOwn){
+  $("profileTitle").textContent = isOwn ? "My Profile" : "Profile";
+  $("profileName").textContent = profile.name || "VEIL User";
+  $("profileUsername").textContent = profile.username || "@username";
+  $("profileBio").textContent = profile.bio || "No bio";
+  $("profileEmail").textContent = profile.email || "Not provided";
+  $("profilePhone").textContent = profile.phone || "Not provided";
 
-function renderProfile(profile,isOwn){
-
-  $("profileTitle").textContent =
-    isOwn
-      ? "My Profile"
-      : "Profile";
-
-
-  $("profileName").textContent =
-    profile.name || "VEIL User";
-
-
-  $("profileUsername").textContent =
-    profile.username || "@username";
-
-
-  $("profileBio").textContent =
-    profile.bio || "No bio";
-
-
-  $("profileEmail").textContent =
-    profile.email || "Not provided";
-
-
-  $("profilePhone").textContent =
-    profile.phone || "Not provided";
-
+  if(profile.district && profile.upazila){
+    $("profileLocation").textContent = `${profile.upazila}, ${profile.district} (${profile.postalCode || ''})`;
+  } else {
+    $("profileLocation").textContent = "Not provided";
+  }
 
   if(profile.verified){
-
-    $("profileStatus").innerHTML =
-      `<span style="color:#38bdf8">
-        Selfie Verified ✓
-      </span>`;
-
-  }else{
-
-    $("profileStatus").textContent =
-      "Not verified";
-
+    $("profileStatus").innerHTML = `<span style="color:#38bdf8">Selfie Verified ✓</span>`;
+  } else {
+    $("profileStatus").textContent = "Not verified";
   }
 
+  $("editName").value = profile.name || "";
+  $("editUsername").value = profile.username || "";
+  $("editEmail").value = profile.email || "";
+  $("editPhone").value = profile.phone || "";
+  $("editBio").value = profile.bio || "";
 
-  $("editName").value =
-    profile.name || "";
+  if(profile.district){
+    $("district").value = profile.district;
+    $("district").dispatchEvent(new Event("change"));
+  }
+  if(profile.upazila){
+    $("upazila").value = profile.upazila;
+    $("upazila").dispatchEvent(new Event("change"));
+  }
+  if(profile.postalCode){
+    $("postalCode").value = profile.postalCode;
+  }
 
-
-  $("editUsername").value =
-    profile.username || "";
-
-
-  $("editEmail").value =
-    profile.email || "";
-
-
-  $("editPhone").value =
-    profile.phone || "";
-
-
-  $("editBio").value =
-    profile.bio || "";
-
-
-  renderProfilePhoto(
-    profile.photoData
-  );
-
-
-  $("editBox").style.display =
-    "none";
-
-
-  $("removeSelfieBtn").style.display =
-    safeImage(profile.photoData)
-      ? "block"
-      : "none";
-
+  renderProfilePhoto(profile.photoData);
+  $("editBox").style.display = "none";
+  $("removeSelfieBtn").style.display = safeImage(profile.photoData) ? "block" : "none";
 }
 
-
-/* =========================================================
-   PROFILE PHOTO
-========================================================= */
 
 function renderProfilePhoto(data){
-
-  const image =
-    safeImage(data);
-
-
-  const box =
-    $("photoContainer");
-
-
+  const image = safeImage(data);
+  const box = $("photoContainer");
   if(image){
-
     box.className = "";
-
-    box.innerHTML = `
-      <img
-        class="photo"
-        src="${image}"
-        alt="Profile">
-    `;
-
-  }else{
-
-    box.className =
-      "photo-empty";
-
-    box.innerHTML =
-      `<i class="fa-solid fa-user"></i>`;
-
+    box.innerHTML = `<img class="photo" src="${image}" alt="Profile">`;
+  } else {
+    box.className = "photo-empty";
+    box.innerHTML = `<i class="fa-solid fa-user"></i>`;
   }
-
 }
 
 
-/* =========================================================
-   PROFILE NAVIGATION
-========================================================= */
-
 function openOwnProfile(){
-
   viewedUser = null;
-
   showScreen("profileScreen");
-
   loadOwnProfile();
-
 }
 
 
 function closeProfile(){
-
   viewedUser = null;
-
   showScreen("homeScreen");
-
 }
 
-
-/* =========================================================
-   EDIT PROFILE
-========================================================= */
 
 function toggleEdit(){
-
-  const box =
-    $("editBox");
-
-
-  box.style.display =
-    box.style.display === "block"
-      ? "none"
-      : "block";
-
+  const box = $("editBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
 
-/* =========================================================
-   SAVE PROFILE
-========================================================= */
-
 async function saveProfile(){
-
   if(!currentUser){
     return;
   }
 
+  const name = $("editName").value.trim();
+  let username = $("editUsername").value.trim().toLowerCase();
+  const email = $("editEmail").value.trim();
+  const phone = $("editPhone").value.trim();
+  const bio = $("editBio").value.trim();
+  const district = $("district").value;
+  const upazila = $("upazila").value;
+  const postalCode = $("postalCode").value;
 
-  const name =
-    $("editName")
-      .value
-      .trim();
-
-
-  let username =
-    $("editUsername")
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const email =
-    $("editEmail")
-      .value
-      .trim();
-
-
-  const phone =
-    $("editPhone")
-      .value
-      .trim();
-
-
-  const bio =
-    $("editBio")
-      .value
-      .trim();
-
-
-  if(!name){
-
-    toast("Name is required.");
-
-    return;
-
-  }
-
-
-  if(!username){
-
-    toast("Username is required.");
-
-    return;
-
-  }
-
-
-  if(!username.startsWith("@")){
-
-    username = "@" + username;
-
-  }
-
-
-  username =
-    username
-      .replace(/[^@a-z0-9_]/g,"")
-      .slice(0,25);
-
-
-  if(username === "@"){
-
-    toast("Enter a valid username.");
-
-    return;
-
-  }
-
-
-  if(!email){
-
-    toast("Email is required.");
-
-    return;
-
-  }
-
-
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-
-    toast("Enter a valid email.");
-
-    return;
-
-  }
-
-
-  if(!phone){
-
-    toast("Phone number is required.");
-
-    return;
-
-  }
-
-
-  if(!bio){
-
-    toast("Bio is required.");
-
-    return;
-
-  }
-
+  if(!name){ toast("Name is required."); return; }
+  if(!username){ toast("Username is required."); return; }
+  if(!username.startsWith("@")) username = "@" + username;
+  if(!email){ toast("Email is required."); return; }
+  if(!phone){ toast("Phone number is required."); return; }
+  if(!bio){ toast("Bio is required."); return; }
+  if(!district || !upazila || !postalCode){ toast("Complete all location fields."); return; }
 
   try{
+    const verified = isComplete({
+      ...currentProfile,
+      name, username, email, phone, bio, district, upazila, postalCode
+    });
 
-    /*
-      If required information changes,
-      previous verification is removed.
-    */
-
-    const verified =
-      Boolean(
-        currentProfile?.photoData
-      ) &&
-      Boolean(
-        currentProfile?.verified
-      );
-
-
-    await db
-      .collection("users")
-      .doc(currentUser.uid)
-      .update({
-
-        name:name,
-
-        username:username,
-
-        email:email,
-
-        phone:phone,
-
-        bio:bio,
-
-        verified:
-          verified,
-
-        lastActive:
-          firebase.firestore.FieldValue
-            .serverTimestamp()
-
-      });
-
+    await db.collection("users").doc(currentUser.uid).update({
+      name,
+      username,
+      email,
+      phone,
+      bio,
+      district,
+      upazila,
+      postalCode,
+      verified,
+      lastActive: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
     await loadOwnProfile();
-
-
-    toast(
-      verified
-        ? "Profile updated."
-        : "Profile saved. Take a selfie to verify."
-    );
-
+    toast(verified ? "Profile updated & verified." : "Profile saved.");
   }catch(error){
-
-    toast(
-      firebaseMessage(error)
-    );
-
+    toast(firebaseMessage(error));
   }
-
 }
 
-
-/* =========================================================
-   CAMERA
-========================================================= */
 
 async function openCamera(){
-
-  if(!isComplete(currentProfile)){
-
-    toast(
-      "Complete Name, Username, Email, Phone and Bio first."
-    );
-
-    $("editBox").style.display =
-      "block";
-
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast("Camera is not supported.");
     return;
-
   }
-
-
-  if(
-    !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
-  ){
-
-    toast(
-      "Camera is not supported."
-    );
-
-    return;
-
-  }
-
 
   try{
-
-    cameraStream =
-      await navigator.mediaDevices
-        .getUserMedia({
-
-          video:{
-            facingMode:"user",
-            width:{ideal:1280},
-            height:{ideal:1280}
-          },
-
-          audio:false
-
-        });
-
-
-    $("cameraVideo").srcObject =
-      cameraStream;
-
-
-    $("cameraBox").style.display =
-      "block";
-
-
-    $("takeSelfieBtn").style.display =
-      "none";
-
-
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:"user", width:{ideal:1280}, height:{ideal:1280} },
+      audio:false
+    });
+    $("cameraVideo").srcObject = cameraStream;
+    $("cameraBox").style.display = "block";
+    $("takeSelfieBtn").style.display = "none";
   }catch(error){
-
-    console.error(error);
-
-    toast(
-      "Camera permission was denied."
-    );
-
+    toast("Camera permission was denied.");
   }
-
 }
 
-
-/* =========================================================
-   CLOSE CAMERA
-========================================================= */
 
 function closeCamera(){
-
   if(cameraStream){
-
-    cameraStream
-      .getTracks()
-      .forEach(track=>{
-        track.stop();
-      });
-
+    cameraStream.getTracks().forEach(track=>track.stop());
   }
-
-
   cameraStream = null;
-
-  $("cameraVideo").srcObject =
-    null;
-
-  $("cameraBox").style.display =
-    "none";
-
-  $("takeSelfieBtn").style.display =
-    "block";
-
+  $("cameraVideo").srcObject = null;
+  $("cameraBox").style.display = "none";
+  $("takeSelfieBtn").style.display = "block";
 }
 
-
-/* =========================================================
-   CAPTURE SELFIE
-========================================================= */
 
 async function captureSelfie(){
-
   if(!cameraStream){
-
     toast("Camera is not active.");
-
     return;
-
   }
 
-
-  const video =
-    $("cameraVideo");
-
-
+  const video = $("cameraVideo");
   if(!video.videoWidth){
-
     toast("Camera is not ready.");
-
     return;
-
   }
 
-
-  /*
-    Square selfie.
-    Image stays inside Firestore
-    as data:image/jpeg.
-  */
-
-  const size =
-    Math.min(
-      video.videoWidth,
-      video.videoHeight
-    );
-
-
-  const canvas =
-    document.createElement("canvas");
-
-
+  const size = Math.min(video.videoWidth, video.videoHeight);
+  const canvas = document.createElement("canvas");
   canvas.width = 640;
-
   canvas.height = 640;
-
-
-  const ctx =
-    canvas.getContext("2d");
-
-
-  /*
-    Mirror selfie so it looks
-    natural like a front camera.
-  */
+  const ctx = canvas.getContext("2d");
 
   ctx.translate(640,0);
-
   ctx.scale(-1,1);
+  ctx.drawImage(video, (video.videoWidth-size)/2, (video.videoHeight-size)/2, size, size, 0, 0, 640, 640);
 
-
-  ctx.drawImage(
-
-    video,
-
-    (video.videoWidth-size)/2,
-
-    (video.videoHeight-size)/2,
-
-    size,
-
-    size,
-
-    0,
-    0,
-    640,
-    640
-
-  );
-
-
-  const image =
-    canvas.toDataURL(
-      "image/jpeg",
-      .70
-    );
-
-
-  /*
-    Prevent extremely large
-    Firestore document.
-  */
+  const image = canvas.toDataURL("image/jpeg", .70);
 
   if(image.length > 900000){
-
-    toast(
-      "Selfie is too large. Please try again."
-    );
-
+    toast("Selfie is too large. Please try again.");
     return;
-
   }
-
 
   try{
+    const snap = await db.collection("users").doc(currentUser.uid).get();
+    if(!snap.exists) return;
+    const latest = snap.data();
 
-    /*
-      Re-read profile before verification.
-    */
+    const verified = isComplete({
+      ...latest,
+      photoData: image
+    });
 
-    const snap =
-      await db
-        .collection("users")
-        .doc(currentUser.uid)
-        .get();
-
-
-    if(!snap.exists){
-
-      toast("Profile not found.");
-
-      return;
-
-    }
-
-
-    const latest =
-      snap.data();
-
-
-    if(!isComplete(latest)){
-
-      toast(
-        "Complete all profile information first."
-      );
-
-      return;
-
-    }
-
-
-    /*
-      SELFIE + COMPLETE PROFILE
-      = VERIFIED
-    */
-
-    await db
-      .collection("users")
-      .doc(currentUser.uid)
-      .update({
-
-        photoData:image,
-
-        verified:true,
-
-        lastActive:
-          firebase.firestore.FieldValue
-            .serverTimestamp()
-
-      });
-
+    await db.collection("users").doc(currentUser.uid).update({
+      photoData: image,
+      verified: verified,
+      lastActive: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
     await loadOwnProfile();
-
     closeCamera();
-
-
-    toast(
-      "Selfie saved. Profile is verified."
-    );
-
+    toast("Selfie saved successfully.");
   }catch(error){
-
-    toast(
-      firebaseMessage(error)
-    );
-
+    toast(firebaseMessage(error));
   }
-
 }
 
-
-/* =========================================================
-   REMOVE SELFIE
-========================================================= */
 
 async function removeSelfie(){
-
-  if(
-    !confirm(
-      "Remove your selfie and verification?"
-    )
-  ){
-
-    return;
-
-  }
-
+  if(!confirm("Remove your selfie and verification?")) return;
 
   try{
-
-    await db
-      .collection("users")
-      .doc(currentUser.uid)
-      .update({
-
-        photoData:"",
-
-        verified:false,
-
-        lastActive:
-          firebase.firestore.FieldValue
-            .serverTimestamp()
-
-      });
-
-
+    await db.collection("users").doc(currentUser.uid).update({
+      photoData: "",
+      verified: false,
+      lastActive: firebase.firestore.FieldValue.serverTimestamp()
+    });
     await loadOwnProfile();
-
-
-    toast(
-      "Selfie removed. Verification removed."
-    );
-
+    toast("Selfie removed.");
   }catch(error){
-
-    toast(
-      firebaseMessage(error)
-    );
-
+    toast(firebaseMessage(error));
   }
-
 }
 
-
-/* =========================================================
-   CONTACTS
-========================================================= */
 
 async function loadContacts(){
-
-  const box =
-    $("contactsList");
-
-
-  box.innerHTML =
-    `<div class="loading">
-      Loading users...
-    </div>`;
-
+  const box = $("contactsList");
+  box.innerHTML = `<div class="loading">Loading users...</div>`;
 
   try{
-
-    const snapshot =
-      await db
-        .collection("users")
-        .limit(100)
-        .get();
-
-
+    const snapshot = await db.collection("users").limit(100).get();
     box.innerHTML = "";
-
-
     let count = 0;
 
-
     snapshot.forEach(doc=>{
-
-      if(
-        doc.id === currentUser.uid
-      ){
-        return;
-      }
-
-
-      const user =
-        doc.data();
-
-
+      if(doc.id === currentUser.uid) return;
+      const user = doc.data();
       count++;
 
-
-      const element =
-        document.createElement("div");
-
-
-      element.className =
-        "item";
-
-
-      const image =
-        safeImage(
-          user.photoData
-        );
-
+      const element = document.createElement("div");
+      element.className = "item";
+      const image = safeImage(user.photoData);
 
       element.innerHTML = `
-
         <div class="avatar">
-
-          ${
-            image
-              ? `<img src="${image}" alt="">`
-              : `<i class="fa-solid fa-user"></i>`
-          }
-
+          ${image ? `<img src="${image}" alt="">` : `<i class="fa-solid fa-user"></i>`}
         </div>
-
         <div class="item-info">
-
           <div class="item-name">
-            ${escapeHTML(
-              user.name || "VEIL User"
-            )}
-            ${
-              user.verified
-                ? `<span style="color:#38bdf8">✓</span>`
-                : ""
-            }
+            ${escapeHTML(user.name || "VEIL User")}
+            ${user.verified ? `<span style="color:#38bdf8">✓</span>` : ""}
           </div>
-
-          <div class="item-sub">
-            ${escapeHTML(
-              user.username || ""
-            )}
-          </div>
-
+          <div class="item-sub">${escapeHTML(user.username || "")}</div>
         </div>
-
       `;
 
-
-      /*
-        Profile viewing is kept separate.
-        Messaging will be added later.
-      */
-
       element.onclick = ()=>{
-
         viewedUser = user;
-
-        showScreen(
-          "profileScreen"
-        );
-
-        renderProfile(
-          user,
-          false
-        );
-
-        $("selfieSection")
-          .classList
-          .add("hidden");
-
-        $("ownActions")
-          .classList
-          .add("hidden");
-
+        showScreen("profileScreen");
+        renderProfile(user, false);
+        $("selfieSection").classList.add("hidden");
+        $("ownActions").classList.add("hidden");
       };
 
-
       box.appendChild(element);
-
     });
 
-
     if(count === 0){
-
-      box.innerHTML =
-        `<div class="empty">
-          No other users found.
-        </div>`;
-
+      box.innerHTML = `<div class="empty">No other users found.</div>`;
     }
-
   }catch(error){
-
-    box.innerHTML =
-      `<div class="empty">
-        ${escapeHTML(
-          firebaseMessage(error)
-        )}
-      </div>`;
-
+    box.innerHTML = `<div class="empty">${escapeHTML(firebaseMessage(error))}</div>`;
   }
-
 }
 
 
-/* =========================================================
-   SEARCH
-========================================================= */
-
-$("searchInput").oninput =
-async function(){
-
-  const query =
-    this.value
-      .trim()
-      .toLowerCase();
-
-
-  const box =
-    $("searchResults");
-
-
+$("searchInput").oninput = async function(){
+  const query = this.value.trim().toLowerCase();
+  const box = $("searchResults");
   box.innerHTML = "";
-
-
-  if(!query){
-    return;
-  }
-
+  if(!query) return;
 
   try{
-
-    const snapshot =
-      await db
-        .collection("users")
-        .limit(100)
-        .get();
-
-
+    const snapshot = await db.collection("users").limit(100).get();
     snapshot.forEach(doc=>{
+      if(doc.id === currentUser.uid) return;
+      const user = doc.data();
+      const text = [user.name, user.username, user.email].join(" ").toLowerCase();
 
-      if(
-        doc.id === currentUser.uid
-      ){
-        return;
-      }
+      if(!text.includes(query)) return;
 
-
-      const user =
-        doc.data();
-
-
-      const text =
-        [
-          user.name,
-          user.username,
-          user.email
-        ]
-        .join(" ")
-        .toLowerCase();
-
-
-      if(
-        !text.includes(query)
-      ){
-        return;
-      }
-
-
-      const element =
-        document.createElement("div");
-
-
-      element.className =
-        "item";
-
-
-      const image =
-        safeImage(
-          user.photoData
-        );
-
+      const element = document.createElement("div");
+      element.className = "item";
+      const image = safeImage(user.photoData);
 
       element.innerHTML = `
-
         <div class="avatar">
-
-          ${
-            image
-              ? `<img src="${image}" alt="">`
-              : `<i class="fa-solid fa-user"></i>`
-          }
-
+          ${image ? `<img src="${image}" alt="">` : `<i class="fa-solid fa-user"></i>`}
         </div>
-
         <div class="item-info">
-
-          <div class="item-name">
-            ${escapeHTML(
-              user.name || "VEIL User"
-            )}
-          </div>
-
-          <div class="item-sub">
-            ${escapeHTML(
-              user.username || ""
-            )}
-          </div>
-
+          <div class="item-name">${escapeHTML(user.name || "VEIL User")}</div>
+          <div class="item-sub">${escapeHTML(user.username || "")}</div>
         </div>
-
       `;
 
-
       element.onclick = ()=>{
-
         viewedUser = user;
-
-        showScreen(
-          "profileScreen"
-        );
-
-        renderProfile(
-          user,
-          false
-        );
-
-        $("selfieSection")
-          .classList
-          .add("hidden");
-
-        $("ownActions")
-          .classList
-          .add("hidden");
-
+        showScreen("profileScreen");
+        renderProfile(user, false);
+        $("selfieSection").classList.add("hidden");
+        $("ownActions").classList.add("hidden");
       };
 
-
       box.appendChild(element);
-
     });
-
   }catch(error){
-
-    toast(
-      firebaseMessage(error)
-    );
-
+    toast(firebaseMessage(error));
   }
-
 };
 
 
-/* =========================================================
-   TABS
-========================================================= */
-
 function switchTab(tab){
+  $("selfieSection").classList.remove("hidden");
+  $("ownActions").classList.remove("hidden");
 
-  /*
-    Restore own-profile controls
-    when leaving another user's profile.
-  */
-
-  $("selfieSection")
-    .classList
-    .remove("hidden");
-
-  $("ownActions")
-    .classList
-    .remove("hidden");
-
-
-  if(tab === "home"){
-
-    showScreen("homeScreen");
-
-  }
-
-
+  if(tab === "home") showScreen("homeScreen");
   if(tab === "contacts"){
-
     showScreen("contactsScreen");
-
     loadContacts();
-
   }
-
-
-  if(tab === "settings"){
-
-    showScreen("settingsScreen");
-
-  }
-
+  if(tab === "settings") showScreen("settingsScreen");
 }
 
-
-/* =========================================================
-   LOGOUT
-========================================================= */
 
 async function logout(){
-
   try{
-
     await auth.signOut();
-
   }catch(error){
-
-    toast(
-      firebaseMessage(error)
-    );
-
+    toast(firebaseMessage(error));
   }
-
 }
 
 
-/* =========================================================
-   CLEANUP
-========================================================= */
-
-window.addEventListener(
-  "beforeunload",
-  ()=>{
-
-    if(cameraStream){
-
-      cameraStream
-        .getTracks()
-        .forEach(track=>{
-          track.stop();
-        });
-
-    }
-
+window.addEventListener("beforeunload", ()=>{
+  if(cameraStream){
+    cameraStream.getTracks().forEach(track=>track.stop());
   }
-);
+});
+
+
+loadDistricts();
 
 </script>
 
