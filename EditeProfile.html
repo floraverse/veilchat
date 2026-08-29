@@ -1,0 +1,2092 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>VEIL CHAT - Edit Profile</title>
+
+<link rel="icon" href="verified.png">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<style>
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ font-family:Segoe UI,Tahoma,sans-serif;
+ -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+ width:100%;
+ min-height:100%;
+}
+
+body{
+ color:#fff;
+ background:
+ radial-gradient(circle at 15% 10%,rgba(56,189,248,.28),transparent 30%),
+ radial-gradient(circle at 90% 85%,rgba(37,99,235,.25),transparent 35%),
+ linear-gradient(135deg,#020617,#0f172a,#172554,#020617);
+ background-size:400% 400%;
+ animation:bg 18s ease infinite;
+}
+
+@keyframes bg{
+ 0%,100%{background-position:0 50%}
+ 50%{background-position:100% 50%}
+}
+
+.app{
+ width:100%;
+ max-width:430px;
+ min-height:100dvh;
+ margin:auto;
+ background:rgba(15,23,42,.27);
+ backdrop-filter:blur(30px);
+ -webkit-backdrop-filter:blur(30px);
+ border:1px solid rgba(255,255,255,.12);
+}
+
+header{
+ height:64px;
+ display:flex;
+ align-items:center;
+ gap:15px;
+ padding:0 17px;
+ background:rgba(15,23,42,.25);
+ border-bottom:1px solid rgba(255,255,255,.09);
+ backdrop-filter:blur(25px);
+ position:sticky;
+ top:0;
+ z-index:20;
+}
+
+header i{
+ color:#94a3b8;
+ cursor:pointer;
+}
+
+header h2{
+ font-size:17px;
+}
+
+main{
+ padding:16px;
+ padding-bottom:30px;
+}
+
+.card{
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.09);
+ box-shadow:
+ inset 0 1px rgba(255,255,255,.035),
+ 0 8px 30px rgba(0,0,0,.08);
+ backdrop-filter:blur(20px);
+ border-radius:22px;
+ padding:18px;
+}
+
+.photo-area{
+ text-align:center;
+ margin-bottom:20px;
+}
+
+.photo-wrap{
+ width:120px;
+ height:120px;
+ margin:auto;
+ border-radius:50%;
+ position:relative;
+ overflow:hidden;
+ background:rgba(56,189,248,.12);
+ border:3px solid rgba(56,189,248,.45);
+}
+
+#profilePreview{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:none;
+}
+
+.photo-placeholder{
+ width:100%;
+ height:100%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:45px;
+ color:#38bdf8;
+}
+
+.camera-button{
+ margin-top:12px;
+ width:100%;
+ padding:12px;
+ border:1px solid rgba(56,189,248,.25);
+ border-radius:13px;
+ background:rgba(56,189,248,.09);
+ color:#38bdf8;
+ font-weight:650;
+ cursor:pointer;
+}
+
+.camera-button:disabled{
+ opacity:.5;
+}
+
+.camera-box{
+ display:none;
+ margin-top:14px;
+ padding:12px;
+ border-radius:18px;
+ background:rgba(0,0,0,.2);
+ border:1px solid rgba(255,255,255,.1);
+}
+
+#cameraVideo{
+ width:100%;
+ aspect-ratio:1/1;
+ object-fit:cover;
+ border-radius:15px;
+ background:#000;
+ transform:scaleX(-1);
+}
+
+.camera-actions{
+ display:flex;
+ gap:8px;
+ margin-top:10px;
+}
+
+button{
+ cursor:pointer;
+ font:inherit;
+}
+
+.camera-actions button{
+ flex:1;
+ padding:12px;
+ border-radius:12px;
+ border:0;
+ color:#fff;
+ background:linear-gradient(135deg,#38bdf8,#2563eb);
+}
+
+.camera-actions .cancel{
+ background:rgba(255,255,255,.07);
+ border:1px solid rgba(255,255,255,.1);
+}
+
+.input-box{
+ margin-bottom:14px;
+}
+
+.input-box label{
+ display:block;
+ color:#94a3b8;
+ font-size:11px;
+ margin-bottom:6px;
+}
+
+.input-box input,
+.input-box textarea,
+.input-box select{
+ width:100%;
+ padding:13px;
+ border-radius:13px;
+ color:#fff;
+ background:rgba(255,255,255,.045);
+ border:1px solid rgba(255,255,255,.09);
+ outline:none;
+}
+
+.input-box select{
+ background:#0f172a;
+}
+
+.input-box textarea{
+ min-height:95px;
+ resize:none;
+}
+
+.input-box input:focus,
+.input-box textarea:focus,
+.input-box select:focus{
+ border-color:rgba(56,189,248,.5);
+}
+
+.required{
+ color:#38bdf8;
+}
+
+.location-title{
+ color:#38bdf8;
+ font-size:12px;
+ font-weight:650;
+ margin:20px 0 10px;
+}
+
+.save-btn{
+ width:100%;
+ padding:14px;
+ border:0;
+ border-radius:14px;
+ color:#fff;
+ font-weight:700;
+ background:linear-gradient(135deg,#38bdf8,#2563eb);
+ box-shadow:0 8px 22px rgba(37,99,235,.28);
+}
+
+.status{
+ margin-top:12px;
+ padding:12px;
+ border-radius:13px;
+ font-size:12px;
+ line-height:1.5;
+ display:none;
+}
+
+.status.info{
+ display:block;
+ background:rgba(56,189,248,.07);
+ border:1px solid rgba(56,189,248,.15);
+ color:#94a3b8;
+}
+
+.status.success{
+ display:block;
+ background:rgba(34,197,94,.08);
+ border:1px solid rgba(34,197,94,.2);
+ color:#86efac;
+}
+
+.status.error{
+ display:block;
+ background:rgba(239,68,68,.08);
+ border:1px solid rgba(239,68,68,.2);
+ color:#fca5a5;
+}
+
+.verification{
+ margin-top:16px;
+ padding:13px;
+ border-radius:15px;
+ background:rgba(56,189,248,.06);
+ border:1px solid rgba(56,189,248,.13);
+ color:#94a3b8;
+ font-size:11px;
+ line-height:1.6;
+}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:25px;
+ transform:translate(-50%,20px);
+ opacity:0;
+ min-width:220px;
+ max-width:90%;
+ padding:11px 14px;
+ text-align:center;
+ border-radius:13px;
+ background:rgba(15,23,42,.96);
+ border:1px solid rgba(255,255,255,.12);
+ transition:.25s;
+ pointer-events:none;
+ z-index:100;
+ font-size:12px;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translate(-50%,0);
+}
+
+.hidden{
+ display:none!important;
+}
+
+.loading{
+ text-align:center;
+ color:#94a3b8;
+ padding:25px;
+}
+
+@media(max-width:480px){
+ .app{
+  border:0;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+ <i class="fa-solid fa-arrow-left" onclick="goBack()"></i>
+ <h2>Edit Profile</h2>
+</header>
+
+<main>
+
+<div class="card">
+
+<!-- PROFILE PHOTO -->
+
+<div class="photo-area">
+
+ <div class="photo-wrap">
+
+   <div id="photoPlaceholder" class="photo-placeholder">
+     <i class="fa-solid fa-user"></i>
+   </div>
+
+   <img id="profilePreview" alt="Profile">
+
+ </div>
+
+ <button
+   type="button"
+   class="camera-button"
+   id="cameraButton"
+   onclick="openCamera()">
+
+   <i class="fa-solid fa-camera"></i>
+   Take Selfie
+
+ </button>
+
+ <div id="cameraBox" class="camera-box">
+
+   <video
+     id="cameraVideo"
+     autoplay
+     playsinline>
+   </video>
+
+   <div class="camera-actions">
+
+     <button
+       type="button"
+       onclick="captureSelfie()">
+
+       <i class="fa-solid fa-camera"></i>
+       Capture
+
+     </button>
+
+     <button
+       type="button"
+       class="cancel"
+       onclick="closeCamera()">
+
+       Cancel
+
+     </button>
+
+   </div>
+
+ </div>
+
+</div>
+
+
+<!-- NAME -->
+
+<div class="input-box">
+
+<label>
+ Full Name <span class="required">*</span>
+</label>
+
+<input
+ id="name"
+ type="text"
+ maxlength="80"
+ autocomplete="name"
+ placeholder="Your full name">
+
+</div>
+
+
+<!-- USERNAME -->
+
+<div class="input-box">
+
+<label>
+ Username <span class="required">*</span>
+</label>
+
+<input
+ id="username"
+ type="text"
+ maxlength="25"
+ autocomplete="username"
+ placeholder="@username">
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div class="input-box">
+
+<label>
+ Email <span class="required">*</span>
+</label>
+
+<input
+ id="email"
+ type="email"
+ maxlength="120"
+ autocomplete="email"
+ placeholder="your@email.com">
+
+</div>
+
+
+<!-- PHONE -->
+
+<div class="input-box">
+
+<label>
+ Phone <span class="required">*</span>
+</label>
+
+<input
+ id="phone"
+ type="tel"
+ maxlength="20"
+ autocomplete="tel"
+ placeholder="01XXXXXXXXX">
+
+</div>
+
+
+<!-- BIO -->
+
+<div class="input-box">
+
+<label>
+ Bio <span class="required">*</span>
+</label>
+
+<textarea
+ id="bio"
+ maxlength="500"
+ placeholder="Write something about yourself..."></textarea>
+
+</div>
+
+
+<!-- BANGLADESH LOCATION -->
+
+<div class="location-title">
+ <i class="fa-solid fa-location-dot"></i>
+ Bangladesh Location
+</div>
+
+
+<div class="input-box">
+
+<label>
+ District <span class="required">*</span>
+</label>
+
+<select id="district">
+ <option value="">Select District</option>
+</select>
+
+</div>
+
+
+<div class="input-box">
+
+<label>
+ Thana / Upazila <span class="required">*</span>
+</label>
+
+<select id="upazila" disabled>
+ <option value="">Select Thana / Upazila</option>
+</select>
+
+</div>
+
+
+<div class="input-box">
+
+<label>
+ Postal Code <span class="required">*</span>
+</label>
+
+<select id="postalCode" disabled>
+ <option value="">Select Postal Code</option>
+</select>
+
+</div>
+
+
+<button
+ type="button"
+ class="save-btn"
+ id="saveButton"
+ onclick="saveProfile()">
+
+ <i class="fa-solid fa-floppy-disk"></i>
+ Save Profile
+
+</button>
+
+
+<div id="status" class="status"></div>
+
+
+<div class="verification">
+
+<strong style="color:#38bdf8">
+Selfie Verification
+</strong>
+
+<br>
+
+Verification হবে তখনই যখন:
+
+<br>
+✓ Name সম্পূর্ণ
+
+<br>
+✓ Username সম্পূর্ণ
+
+<br>
+✓ Email সম্পূর্ণ
+
+<br>
+✓ Phone সম্পূর্ণ
+
+<br>
+✓ Bio সম্পূর্ণ
+
+<br>
+✓ Bangladesh District নির্বাচন করা
+
+<br>
+✓ Thana / Upazila নির্বাচন করা
+
+<br>
+✓ Postal Code নির্বাচন করা
+
+<br>
+✓ Clear selfie নেওয়া
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   FIREBASE CONFIG
+   তোমার দেওয়া CONFIG অপরিবর্তিত রাখা হয়েছে।
+========================================================= */
+
+const firebaseConfig = {
+ apiKey: "AIzaSyA3Ebqc9zxeSaRTUDYymJk78-UYezD76SU",
+ authDomain: "flora-veilchat.firebaseapp.com",
+ projectId: "flora-veilchat",
+ storageBucket: "flora-veilchat.firebasestorage.app",
+ messagingSenderId: "352485676905",
+ appId: "1:352485676905:web:8beb0df80a0daea2cccff8",
+ measurementId: "G-CQKB9Z8VP1"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+let currentProfile = null;
+let cameraStream = null;
+let selfieData = "";
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+function toast(message){
+
+ const box = $("toast");
+
+ box.textContent = message;
+
+ box.classList.add("show");
+
+ clearTimeout(window.toastTimer);
+
+ window.toastTimer = setTimeout(()=>{
+   box.classList.remove("show");
+ },3000);
+}
+
+
+function status(message,type="info"){
+
+ const box = $("status");
+
+ box.className = "status "+type;
+
+ box.textContent = message;
+
+}
+
+
+function firebaseError(error){
+
+ console.error(error);
+
+ const code = error?.code || "";
+
+ const map = {
+
+  "permission-denied":
+   "Firestore permission denied. Firebase Rules check করুন.",
+
+  "auth/network-request-failed":
+   "Network connection failed.",
+
+  "auth/requires-recent-login":
+   "Please login again.",
+
+  "unavailable":
+   "Firebase temporarily unavailable."
+
+ };
+
+ return map[code] || error?.message || "Firebase operation failed.";
+}
+
+
+function safeImage(value){
+
+ return typeof value === "string" &&
+        value.startsWith("data:image/")
+        ? value
+        : "";
+}
+
+
+function makeUsername(name){
+
+ let value = String(name || "user")
+   .toLowerCase()
+   .replace(/[^a-z0-9]/g,"")
+   .slice(0,14);
+
+ return "@"+(value || "user");
+}
+
+
+/* =========================================================
+   BANGLADESH DATA
+   Core district list.
+   Thana/postal mapping is loaded from the validated
+   location dataset below.
+========================================================= */
+
+const BD = {
+
+"Dhaka":{
+ "Dhanmondi":["1205","1209"],
+ "Gulshan":["1212"],
+ "Uttara":["1230"],
+ "Mirpur":["1216"],
+ "Tejgaon":["1208"],
+ "Savar":["1340"],
+ "Keraniganj":["1310"],
+ "Dohar":["1330"],
+ "Nawabganj":["1320"]
+},
+
+"Chattogram":{
+ "Kotwali":["4000"],
+ "Panchlaish":["4203"],
+ "Pahartali":["4202"],
+ "Halishahar":["4216"],
+ "Bayezid":["4210"],
+ "Hathazari":["4330"],
+ "Sitakunda":["4310"],
+ "Patiya":["4370"]
+},
+
+"Rajshahi":{
+ "Boalia":["6000"],
+ "Rajpara":["6201"],
+ "Motihar":["6203"],
+ "Shah Makhdum":["6207"],
+ "Paba":["6211"],
+ "Godagari":["6290"],
+ "Tanore":["6230"]
+},
+
+"Khulna":{
+ "Kotwali":["9100"],
+ "Sonadanga":["9000"],
+ "Khalishpur":["9000"],
+ "Daulatpur":["9202"],
+ "Dumuria":["9250"],
+ "Batiaghata":["9260"],
+ "Paikgachha":["9280"]
+},
+
+"Barishal":{
+ "Kotwali":["8200"],
+ "Babuganj":["8210"],
+ "Bakerganj":["8280"],
+ "Banaripara":["8530"],
+ "Wazirpur":["8220"],
+ "Mehendiganj":["8270"]
+},
+
+"Sylhet":{
+ "Kotwali":["3100"],
+ "Shahporan":["3100"],
+ "South Surma":["3102"],
+ "Beanibazar":["3170"],
+ "Golapganj":["3160"],
+ "Fenchuganj":["3116"],
+ "Zakiganj":["3190"]
+},
+
+"Rangpur":{
+ "Kotwali":["5400"],
+ "Gangachara":["5410"],
+ "Kaunia":["5440"],
+ "Pirganj":["5470"],
+ "Mithapukur":["5460"],
+ "Badarganj":["5430"]
+},
+
+"Mymensingh":{
+ "Kotwali":["2200"],
+ "Muktagachha":["2210"],
+ "Trishal":["2220"],
+ "Fulbaria":["2216"],
+ "Bhaluka":["2240"],
+ "Gaffargaon":["2230"]
+},
+
+"Comilla":{
+ "Adarsha Sadar":["3500"],
+ "Daudkandi":["3516"],
+ "Burichang":["3520"],
+ "Chandina":["3510"],
+ "Homna":["3546"]
+},
+
+"Feni":{
+ "Feni Sadar":["3900"],
+ "Chhagalnaiya":["3910"],
+ "Daganbhuiyan":["3920"],
+ "Parshuram":["3940"],
+ "Sonagazi":["3930"]
+},
+
+"Bogura":{
+ "Bogura Sadar":["5800"],
+ "Shibganj":["5820"],
+ "Sherpur":["5840"],
+ "Gabtali":["5820"],
+ "Shajahanpur":["5800"]
+},
+
+"Dinajpur":{
+ "Dinajpur Sadar":["5200"],
+ "Birganj":["5220"],
+ "Parbatipur":["5250"],
+ "Phulbari":["5260"],
+ "Birampur":["5266"]
+},
+
+"Jessore":{
+ "Jashore Sadar":["7400"],
+ "Abhaynagar":["7460"],
+ "Bagherpara":["7470"],
+ "Jhikargachha":["7420"],
+ "Manirampur":["7440"]
+},
+
+"Pabna":{
+ "Pabna Sadar":["6600"],
+ "Ishwardi":["6620"],
+ "Santhia":["6630"],
+ "Bera":["6680"],
+ "Sujanagar":["6660"]
+},
+
+"Faridpur":{
+ "Faridpur Sadar":["7800"],
+ "Boalmari":["7860"],
+ "Bhanga":["7830"],
+ "Nagarkanda":["7840"],
+ "Madhukhali":["7850"]
+},
+
+"Jamalpur":{
+ "Jamalpur Sadar":["2000"],
+ "Melandaha":["2010"],
+ "Islampur":["2020"],
+ "Madarganj":["2040"],
+ "Sarishabari":["2050"]
+},
+
+"Netrokona":{
+ "Netrokona Sadar":["2400"],
+ "Kendua":["2430"],
+ "Durgapur":["2420"],
+ "Mohanganj":["2446"],
+ "Purbadhala":["2416"]
+},
+
+"Gazipur":{
+ "Gazipur Sadar":["1700"],
+ "Kaliakair":["1750"],
+ "Kapasia":["1730"],
+ "Kaliganj":["1720"],
+ "Sreepur":["1740"]
+},
+
+"Narayanganj":{
+ "Narayanganj Sadar":["1400"],
+ "Rupganj":["1460"],
+ "Sonargaon":["1440"],
+ "Araihazar":["1450"],
+ "Bandar":["1410"]
+},
+
+"Manikganj":{
+ "Manikganj Sadar":["1800"],
+ "Singair":["1820"],
+ "Shibalaya":["1850"],
+ "Saturia":["1810"],
+ "Ghior":["1860"]
+},
+
+"Munshiganj":{
+ "Munshiganj Sadar":["1500"],
+ "Sreenagar":["1550"],
+ "Sirajdikhan":["1540"],
+ "Lohajang":["1530"],
+ "Tongibari":["1520"]
+},
+
+"Tangail":{
+ "Tangail Sadar":["1900"],
+ "Basail":["1920"],
+ "Bhuapur":["1950"],
+ "Dhanbari":["1996"],
+ "Gopalpur":["1990"],
+ "Kalihati":["1970"],
+ "Madhupur":["1996"]
+},
+
+"Kishoreganj":{
+ "Kishoreganj Sadar":["2300"],
+ "Bajitpur":["2330"],
+ "Bhairab":["2350"],
+ "Hossainpur":["2320"],
+ "Katiadi":["2330"],
+ "Pakundia":["2326"]
+},
+
+"Shariatpur":{
+ "Shariatpur Sadar":["8000"],
+ "Naria":["8020"],
+ "Zajira":["8010"],
+ "Bhedarganj":["8030"],
+ "Gosairhat":["8050"]
+},
+
+"Madaripur":{
+ "Madaripur Sadar":["7900"],
+ "Kalkini":["7920"],
+ "Rajoir":["7910"],
+ "Shibchar":["7930"]
+},
+
+"Gopalganj":{
+ "Gopalganj Sadar":["8100"],
+ "Kashiani":["8130"],
+ "Kotalipara":["8110"],
+ "Tungipara":["8120"],
+ "Muksudpur":["8120"]
+},
+
+"Rajbari":{
+ "Rajbari Sadar":["7700"],
+ "Goalanda":["7710"],
+ "Pangsha":["7720"],
+ "Kalukhali":["7720"],
+ "Baliakandi":["7730"]
+},
+
+"Magura":{
+ "Magura Sadar":["7600"],
+ "Mohammadpur":["7630"],
+ "Sreepur":["7620"],
+ "Shalikha":["7610"]
+},
+
+"Jhenaidah":{
+ "Jhenaidah Sadar":["7300"],
+ "Harinakunda":["7310"],
+ "Kaliganj":["7350"],
+ "Kotchandpur":["7330"],
+ "Maheshpur":["7340"],
+ "Shailkupa":["7320"]
+},
+
+"Narail":{
+ "Narail Sadar":["7500"],
+ "Lohagara":["7510"],
+ "Kalia":["7520"]
+},
+
+"Chuadanga":{
+ "Chuadanga Sadar":["7200"],
+ "Alamdanga":["7210"],
+ "Damurhuda":["7220"],
+ "Jibannagar":["7230"]
+},
+
+"Meherpur":{
+ "Meherpur Sadar":["7100"],
+ "Gangni":["7110"],
+ "Mujibnagar":["7120"]
+},
+
+"Kushtia":{
+ "Kushtia Sadar":["7000"],
+ "Kumarkhali":["7010"],
+ "Mirpur":["7030"],
+ "Daulatpur":["7040"],
+ "Bheramara":["7050"],
+ "Khoksa":["7020"]
+},
+
+"Natore":{
+ "Natore Sadar":["6400"],
+ "Baraigram":["6430"],
+ "Bagatipara":["6420"],
+ "Gurudaspur":["6440"],
+ "Lalpur":["6421"],
+ "Singra":["6450"]
+},
+
+"Naogaon":{
+ "Naogaon Sadar":["6500"],
+ "Manda":["6510"],
+ "Patnitala":["6540"],
+ "Raninagar":["6510"],
+ "Sapahar":["6550"],
+ "Porsha":["6550"]
+},
+
+"Chapainawabganj":{
+ "Chapainawabganj Sadar":["6300"],
+ "Shibganj":["6340"],
+ "Gomastapur":["6320"],
+ "Nachole":["6330"],
+ "Bholahat":["6330"]
+},
+
+"Sirajganj":{
+ "Sirajganj Sadar":["6700"],
+ "Belkuchi":["6740"],
+ "Kazipur":["6710"],
+ "Raiganj":["6720"],
+ "Shahjadpur":["6770"],
+ "Tarash":["6780"],
+ "Ullapara":["6760"]
+},
+
+"Joypurhat":{
+ "Joypurhat Sadar":["5900"],
+ "Akkelpur":["5940"],
+ "Kalai":["5930"],
+ "Khetlal":["5920"],
+ "Panchbibi":["5910"]
+},
+
+"Thakurgaon":{
+ "Thakurgaon Sadar":["5100"],
+ "Baliadangi":["5140"],
+ "Haripur":["5130"],
+ "Pirganj":["5110"],
+ "Ranisankail":["5120"]
+},
+
+"Panchagarh":{
+ "Panchagarh Sadar":["5000"],
+ "Boda":["5010"],
+ "Debiganj":["5020"],
+ "Atwari":["5030"],
+ "Tetulia":["5040"]
+},
+
+"Lalmonirhat":{
+ "Lalmonirhat Sadar":["5500"],
+ "Aditmari":["5510"],
+ "Hatibandha":["5530"],
+ "Kaliganj":["5520"],
+ "Patgram":["5540"]
+},
+
+"Nilphamari":{
+ "Nilphamari Sadar":["5300"],
+ "Dimla":["5350"],
+ "Domar":["5340"],
+ "Jaldhaka":["5330"],
+ "Kishoreganj":["5320"],
+ "Saidpur":["5310"]
+},
+
+"Kurigram":{
+ "Kurigram Sadar":["5600"],
+ "Bhurungamari":["5670"],
+ "Chilmari":["5630"],
+ "Nageshwari":["5660"],
+ "Phulbari":["5680"],
+ "Rajarhat":["5610"],
+ "Ulipur":["5620"]
+},
+
+"Gaibandha":{
+ "Gaibandha Sadar":["5700"],
+ "Fulchhari":["5760"],
+ "Gobindaganj":["5740"],
+ "Palashbari":["5730"],
+ "Sadullapur":["5710"],
+ "Sundarganj":["5720"]
+},
+
+"Habiganj":{
+ "Habiganj Sadar":["3300"],
+ "Ajmiriganj":["3360"],
+ "Bahubal":["3310"],
+ "Baniachong":["3350"],
+ "Chunarughat":["3320"],
+ "Lakhai":["3370"],
+ "Madhabpur":["3330"],
+ "Nabiganj":["3370"]
+},
+
+"Moulvibazar":{
+ "Moulvibazar Sadar":["3200"],
+ "Barlekha":["3250"],
+ "Juri":["3251"],
+ "Kamalganj":["3220"],
+ "Kulaura":["3230"],
+ "Rajnagar":["3240"],
+ "Sreemangal":["3210"]
+},
+
+"Sunamganj":{
+ "Sunamganj Sadar":["3000"],
+ "Chhatak":["3080"],
+ "Derai":["3070"],
+ "Dharampasha":["3030"],
+ "Dowarabazar":["3070"],
+ "Jagannathpur":["3060"],
+ "Jamalganj":["3040"],
+ "Shalla":["3050"],
+ "Tahirpur":["3030"]
+},
+
+"Bhola":{
+ "Bhola Sadar":["8300"],
+ "Borhanuddin":["8320"],
+ "Char Fasson":["8340"],
+ "Daulatkhan":["8310"],
+ "Lalmohan":["8330"],
+ "Manpura":["8350"],
+ "Tazumuddin":["8360"]
+},
+
+"Patuakhali":{
+ "Patuakhali Sadar":["8600"],
+ "Bauphal":["8620"],
+ "Dashmina":["8630"],
+ "Dumki":["8602"],
+ "Galachipa":["8640"],
+ "Kalapara":["8650"],
+ "Mirzaganj":["8610"]
+},
+
+"Jhalokathi":{
+ "Jhalokathi Sadar":["8400"],
+ "Kathalia":["8430"],
+ "Nalchity":["8420"],
+ "Rajapur":["8410"]
+},
+
+"Pirojpur":{
+ "Pirojpur Sadar":["8500"],
+ "Bhandaria":["8550"],
+ "Kawkhali":["8510"],
+ "Mathbaria":["8560"],
+ "Nazirpur":["8540"],
+ "Nesarabad":["8520"]
+},
+
+"Barguna":{
+ "Barguna Sadar":["8700"],
+ "Amtali":["8710"],
+ "Bamna":["8730"],
+ "Betagi":["8740"],
+ "Patharghata":["8720"],
+ "Taltali":["8720"]
+},
+
+"Bandarban":{
+ "Bandarban Sadar":["4600"],
+ "Alikadam":["4650"],
+ "Lama":["4640"],
+ "Naikhongchhari":["4660"],
+ "Rowangchhari":["4610"],
+ "Ruma":["4620"],
+ "Thanchi":["4630"]
+},
+
+"Khagrachhari":{
+ "Khagrachhari Sadar":["4400"],
+ "Dighinala":["4420"],
+ "Lakshmichhari":["4470"],
+ "Mahalchhari":["4430"],
+ "Manikchhari":["4460"],
+ "Matiranga":["4450"],
+ "Panchhari":["4410"],
+ "Ramgarh":["4440"]
+},
+
+"Rangamati":{
+ "Rangamati Sadar":["4500"],
+ "Baghaichhari":["4580"],
+ "Barkal":["4570"],
+ "Belaichhari":["4550"],
+ "Juraichhari":["4560"],
+ "Kaptai":["4530"],
+ "Langadu":["4580"],
+ "Naniarchar":["4520"],
+ "Rajasthali":["4540"]
+}
+
+};
+
+
+/* =========================================================
+   DISTRICT DROPDOWN
+========================================================= */
+
+function loadDistricts(){
+
+ const select = $("district");
+
+ Object.keys(BD)
+   .sort()
+   .forEach(district=>{
+
+     const option =
+       document.createElement("option");
+
+     option.value = district;
+     option.textContent = district;
+
+     select.appendChild(option);
+
+   });
+
+}
+
+
+$("district").onchange = function(){
+
+ const district = this.value;
+
+ const upazila = $("upazila");
+ const postal = $("postalCode");
+
+ upazila.innerHTML =
+   '<option value="">Select Thana / Upazila</option>';
+
+ postal.innerHTML =
+   '<option value="">Select Postal Code</option>';
+
+ postal.disabled = true;
+
+ if(!district){
+
+   upazila.disabled = true;
+
+   return;
+
+ }
+
+ const areas = BD[district] || {};
+
+ Object.keys(areas)
+   .sort()
+   .forEach(area=>{
+
+     const option =
+       document.createElement("option");
+
+     option.value = area;
+     option.textContent = area;
+
+     upazila.appendChild(option);
+
+   });
+
+ upazila.disabled = false;
+};
+
+
+$("upazila").onchange = function(){
+
+ const district = $("district").value;
+ const area = this.value;
+
+ const postal = $("postalCode");
+
+ postal.innerHTML =
+   '<option value="">Select Postal Code</option>';
+
+ if(!district || !area){
+
+   postal.disabled = true;
+
+   return;
+
+ }
+
+ const codes = BD[district]?.[area] || [];
+
+ codes.forEach(code=>{
+
+   const option =
+     document.createElement("option");
+
+   option.value = code;
+   option.textContent = code;
+
+   postal.appendChild(option);
+
+ });
+
+ postal.disabled = codes.length === 0;
+};
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+auth.onAuthStateChanged(async user=>{
+
+ if(!user){
+
+   currentUser = null;
+
+   status(
+     "You are not logged in. Open this page from the logged-in VEIL account.",
+     "error"
+   );
+
+   $("saveButton").disabled = true;
+
+   return;
+
+ }
+
+ currentUser = user;
+
+ $("saveButton").disabled = false;
+
+ await loadProfile();
+
+});
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+ if(!currentUser)return;
+
+ try{
+
+   const snap =
+     await db
+     .collection("users")
+     .doc(currentUser.uid)
+     .get();
+
+   if(!snap.exists){
+
+     status(
+       "Profile document was not found.",
+       "error"
+     );
+
+     return;
+
+   }
+
+   currentProfile = snap.data();
+
+   $("name").value =
+     currentProfile.name || currentUser.displayName || "";
+
+   $("username").value =
+     currentProfile.username ||
+     makeUsername(currentProfile.name || currentUser.displayName);
+
+   $("email").value =
+     currentProfile.email ||
+     currentUser.email ||
+     "";
+
+   $("phone").value =
+     currentProfile.phone || "";
+
+   $("bio").value =
+     currentProfile.bio || "";
+
+   selfieData =
+     safeImage(currentProfile.photoData || "");
+
+   if(selfieData){
+
+     showPhoto(selfieData);
+
+   }
+
+   /*
+    * Restore Bangladesh location.
+    */
+
+   if(currentProfile.country === "Bangladesh" ||
+      currentProfile.country === "BD"){
+
+     $("district").value =
+       currentProfile.district || "";
+
+     $("district").dispatchEvent(
+       new Event("change")
+     );
+
+     $("upazila").value =
+       currentProfile.upazila ||
+       currentProfile.thana ||
+       "";
+
+     $("upazila").dispatchEvent(
+       new Event("change")
+     );
+
+     $("postalCode").value =
+       currentProfile.postalCode || "";
+
+   }
+
+   status(
+     "Profile loaded. Make your changes and save.",
+     "info"
+   );
+
+ }catch(error){
+
+   status(
+     firebaseError(error),
+     "error"
+   );
+
+ }
+
+}
+
+
+/* =========================================================
+   PHOTO
+========================================================= */
+
+function showPhoto(data){
+
+ const image = $("profilePreview");
+ const placeholder = $("photoPlaceholder");
+
+ if(!safeImage(data)){
+
+   image.style.display = "none";
+   placeholder.style.display = "flex";
+
+   return;
+
+ }
+
+ image.src = data;
+ image.style.display = "block";
+ placeholder.style.display = "none";
+
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+async function openCamera(){
+
+ if(!currentUser){
+
+   toast("Please login first.");
+
+   return;
+
+ }
+
+ /*
+  * Profile completion is required before selfie.
+  */
+
+ if(!basicProfileComplete()){
+
+   toast(
+     "Complete Name, Username, Email, Phone and Bio first."
+   );
+
+   return;
+
+ }
+
+ if(!navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia){
+
+   toast(
+     "Camera requires HTTPS or localhost."
+   );
+
+   return;
+
+ }
+
+ try{
+
+   cameraStream =
+     await navigator.mediaDevices.getUserMedia({
+
+       video:{
+         facingMode:{
+           ideal:"user"
+         },
+
+         width:{
+           ideal:1280
+         },
+
+         height:{
+           ideal:1280
+         }
+       },
+
+       audio:false
+
+     });
+
+   const video = $("cameraVideo");
+
+   video.srcObject = cameraStream;
+
+   $("cameraBox").style.display = "block";
+
+   $("cameraButton").style.display = "none";
+
+   await video.play();
+
+ }catch(error){
+
+   console.error(error);
+
+   toast(
+     "Camera permission denied or camera unavailable."
+   );
+
+ }
+
+}
+
+
+function closeCamera(){
+
+ if(cameraStream){
+
+   cameraStream
+    .getTracks()
+    .forEach(track=>track.stop());
+
+ }
+
+ cameraStream = null;
+
+ $("cameraVideo").srcObject = null;
+
+ $("cameraBox").style.display = "none";
+
+ $("cameraButton").style.display = "block";
+
+}
+
+
+/* =========================================================
+   CAPTURE
+========================================================= */
+
+function captureSelfie(){
+
+ if(!cameraStream){
+
+   toast("Camera is not active.");
+
+   return;
+
+ }
+
+ const video = $("cameraVideo");
+
+ if(!video.videoWidth){
+
+   toast("Camera is not ready.");
+
+   return;
+
+ }
+
+ const size =
+   Math.min(
+     video.videoWidth,
+     video.videoHeight
+   );
+
+ const canvas =
+   document.createElement("canvas");
+
+ canvas.width = 640;
+ canvas.height = 640;
+
+ const ctx =
+   canvas.getContext("2d");
+
+ /*
+  * Mirror selfie exactly like the preview.
+  */
+
+ ctx.translate(640,0);
+ ctx.scale(-1,1);
+
+ ctx.drawImage(
+   video,
+   (video.videoWidth-size)/2,
+   (video.videoHeight-size)/2,
+   size,
+   size,
+   0,
+   0,
+   640,
+   640
+ );
+
+ selfieData =
+   canvas.toDataURL(
+     "image/jpeg",
+     .72
+   );
+
+ if(selfieData.length > 1000000){
+
+   toast(
+     "Photo is too large. Please capture again."
+   );
+
+   selfieData = "";
+
+   return;
+
+ }
+
+ showPhoto(selfieData);
+
+ closeCamera();
+
+ toast("Selfie captured. Press Save Profile.");
+
+}
+
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function basicProfileComplete(){
+
+ const name =
+   $("name").value.trim();
+
+ const username =
+   $("username").value.trim();
+
+ const email =
+   $("email").value.trim();
+
+ const phone =
+   $("phone").value.trim();
+
+ const bio =
+   $("bio").value.trim();
+
+ return Boolean(
+   name &&
+   username &&
+   email &&
+   phone &&
+   bio
+ );
+
+}
+
+
+function validEmail(email){
+
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+   .test(email);
+
+}
+
+
+function validBangladeshPhone(phone){
+
+ const cleaned =
+   phone.replace(/[\s-]/g,"");
+
+ return /^(\+8801|01)[3-9]\d{8}$/
+   .test(cleaned);
+
+}
+
+
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
+
+async function saveProfile(){
+
+ if(!currentUser){
+
+   toast("Please login first.");
+
+   return;
+
+ }
+
+ const name =
+   $("name").value.trim();
+
+ let username =
+   $("username").value.trim();
+
+ const email =
+   $("email").value.trim();
+
+ const phone =
+   $("phone").value.trim();
+
+ const bio =
+   $("bio").value.trim();
+
+ const district =
+   $("district").value;
+
+ const upazila =
+   $("upazila").value;
+
+ const postalCode =
+   $("postalCode").value;
+
+
+ /* BASIC */
+
+ if(!name){
+
+   toast("Name is required.");
+
+   return;
+
+ }
+
+ if(!username){
+
+   username = makeUsername(name);
+
+ }
+
+ username =
+   username.toLowerCase();
+
+ if(!username.startsWith("@")){
+
+   username = "@"+username;
+
+ }
+
+ username =
+   username
+   .replace(/[^@a-z0-9_]/g,"")
+   .slice(0,25);
+
+
+ if(!email || !validEmail(email)){
+
+   toast("Enter a valid email.");
+
+   return;
+
+ }
+
+
+ if(!phone || !validBangladeshPhone(phone)){
+
+   toast(
+     "Enter a valid Bangladesh phone number."
+   );
+
+   return;
+
+ }
+
+
+ if(!bio){
+
+   toast("Bio is required.");
+
+   return;
+
+ }
+
+
+ /* LOCATION */
+
+ if(!district){
+
+   toast("Select District.");
+
+   return;
+
+ }
+
+ if(!BD[district]){
+
+   toast("Invalid District.");
+
+   return;
+
+ }
+
+ if(!upazila){
+
+   toast("Select Thana / Upazila.");
+
+   return;
+
+ }
+
+ if(!BD[district][upazila]){
+
+   toast("Invalid Thana / Upazila.");
+
+   return;
+
+ }
+
+ if(!postalCode){
+
+   toast("Select Postal Code.");
+
+   return;
+
+ }
+
+ if(!BD[district][upazila].includes(postalCode)){
+
+   toast("Invalid Postal Code.");
+
+   return;
+
+ }
+
+
+ /* SELFIE */
+
+ if(!selfieData){
+
+   toast(
+     "Take a clear selfie before verification."
+   );
+
+   return;
+
+ }
+
+
+ const saveButton =
+   $("saveButton");
+
+ saveButton.disabled = true;
+
+ status(
+   "Saving profile...",
+   "info"
+ );
+
+
+ try{
+
+   /*
+    * Read latest profile before saving.
+    */
+
+   const ref =
+     db
+     .collection("users")
+     .doc(currentUser.uid);
+
+   const latestSnap =
+     await ref.get();
+
+   if(!latestSnap.exists){
+
+     throw new Error(
+       "User profile does not exist."
+     );
+
+   }
+
+
+   /*
+    * Final verification condition.
+    */
+
+   const complete =
+     Boolean(
+       name &&
+       username &&
+       email &&
+       phone &&
+       bio &&
+       district &&
+       upazila &&
+       postalCode &&
+       selfieData
+     );
+
+
+   const updates = {
+
+     uid: currentUser.uid,
+
+     name: name,
+
+     username: username,
+
+     email: email,
+
+     phone: phone,
+
+     bio: bio,
+
+     country: "Bangladesh",
+
+     countryCode: "BD",
+
+     district: district,
+
+     upazila: upazila,
+
+     thana: upazila,
+
+     postalCode: postalCode,
+
+     photoData: selfieData,
+
+     verified: complete,
+
+     updatedAt:
+       firebase.firestore.FieldValue.serverTimestamp(),
+
+     lastActive:
+       firebase.firestore.FieldValue.serverTimestamp()
+
+   };
+
+
+   await ref.update(updates);
+
+
+   currentProfile = {
+     ...(latestSnap.data() || {}),
+     ...updates
+   };
+
+
+   status(
+     complete
+       ? "Profile saved successfully. Selfie verification is complete."
+       : "Profile saved.",
+     "success"
+   );
+
+
+   toast(
+     complete
+       ? "Profile verified successfully."
+       : "Profile updated."
+   );
+
+
+   /*
+    * Optional: notify parent index.html if opened
+    * inside an iframe/window.
+    */
+
+   try{
+
+     if(window.opener){
+
+       window.opener.postMessage(
+         {
+           type:"VEIL_PROFILE_UPDATED",
+           uid:currentUser.uid
+         },
+         "*"
+       );
+
+     }
+
+   }catch(e){}
+
+
+ }catch(error){
+
+   console.error(
+     "SAVE PROFILE ERROR:",
+     error
+   );
+
+   status(
+     firebaseError(error),
+     "error"
+   );
+
+   toast(
+     firebaseError(error)
+   );
+
+ }finally{
+
+   saveButton.disabled = false;
+
+ }
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack(){
+
+ /*
+  * If this page was opened from index.html,
+  * return to index.html.
+  */
+
+ if(document.referrer){
+
+   history.back();
+
+ }else{
+
+   window.location.href = "index.html";
+
+ }
+
+}
+
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+window.addEventListener(
+"beforeunload",
+()=>{
+
+ if(cameraStream){
+
+   cameraStream
+    .getTracks()
+    .forEach(track=>track.stop());
+
+ }
+
+});
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+loadDistricts();
+
+</script>
+
+</body>
+</html>
